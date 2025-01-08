@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Coordinates</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJvo0AZ4PjbJF3_Yn-Z3PIb31TZAV9624"></script>
+    <style>
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 34.89495, lng: -86.44408 },
+                zoom: 18,
+                mapTypeId: "satellite"  // Default view: satellite
+            });
+
+            map.addListener("click", (event) => {
+                const lat = event.latLng.lat();
+                const lng = event.latLng.lng();
+
+                // Send coordinates back to the parent window
+                window.opener.postMessage({ lat, lng }, window.location.origin);
+
+                // Close the map window
+                window.close();
+            });
+        }
+
+        // Initialize the map once the page loads
+        window.onload = initMap;
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+# Python-related
+*.pyc
+*.pyo
+__pycache__/
+*.sqlite3
+
+# Environment files
+venv/
+.env
+
+# Django-related
+db.sqlite3
+/media/
+
+# System files
+.DS_Store
+*.log
+*.bak
+
+# IDE-specific
+.idea/
+.vscode/
