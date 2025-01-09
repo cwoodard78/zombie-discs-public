@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile_user.username }}'s Profile</title>
+</head>
+<body>
+    <h1>{{ user.username }}'s Profile</h1>
+    {% if profile_user.profile.photo %}
+        <img src="{{ profile_user.profile.photo.url }}" alt="Profile Photo" style="width: 150px; height: 150px; border-radius: 50%;">
+    {% else %}
+        <p>No profile photo uploaded.</p>
+    {% endif %}
+
+    <p>UserID: {{ user.id }}</p>
+    <p>First Name: {{ user.first_name }}</p>
+    <p>Last Name: {{ user.last_name }}</p>
+    <p>Lost Total:</p>
+    <p>Found Total:</p>
+    <p>Karma: </p>
+    <p>Date Joined: {{ user.date_joined }}</p>
+    <p>Last Login: {{ user.last_login }}</p>
+
+    {% if is_owner %}
+        <!-- Private Details -->
+        <p>Email: {{ profile_user.email }}</p>
+        <a href="{% url 'edit_profile' %}" style="color: blue;">Edit Profile</a>
+    {% endif %}
+</body>
+</html>

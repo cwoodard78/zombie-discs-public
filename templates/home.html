@@ -62,7 +62,8 @@
         <p>Find your lost discs or help others recover theirs.</p>
         {% if user.is_authenticated %}
             <p>Welcome back, {{ user.username }}!</p>
-            <form action="{% url 'logout' %}" method="POST">
+            <a href="{% url 'profile' user.username %}">View Profile</a>
+            <form action="{% url 'logout' %}" method="POST" style="margin-top: 10px;">
                 {% csrf_token %}
                 <button type="submit">Log Out</button>
             </form>

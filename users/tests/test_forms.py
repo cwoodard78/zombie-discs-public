@@ -1,5 +1,5 @@
 from django.test import TestCase
-from users.forms import RegistrationForm
+from users.forms import RegistrationForm, ProfileForm
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -77,3 +77,42 @@ class LoginFormTests(TestCase):
         response = self.client.post(self.login_url, data={'username': 'testuser', 'password': 'StrongPass123!'})
         self.assertEqual(response.status_code, 302)  # Redirects after successful login
         self.assertIn('_auth_user_id', self.client.session)  # User is authenticated
+
+class ProfileFormTests(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='testuser@example.com',
+            first_name='John',
+            last_name='Doe'
+        )
+
+    def test_valid_form(self):
+        """Test that the form is valid with correct data"""
+        form = ProfileForm(data={
+            'email': 'newemail@example.com',
+            'first_name': 'Jane',
+            'last_name': 'Smith',
+        }, instance=self.user)
+        self.assertTrue(form.is_valid())
+
+    def test_missing_required_field(self):
+        """Test that the form is invalid if a required field is missing"""
+        form = ProfileForm(data={
+            'email': '',
+            'first_name': 'Jane',
+            'last_name': 'Smith',
+        }, instance=self.user)
+        self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)
+
+    def test_invalid_email(self):
+        """Test that the form is invalid with an invalid email"""
+        form = ProfileForm(data={
+            'email': 'not-an-email',
+            'first_name': 'Jane',
+            'last_name': 'Smith',
+        }, instance=self.user)
+        self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)

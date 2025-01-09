@@ -2,6 +2,7 @@ from django.test import SimpleTestCase
 from users.views import register
 from django.urls import reverse, resolve
 from django.contrib.auth.views import LoginView, LogoutView
+from users.views import profile, edit_profile
 
 class RegistrationURLTests(SimpleTestCase):
 
@@ -23,3 +24,15 @@ class LogoutURLTests(SimpleTestCase):
         """Test that the logout URL resolves to the Django LogoutView"""
         url = reverse('logout')
         self.assertEqual(resolve(url).func.view_class, LogoutView)
+
+class ProfileURLTests(SimpleTestCase):
+
+    def test_profile_url_resolves(self):
+        """Test that the profile URL resolves to the correct view"""
+        url = reverse('profile', kwargs={'username': 'testuser'})
+        self.assertEqual(resolve(url).func, profile)
+
+    def test_edit_profile_url_resolves(self):
+        """Test that the edit profile URL resolves to the correct view"""
+        url = reverse('edit_profile')
+        self.assertEqual(resolve(url).func, edit_profile)
