@@ -229,3 +229,53 @@ class ProfileViewTests(TestCase):
         self.assertEqual(response.status_code, 200)  # User1 can access their own edit page
         self.assertContains(response, self.user1.username)  # Ensure user1 sees only their username
         self.assertNotContains(response, self.user2.username)  # Ensure user2's username is not displayed
+
+class DeleteAccountTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='testuser@example.com',
+            password='password123'
+        )
+        self.client.login(username='testuser', password='password123')
+
+    def test_delete_account_view_get(self):
+        """Test that the delete account view loads successfully"""
+        response = self.client.get(reverse('delete_account'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Are you sure you want to delete your account?")
+
+    def test_delete_account_view_post(self):
+        """Test that the account is deleted on POST"""
+        response = self.client.post(reverse('delete_account'))
+        self.assertRedirects(response, reverse('home'))  # Assuming 'home' is your homepage
+        self.assertFalse(User.objects.filter(username='testuser').exists())
+
+from django.test import TestCase
+from django.contrib.auth.models import User
+from django.urls import reverse
+
+class PasswordChangeTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='OldPassword123!'
+        )
+        self.client.login(username='testuser', password='OldPassword123!')
+
+    def test_password_change_view(self):
+        """Test that the password change view loads successfully"""
+        response = self.client.get(reverse('password_change'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Change Password')
+
+    def test_password_change_success(self):
+        """Test that the password is successfully changed"""
+        response = self.client.post(reverse('password_change'), {
+            'old_password': 'OldPassword123!',
+            'new_password1': 'NewStrongPassword123!',
+            'new_password2': 'NewStrongPassword123!',
+        })
+        self.assertRedirects(response, reverse('password_change_done'))
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('NewStrongPassword123!'))

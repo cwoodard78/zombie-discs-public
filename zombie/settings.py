@@ -142,3 +142,13 @@ LOGOUT_REDIRECT_URL = '/'
 # Media settings
 MEDIA_URL = '/media/'  # URL to access media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory to store media files
+
+# For password resets
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development (logs emails to console)
+# For production, configure email backend properly:
+    # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    # EMAIL_HOST = 'your-smtp-server'
+    # EMAIL_PORT = 587
+    # EMAIL_USE_TLS = True
+    # EMAIL_HOST_USER = 'your-email@example.com'
+    # EMAIL_HOST_PASSWORD = 'your-email-password'

@@ -34,39 +34,6 @@ def profile(request, username):
 
     return render(request, 'users/profile.html', context)
 
-# @login_required
-# def edit_profile(request):
-#     """View for editing the user's own profile."""
-#     if request.method == 'POST':
-#         form = ProfileForm(request.POST, instance=request.user)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Your profile has been updated successfully!')
-#             return redirect('profile', username=request.user.username)
-#         else:
-#             messages.error(request, 'Please correct the errors below.')
-#     else:
-#         form = ProfileForm(instance=request.user)
-
-#     return render(request, 'users/edit_profile.html', {'form': form})
-
-# @login_required
-# def edit_profile(request):
-#     profile, created = Profile.objects.get_or_create(user=request.user)
-
-#     if request.method == 'POST':
-#         form = ProfileForm(request.POST, request.FILES, instance=profile)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Your profile has been updated successfully!')
-#             return redirect('profile', username=request.user.username)
-#         else:
-#             messages.error(request, 'Please correct the errors below.')
-#     else:
-#         form = ProfileForm(instance=profile)
-
-#     return render(request, 'users/edit_profile.html', {'form': form})
-
 @login_required
 def edit_profile(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
@@ -81,3 +48,13 @@ def edit_profile(request):
         form = ProfileForm(instance=profile, user=request.user)
 
     return render(request, 'users/edit_profile.html', {'form': form})
+
+@login_required
+def delete_account(request):
+    """Allow users to delete their account with confirmation"""
+    if request.method == 'POST':
+        user = request.user
+        user.delete()
+        messages.success(request, "Your account has been successfully deleted.")
+        return redirect('home')  # Redirect to homepage or any other page after deletion
+    return render(request, 'users/delete_account.html')
