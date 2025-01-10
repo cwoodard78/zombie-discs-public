@@ -1,34 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ profile_user.username }}'s Profile</title>
-</head>
-<body>
-    <h1>{{ user.username }}'s Profile</h1>
-    {% if profile_user.profile.photo %}
-        <img src="{{ profile_user.profile.photo.url }}" alt="Profile Photo" style="width: 150px; height: 150px; border-radius: 50%;">
-    {% else %}
-        <p>No profile photo uploaded.</p>
-    {% endif %}
+{% extends "base.html" %}
 
-    <p>UserID: {{ user.id }}</p>
-    <p>First Name: {{ user.first_name }}</p>
-    <p>Last Name: {{ user.last_name }}</p>
-    <p>Lost Total:</p>
-    <p>Found Total:</p>
-    <p>Karma: </p>
-    <p>Date Joined: {{ user.date_joined }}</p>
-    <p>Last Login: {{ user.last_login }}</p>
+{% block title %}{{ user.username }}'s Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <div class="flex items-center space-x-4 mb-6">
+        {% if profile_user.profile.photo %}
+            <img src="{{ profile_user.profile.photo.url }}" alt="Profile Photo" class="w-24 h-24 rounded-full shadow-md">
+        {% else %}
+            <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center shadow-md">
+                <span class="text-gray-500 text-sm">No Photo</span>
+            </div>
+        {% endif %}
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-800">{{ user.username }}</h1>
+            <p class="text-gray-600">UserID: {{ user.id }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 text-gray-800">
+        <p><strong>First Name:</strong> {{ user.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+        <p><strong>Date Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+        <p><strong>Last Login:</strong> {{ user.last_login|date:"F j, Y, g:i A" }}</p>
+        <p><strong>Lost Total:</strong> <span class="text-blue-500">TBD</span></p>
+        <p><strong>Found Total:</strong> <span class="text-blue-500">TBD</span></p>
+        <p><strong>Karma:</strong> <span class="text-green-500">TBD</span></p>
+    </div>
 
     {% if is_owner %}
-        <!-- Private Details -->
-        <p>Email: {{ profile_user.email }}</p>
-        <a href="{% url 'edit_profile' %}" style="color: blue;">Edit Profile</a>
-        <a href="{% url 'password_change' %}" style="color: blue;">Change Password</a>
+        <div class="mt-6">
+            <p><strong>Email:</strong> {{ profile_user.email }}</p>
+            <div class="flex space-x-4 mt-4">
+                <a href="{% url 'edit_profile' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Edit Profile
+                </a>
+                <a href="{% url 'password_change' %}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+                    Change Password
+                </a>
+            </div>
+        </div>
     {% endif %}
 
-    <a href="{% url 'delete_account' %}" style="color: red;">Delete Account</a>
-</body>
-</html>
+    <div class="mt-6">
+        <a href="{% url 'delete_account' %}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+            Delete Account
+        </a>
+    </div>
+</div>
+{% endblock %}

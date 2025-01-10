@@ -1,78 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Zombie Discs</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            margin-bottom: 10px;
-        }
-        p {
-            margin-bottom: 20px;
-            color: #555;
-        }
-        a {
-            text-decoration: none;
-            color: white;
-            background-color: #007BFF;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        a:hover {
-            background-color: #0056b3;
-        }
-        .links {
-            margin-top: 20px;
-        }
-        .links a {
-            display: inline-block;
-            margin: 0 10px;
-            color: #007BFF;
-            background-color: transparent;
-            padding: 0;
-        }
-        .links a:hover {
-            text-decoration: underline;
-            color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Welcome to Zombie Discs</h1>
-        <p>Find your lost discs or help others recover theirs.</p>
-        {% if user.is_authenticated %}
-            <p>Welcome back, {{ user.username }}!</p>
-            <a href="{% url 'profile' user.username %}">View Profile</a>
-            <form action="{% url 'logout' %}" method="POST" style="margin-top: 10px;">
-                {% csrf_token %}
-                <button type="submit">Log Out</button>
-            </form>
-        {% else %}
-            <a href="{% url 'login' %}">Log In</a>
-            <div class="links">
-                <a href="{% url 'register' %}">Register</a>
-            </div>
-        {% endif %}
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Welcome to Zombie Discs{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="text-4xl font-bold mb-4">Welcome to Zombie Discs</h1>
+    <p class="text-lg text-gray-700 mb-6">Find your lost discs or help others recover theirs.</p>
+    {% if user.is_authenticated %}
+        <a href="{% url 'profile' user.username %}" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">Go to Profile</a>
+    {% else %}
+        <a href="{% url 'login' %}" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">Login</a>
+    {% endif %}
+</div>
+{% endblock %}

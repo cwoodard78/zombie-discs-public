@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Disc Details{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-4">Disc Details</h1>
+    <div class="grid grid-cols-2 gap-4 text-gray-800">
+        <p><strong>Status:</strong> {{ disc.get_status_display }}</p>
+        <p><strong>Color:</strong> {{ disc.color }}</p>
+        <p><strong>Type:</strong> {{ disc.disc_type|default:"N/A" }}</p>
+        <p><strong>Manufacturer:</strong> {{ disc.manufacturer|default:"N/A" }}</p>
+        <p><strong>Mold:</strong> {{ disc.mold|default:"N/A" }}</p>
+        <p><strong>Notes:</strong> {{ disc.notes|default:"None" }}</p>
+        <p><strong>Latitude:</strong> {{ disc.latitude }}</p>
+        <p><strong>Longitude:</strong> {{ disc.longitude }}</p>
+        <p><strong>Created At:</strong> {{ disc.created_at|date:"F j, Y, g:i A" }}</p>
+    </div>
+    <div class="mt-6">
+        <p class="text-gray-600">
+            <strong>Reported by:</strong> 
+            <a href="{% url 'profile' username=disc.user.username %}" class="text-blue-500 hover:underline">
+                {{ disc.user.username }}
+            </a>
+        </p>
+    </div>
+    <div class="mt-6">
+        <a href="{% url 'submit_disc' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Add Another Disc
+        </a>
+    </div>
+</div>
+{% endblock %}

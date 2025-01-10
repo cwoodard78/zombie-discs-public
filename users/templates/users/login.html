@@ -1,53 +1,41 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        form {
-            max-width: 300px;
-            margin: 0 auto;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-        button {
-            width: 100%;
-            padding: 8px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <h1 style="text-align: center;">Login</h1>
-    <form method="POST">
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-semibold text-gray-800 text-center mb-6">Login</h1>
+
+    <form method="POST" class="space-y-4">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
+        {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                    <p class="text-sm text-red-500 mt-1">{{ field.errors }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% if form.non_field_errors %}
+            <div class="text-red-500">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 w-full rounded hover:bg-blue-600">
+            Login
+        </button>
     </form>
-    <div style="text-align: center; margin-top: 10px;">
-        <a href="{% url 'register' %}">Register</a> | 
-        <a href="{% url 'password_reset' %}">Forgot Password?</a>
+
+    <div class="text-center mt-4 space-x-4">
+        <a href="{% url 'register' %}" class="text-blue-500 hover:underline">Register</a>
+        <span>|</span>
+        <a href="{% url 'password_reset' %}" class="text-blue-500 hover:underline">Forgot Password?</a>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

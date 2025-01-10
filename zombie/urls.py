@@ -24,13 +24,14 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
+    path("discs/", include("disc.urls")),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
 
-    path('map/', views.map_view, name='map_view'),
-    path('api/', include('map.urls')),
-    path('submit-disc/', views.submit_disc, name='submit_disc'),
-    path('discs/', views.disc_list, name='disc_list'),
-    path('api/save-coordinates/', views.save_coordinates, name='save_coordinates'),
+    # path('map/', views.map_view, name='map_view'),
+    # path('api/', include('map.urls')),
+    # path('submit-disc/', views.submit_disc, name='submit_disc'),
+    # path('discs/', views.disc_list, name='disc_list'),
+    # path('api/save-coordinates/', views.save_coordinates, name='save_coordinates'),
 ]
 
 if settings.DEBUG:
