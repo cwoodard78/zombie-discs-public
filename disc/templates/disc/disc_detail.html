@@ -24,10 +24,23 @@
             </a>
         </p>
     </div>
+    {% if from_user_disc_list %}
+    <div class="mt-6">
+        <a href="{% url 'user_disc_list' %}" class="text-blue-500 hover:underline">
+            &larr; Back to My Discs
+        </a>
+    </div>
+    {% else %}
     <div class="mt-6">
         <a href="{% url 'submit_disc' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Add Another Disc
         </a>
     </div>
+    <div class="mt-6">
+        <a href="{% url 'user_disc_list' %}" class="text-blue-500 hover:underline">
+            Go to My Disc List
+        </a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

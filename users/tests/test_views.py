@@ -279,3 +279,23 @@ class PasswordChangeTests(TestCase):
         self.assertRedirects(response, reverse('password_change_done'))
         self.user.refresh_from_db()
         self.assertTrue(self.user.check_password('NewStrongPassword123!'))
+
+class AboutPageTests(TestCase):
+    def setUp(self):
+        self.url = reverse('about')
+
+    def test_about_page_status_code(self):
+        """Test that the About page loads successfully."""
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_about_page_template_used(self):
+        """Test that the correct template is used for the About page."""
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, 'about.html')
+
+    def test_about_page_content(self):
+        """Test that the About page contains specific content."""
+        response = self.client.get(self.url)
+        self.assertContains(response, 'About Zombie Discs')  
+        self.assertContains(response, 'Welcome to <strong>Zombie Discs</strong>')

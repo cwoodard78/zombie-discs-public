@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}My Discs{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-4">My Discs</h1>
+    {% if discs %}
+        <ul class="divide-y divide-gray-200">
+            {% for disc in discs %}
+                <li class="py-4">
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-lg font-medium text-gray-800">{{ disc.color }} {{ disc.status|title }}</p>
+                            <p class="text-sm text-gray-600">{{ disc.created_at|date:"F j, Y" }}</p>
+                            {% if disc.latitude and disc.longitude %}
+                                <p class="text-sm text-gray-500">Coordinates: {{ disc.latitude }}, {{ disc.longitude }}</p>
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'disc_detail' disc.id %}?from_user_disc_list=true" class="text-blue-500 hover:underline">View Details</a>
+
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600">No discs have been logged yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

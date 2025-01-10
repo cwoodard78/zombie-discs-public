@@ -7,14 +7,17 @@ from .models import Disc
 from django.views.decorators.csrf import csrf_exempt
 import json
 from .forms import DiscForm
+from django.contrib.auth.decorators import login_required
 
 class MyModelViewSet(ModelViewSet):
     queryset = MyModel.objects.all()
     serializer_class = MyModelSerializer
 
+@login_required
 def map_view(request):
     return render(request, 'disc/map.html')
 
+@login_required
 def submit_disc(request):
     if request.method == "POST":
         form = DiscForm(request.POST)
@@ -32,40 +35,13 @@ def submit_disc(request):
     # return render(request, "disc/submit_disc.html", {"form": form})
     return render(request, "disc/submit_disc.html", {"form": form})
 
+@login_required
 def disc_detail(request, disc_id):
     disc = get_object_or_404(Disc, id=disc_id)
-    return render(request, "disc/disc_detail.html", {"disc": disc})
+    from_user_disc_list = request.GET.get("from_user_disc_list", "false").lower() == "true"
+    return render(request, "disc/disc_detail.html", {"disc": disc, "from_user_disc_list": from_user_disc_list})
 
-# # THIS WORKS
-# def submit_disc(request):
-#     if request.method == "POST":
-#         # Extract the form data from the request
-#         status = request.POST.get("type")  # 'type' matches the radio button name
-#         color = request.POST.get("color")
-#         notes = request.POST.get("notes")
-#         coordinates = request.POST.get("coordinates")  # Single field for lat,lng
-
-#         # Check for coordinates and split them into latitude and longitude
-#         if coordinates:
-#             try:
-#                 latitude, longitude = map(float, coordinates.split(','))  # Parse coordinates
-#             except ValueError:
-#                 return JsonResponse({"error": "Invalid coordinates format!"}, status=400)
-
-#             # Create the Disc object and save it to the database
-#             disc = Disc.objects.create(
-#                 status=status,
-#                 color=color,
-#                 notes=notes,
-#                 latitude=latitude,
-#                 longitude=longitude
-#             )
-
-#             # Return a success response
-#             return JsonResponse({"message": "Disc entry submitted successfully!"})
-        
-#         # Handle missing coordinates
-#         return JsonResponse({"error": "Coordinates are missing!"}, status=400)
-
-#     # Handle non-POST requests
-#     return JsonResponse({"error": "Invalid request method!"}, status=400)
+@login_required
+def user_disc_list(request):
+    discs = Disc.objects.filter(user=request.user)
+    return render(request, "disc/user_disc_list.html", {"discs": discs})

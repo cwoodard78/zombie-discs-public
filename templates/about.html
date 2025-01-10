@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}About Zombie Discs{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">About Zombie Discs</h1>
+    <p class="text-gray-600 mb-4">
+        Welcome to <strong>Zombie Discs</strong> – the ultimate community-driven platform for disc golfers to recover and reunite with lost discs! 
+        Whether you're an avid disc golfer or just starting out, we aim to make your game more enjoyable by ensuring your favorite discs 
+        don't stay lost forever.
+    </p>
+
+    <h2 class="text-2xl font-semibold text-gray-700 mt-6 mb-2">Our Mission</h2>
+    <p class="text-gray-600 mb-4">
+        At Zombie Discs, we believe every disc deserves a second chance. Our mission is to provide an easy-to-use platform where players can log lost or found discs,
+        helping fellow golfers recover their gear quickly and hassle-free.
+    </p>
+
+    <h2 class="text-2xl font-semibold text-gray-700 mt-6 mb-2">How It Works</h2>
+    <ul class="list-disc list-inside text-gray-600 mb-4">
+        <li><strong>Log a Disc:</strong> Whether you’ve lost or found a disc, simply log it into our database with relevant details.</li>
+        <li><strong>Find Matches:</strong> Use our platform to search for logged discs and reconnect them with their rightful owners.</li>
+        <li><strong>Community Focus:</strong> Collaborate with other disc golfers to make the sport even more enjoyable!</li>
+    </ul>
+
+    <h2 class="text-2xl font-semibold text-gray-700 mt-6 mb-2">Why Zombie Discs?</h2>
+    <p class="text-gray-600 mb-4">
+        Losing a beloved disc is frustrating, but we’re here to make the recovery process easier. By using GPS tagging, user-friendly forms, and a 
+        supportive community, Zombie Discs makes sure your gear keeps coming back – just like a zombie!
+    </p>
+
+    <h2 class="text-2xl font-semibold text-gray-700 mt-6 mb-2">Get Involved</h2>
+    <p class="text-gray-600">
+        Ready to join the Zombie Discs community? <a href="{% url 'register' %}" class="text-blue-500 hover:underline">Sign up today</a> and start logging your discs. 
+        Together, we can make disc golf better for everyone!
+    </p>
+</div>
+{% endblock %}
