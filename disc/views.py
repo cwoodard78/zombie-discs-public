@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from .forms import DiscForm
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.contrib import messages
 
 class MyModelViewSet(ModelViewSet):
     queryset = MyModel.objects.all()
@@ -20,13 +22,12 @@ def map_view(request):
 @login_required
 def submit_disc(request):
     if request.method == "POST":
-        form = DiscForm(request.POST)
+        form = DiscForm(request.POST, request.FILES)
         if form.is_valid():
             disc = form.save(commit=False)  # Don't save yet
             disc.user = request.user  # Assign the authenticated user
             form.save()
             return redirect('disc_detail', disc_id=disc.id)
-            # return JsonResponse({"message": "Disc entry submitted successfully!"})
         else:
             return JsonResponse({"errors": form.errors}, status=400)
 
@@ -45,3 +46,39 @@ def disc_detail(request, disc_id):
 def user_disc_list(request):
     discs = Disc.objects.filter(user=request.user)
     return render(request, "disc/user_disc_list.html", {"discs": discs})
+
+@login_required
+def edit_disc(request, disc_id):
+    disc = get_object_or_404(Disc, id=disc_id)
+
+    # Ensure only the owner can edit
+    if disc.user != request.user:
+        return HttpResponseForbidden("You do not have permission to edit this disc.")
+
+    if request.method == "POST":
+        form = DiscForm(request.POST, request.FILES, instance=disc)
+        if form.is_valid():
+            form.save()
+            return redirect("disc_detail", disc_id=disc.id)
+    else:
+        form = DiscForm(instance=disc)
+
+    return render(request, "disc/edit_disc.html", {"form": form, "disc": disc})
+
+@login_required
+def delete_disc(request, disc_id):
+    disc = get_object_or_404(Disc, id=disc_id)
+
+    # Ensure the logged-in user is the owner
+    if disc.user != request.user:
+        messages.error(request, "You are not authorized to delete this disc.")
+        return redirect('user_disc_list')
+
+    # Delete the disc
+    if request.method == "POST":
+        disc.delete()
+        messages.success(request, "Disc deleted successfully.")
+        return redirect('user_disc_list')
+
+    # Confirmation page
+    return render(request, 'disc/delete_disc_confirm.html', {'disc': disc})

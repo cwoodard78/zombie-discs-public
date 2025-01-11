@@ -137,8 +137,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Global redirect for login/logout
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'    # Redirect after successful login
+LOGOUT_REDIRECT_URL = '/'   # Redirect after logout
+LOGIN_URL = '/users/login/' # Matches the path in users.urls.py
 
 # Media settings
 MEDIA_URL = '/media/'  # URL to access media files

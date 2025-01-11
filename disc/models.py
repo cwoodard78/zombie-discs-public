@@ -12,10 +12,10 @@ class Disc(models.Model):
     ]
 
     DISC_TYPE_CHOICES = [
-        ('driver', 'Driver'),
-        ('midrange', 'Midrange'),
-        ('putter', 'Putter'),
-        ('other', 'Other'),
+        ('Driver', 'Driver'),
+        ('Midrange', 'Midrange'),
+        ('Putter', 'Putter'),
+        ('Other', 'Other'),
     ]
 
     status = models.CharField(max_length=5, choices=STATUS_CHOICES, default='lost')
@@ -32,6 +32,7 @@ class Disc(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='disc_images/', blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Tie to authenticated user
 
     def __str__(self):

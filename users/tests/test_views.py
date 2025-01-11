@@ -130,8 +130,8 @@ class LoginViewTests(TestCase):
         self.assertRedirects(response, '/')  # Match LOGIN_REDIRECT_URL from settings.py
 
     def test_protected_view_redirects_unauthenticated_users(self):
-        """Test that unauthenticated users are redirected to login when accessing a protected view"""
-        protected_url = reverse('protected_view')  # Replace with your actual protected view URL name
+        """Test that unauthenticated users are redirected to login when accessing a protected view."""
+        protected_url = reverse('user_disc_list')  # Replace with an actual protected view name
         response = self.client.get(protected_url)
         self.assertRedirects(response, f"{self.login_url}?next={protected_url}")  # Redirect with `next` parameter
 
@@ -230,6 +230,33 @@ class ProfileViewTests(TestCase):
         self.assertContains(response, self.user1.username)  # Ensure user1 sees only their username
         self.assertNotContains(response, self.user2.username)  # Ensure user2's username is not displayed
 
+    def test_public_profile_details(self):
+        """Test that only public details are displayed on another user's profile."""
+        response = self.client.get(reverse('profile', kwargs={'username': self.user2.username}))
+        self.assertContains(response, self.user2.first_name)
+        self.assertContains(response, self.user2.last_name)
+        self.assertNotContains(response, self.user2.email)
+
+    def test_nonexistent_profile(self):
+        """Test that accessing a non-existent profile returns a 404 error."""
+        response = self.client.get(reverse('profile', kwargs={'username': 'nonexistentuser'}))
+        self.assertEqual(response.status_code, 404)
+
+    def test_redirect_if_not_logged_in(self):
+        """Test that unauthenticated users are redirected to login page when accessing a profile."""
+        self.client.logout()
+        response = self.client.get(reverse('profile', kwargs={'username': self.user1.username}))
+        self.assertRedirects(
+            response,
+            f"{reverse('login')}?next={reverse('profile', kwargs={'username': self.user1.username})}"
+        )
+
+    def test_case_sensitivity_in_usernames(self):
+        """Test behavior for case variations in usernames."""
+        response_lowercase = self.client.get(reverse('profile', kwargs={'username': 'testuser1'}))
+        response_uppercase = self.client.get(reverse('profile', kwargs={'username': 'TestUser1'}))
+        self.assertEqual(response_lowercase.status_code, 200)
+        self.assertEqual(response_uppercase.status_code, 404)  # Assuming case sensitivity in your setup
 class DeleteAccountTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
@@ -250,10 +277,6 @@ class DeleteAccountTests(TestCase):
         response = self.client.post(reverse('delete_account'))
         self.assertRedirects(response, reverse('home'))  # Assuming 'home' is your homepage
         self.assertFalse(User.objects.filter(username='testuser').exists())
-
-from django.test import TestCase
-from django.contrib.auth.models import User
-from django.urls import reverse
 
 class PasswordChangeTests(TestCase):
     def setUp(self):

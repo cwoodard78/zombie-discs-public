@@ -5,12 +5,17 @@
 {% block content %}
 <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
     <h1 class="text-2xl font-semibold text-gray-800 mb-4">Disc Details</h1>
+    {% if disc.image %}
+    <div class="mb-6">
+        <img src="{{ disc.image.url }}" alt="Disc Image" class="w-full max-w-md rounded shadow-md">
+    </div>
+    {% endif %}
     <div class="grid grid-cols-2 gap-4 text-gray-800">
         <p><strong>Status:</strong> {{ disc.get_status_display }}</p>
         <p><strong>Color:</strong> {{ disc.color }}</p>
-        <p><strong>Type:</strong> {{ disc.disc_type|default:"N/A" }}</p>
+        <p><strong>Type:</strong> {{ disc.type|default:"N/A" }}</p>
         <p><strong>Manufacturer:</strong> {{ disc.manufacturer|default:"N/A" }}</p>
-        <p><strong>Mold:</strong> {{ disc.mold|default:"N/A" }}</p>
+        <p><strong>Mold:</strong> {{ disc.mold_name|default:"N/A" }}</p>
         <p><strong>Notes:</strong> {{ disc.notes|default:"None" }}</p>
         <p><strong>Latitude:</strong> {{ disc.latitude }}</p>
         <p><strong>Longitude:</strong> {{ disc.longitude }}</p>
@@ -25,6 +30,17 @@
         </p>
     </div>
     {% if from_user_disc_list %}
+    <div class="mt-6">
+        <a href="{% url 'edit_disc' disc.id %}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+            Edit Disc
+        </a>
+    </div>
+    <div class="mt-6">
+        <a href="{% url 'delete_disc' disc_id=disc.id %}" 
+           class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+            Delete This Disc
+        </a>
+    </div>
     <div class="mt-6">
         <a href="{% url 'user_disc_list' %}" class="text-blue-500 hover:underline">
             &larr; Back to My Discs

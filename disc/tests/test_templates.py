@@ -2,18 +2,20 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 from disc.models import Disc, Manufacturer
+
 class DiscTemplateTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='password')
         self.client.login(username='testuser', password='password')
+
         Disc.objects.create(
             user=self.user,
             status='lost',
             color='Yellow',
-            notes='Near hole 7.',  # Test data includes expected notes
+            notes='Near hole 7.',
             latitude=34.89495,
-            longitude=-86.44408
+            longitude=-86.44408,
         )
         self.url = reverse('user_disc_list')
 
@@ -25,7 +27,6 @@ class DiscTemplateTests(TestCase):
 
     def test_user_disc_list_template_content(self):
         """Test that the user_disc_list template displays discs correctly."""
-        # Make a GET request to the URL
         response = self.client.get(self.url)
 
         # Ensure the page loads successfully
@@ -33,7 +34,8 @@ class DiscTemplateTests(TestCase):
 
         # Check if the content of the disc is rendered properly
         self.assertContains(response, "Yellow")  # Status and color
-        self.assertContains(response, "January 10, 2025")  # Creation date
+        self.assertContains(response, "34.89495")
+        self.assertContains(response, "-86.44408")
 
 class DiscDetailTemplateTest(TestCase):
     def setUp(self):

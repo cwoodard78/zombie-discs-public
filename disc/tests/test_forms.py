@@ -1,6 +1,7 @@
 from django.test import TestCase
 from disc.forms import DiscForm
 from disc.models import Manufacturer
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 class DiscFormTests(TestCase):
 
@@ -13,7 +14,7 @@ class DiscFormTests(TestCase):
         form_data = {
             'status': 'lost',
             'color': 'Red',
-            'type': 'driver',
+            'type': 'Driver',
             'manufacturer': self.manufacturer.id,
             'mold_name': 'Destroyer',
             'notes': 'Left in the bushes near hole 5.',
@@ -107,3 +108,22 @@ class DiscFormTests(TestCase):
         form = DiscForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('manufacturer', form.errors)
+
+    def test_disc_form_invalid_image_type(self):
+        """Test that the form rejects an invalid image type."""
+        invalid_image = SimpleUploadedFile("invalid_image.txt", b"file_content", content_type="text/plain")
+        form_data = {
+            'status': 'lost',
+            'color': 'Yellow',
+            'notes': 'Near hole 3.',
+            'latitude': 34.89700,
+            'longitude': -86.44600,
+            'manufacturer': self.manufacturer.id,
+            'mold_name': 'TeeBird',
+        }
+        form_files = {
+            'image': invalid_image,
+        }
+        form = DiscForm(data=form_data, files=form_files)
+        self.assertFalse(form.is_valid())
+        self.assertIn('image', form.errors)

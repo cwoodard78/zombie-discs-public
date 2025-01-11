@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Disc{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-4">Confirm Deletion</h1>
+    <p>Are you sure you want to delete this disc?</p>
+    <p class="mt-4 text-gray-600"><strong>Disc:</strong> {{ disc.color }} - {{ disc.mold_name|default:"Unknown Mold" }}</p>
+    <div class="mt-6 flex space-x-4">
+        <form action="{% url 'delete_disc' disc_id=disc.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                Yes, Delete
+            </button>
+        </form>
+        <a href="{% url 'disc_detail' disc_id=disc.id %}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+            Cancel
+        </a>
+    </div>
+</div>
+{% endblock %}
