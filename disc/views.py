@@ -11,28 +11,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib import messages
 
-# # For Serializer
-# from .serializers import StatsSerializer
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-
-# # class MyModelViewSet(ModelViewSet):
-# #     queryset = MyModel.objects.all()
-# #     serializer_class = MyModelSerializer
-
-# class StatsAPIView(APIView):
-#     def get(self, request, *args, **kwargs):
-#         total_lost = Disc.objects.filter(status='lost').count()
-#         total_found = Disc.objects.filter(status='found').count()
-#         data = {'total_lost': total_lost, 'total_found': total_found}
-#         serializer = StatsSerializer(data)
-#         return Response(serializer.data)
-
+# For APIs
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Disc, User
-from .serializers import DiscSerializer, RecentDiscSerializer
+from .serializers import DiscSerializer, RecentDiscSerializer, DiscMapSerializer
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 class DiscListCreateAPIView(ListCreateAPIView):
@@ -60,6 +44,25 @@ class StatsAPIView(APIView):
             'total_found': total_found,
             'total_users': total_users,
         })
+
+# class DiscMapAPIView(APIView):
+#     """API view to fetch disc data for the map."""
+
+#     def get(self, request):
+#         discs = Disc.objects.exclude(latitude__isnull=True, longitude__isnull=True)
+#         serializer = DiscMapSerializer(discs, many=True)
+#         return Response(serializer.data)
+
+class DiscMapAPIView(ListAPIView):
+    serializer_class = DiscMapSerializer
+
+    def get_queryset(self):
+        # Exclude discs with latitude and longitude both equal to 0
+        return Disc.objects.exclude(latitude=0, longitude=0)
+    
+def disc_map_view(request):
+    """View for displaying all discs on a map."""
+    return render(request, 'disc/disc_map.html')
     
 @login_required
 def map_view(request):

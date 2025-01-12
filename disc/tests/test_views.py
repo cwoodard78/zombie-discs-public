@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from disc.models import Disc, Manufacturer
 from django.core.files.uploadedfile import SimpleUploadedFile
+from rest_framework import status
+from rest_framework.test import APITestCase
 
 class DiscViewTests(TestCase):
 
@@ -261,3 +263,28 @@ class DeleteDiscViewTests(TestCase):
         """Test that an unauthenticated user cannot access the delete page."""
         response = self.client.get(self.url)
         self.assertRedirects(response, f"{reverse('login')}?next={self.url}")
+
+class DiscMapViewTests(TestCase):
+    def test_disc_map_view_template(self):
+        """Test that the map view uses the correct template."""
+        response = self.client.get(reverse('disc_map_view'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'disc/disc_map.html')
+
+class DiscMapAPITests(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='password')
+        Disc.objects.create(user=self.user, status='lost', latitude=34.1, longitude=-86.1, notes='Lost disc')
+        Disc.objects.create(user=self.user, status='found', latitude=35.2, longitude=-85.2, notes='Found disc')
+
+    def test_disc_map_api_returns_data(self):
+        """Test that the map API returns correct data."""
+        response = self.client.get(reverse('disc_map_api'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+
+    def test_disc_map_api_excludes_invalid_coordinates(self):
+        """Test that the map API excludes discs with invalid coordinates."""
+        Disc.objects.create(user=self.user, status='lost', latitude=0, longitude=0, notes='Invalid coordinates')
+        response = self.client.get(reverse('disc_map_api'))
+        self.assertEqual(len(response.data), 2)  # Only valid discs should be included

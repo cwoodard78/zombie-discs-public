@@ -46,7 +46,7 @@
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'submit_disc' %}" class="hover:underline">Log a Disc</a></li>
                         <li><a href="" class="hover:underline">Search</a></li>
-                        <li><a href="" class="hover:underline">Map</a></li>
+                        <li><a href="{% url 'disc_map_view' %}" class="hover:underline">Map</a></li>
                         <li><a href="" class="hover:underline">Help</a></li>
                         <li><a href="{% url 'profile' user.username %}" class="hover:underline">Profile</a></li>
                         <li>

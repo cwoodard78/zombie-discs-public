@@ -1,6 +1,7 @@
 from django.test import SimpleTestCase, TestCase
 from django.urls import reverse, resolve
 from disc.views import submit_disc, map_view, edit_disc
+from disc.views import disc_map_view, DiscMapAPIView
 
 class DiscURLSimpleTests(SimpleTestCase):
     """Tests for URL resolution that do not require database access."""
@@ -34,3 +35,14 @@ class DiscURLTests(SimpleTestCase):
         """Test that the edit_disc URL resolves correctly."""
         url = reverse('edit_disc', kwargs={'disc_id': 1})
         self.assertEqual(resolve(url).func, edit_disc)
+
+class MapURLTests(SimpleTestCase):
+    def test_disc_map_view_url_resolves(self):
+        """Test that the disc map page URL resolves to the correct view."""
+        url = reverse('disc_map_view')
+        self.assertEqual(resolve(url).func, disc_map_view)
+
+    def test_disc_map_api_url_resolves(self):
+        """Test that the disc map API URL resolves to the correct view."""
+        url = reverse('disc_map_api')
+        self.assertEqual(resolve(url).func.view_class, DiscMapAPIView)

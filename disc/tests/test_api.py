@@ -92,7 +92,7 @@ class DiscAPITests(APITestCase):
 
     def test_get_stats(self):
         """Test retrieving disc statistics"""
-        url = reverse("stats_api")
+        url = reverse("disc_stats_api")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["total_lost"], 1)

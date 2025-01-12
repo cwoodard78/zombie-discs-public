@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}View All Discs on Map{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-4">Disc Map</h1>
+    <div class="flex space-x-4 mb-4">
+        <button id="showAll" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Show All</button>
+        <button id="showLost" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Show Lost</button>
+        <button id="showFound" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Show Found</button>
+    </div>
+    <div id="map" style="height: 500px;"></div>
+</div>
+<script>
+    function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 39.5, lng: -98.35 }, // USA centered
+            zoom: 4,
+            gestureHandling: "greedy", // Enable scroll wheel zoom without Ctrl
+        });
+
+        const icons = {
+            lost: {
+                url: "{% static 'icons/lost_marker.png' %}",
+                scaledSize: new google.maps.Size(30, 30),
+            },
+            found: {
+                url: "{% static 'icons/found_marker.png' %}",
+                scaledSize: new google.maps.Size(30, 30),
+            },
+        };
+
+        const markers = [];
+
+        // Fetch disc data from the API endpoint
+        fetch("{% url 'disc_map_api' %}")
+            .then((response) => response.json())
+            .then((discs) => {
+                discs.forEach((disc) => {
+                    const marker = new google.maps.Marker({
+                        position: { lat: parseFloat(disc.latitude), lng: parseFloat(disc.longitude) },
+                        map: map,
+                        title: `${disc.color} Disc (${disc.status})`,
+                        icon: icons[disc.status.toLowerCase()],
+                    });
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `
+                            <div>
+                                <p><strong>Color:</strong> ${disc.color}</p>
+                                <p><strong>Status:</strong> ${disc.status}</p>
+                                <p><strong>Notes:</strong> ${disc.notes || "No notes"}</p>
+                                <p><strong>Posted By:</strong> ${disc.username}</p><br>
+                                <p><a href="/discs/disc/${disc.id}/">View Details</a></p>
+                            </div>
+                        `,
+                    });
+
+                    marker.addListener("click", () => {
+                        infoWindow.open(map, marker);
+                    });
+
+                    markers.push({ marker, status: disc.status.toLowerCase() });
+                });
+
+                addFilterListeners(markers, map); // Pass map to the listener
+            })
+            .catch((error) => console.error("Error fetching disc data:", error));
+    }
+
+
+    function addFilterListeners(markers, map) {
+        document.getElementById("showAll").addEventListener("click", () => {
+            markers.forEach(({ marker }) => marker.setMap(map)); // Set map to display all markers
+        });
+
+        document.getElementById("showLost").addEventListener("click", () => {
+            markers.forEach(({ marker, status }) => {
+                marker.setMap(status === "lost" ? map : null); // Show only lost markers
+            });
+        });
+
+        document.getElementById("showFound").addEventListener("click", () => {
+            markers.forEach(({ marker, status }) => {
+                marker.setMap(status === "found" ? map : null); // Show only found markers
+            });
+        });
+    }
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJvo0AZ4PjbJF3_Yn-Z3PIb31TZAV9624&callback=initMap" async defer></script>
+<p><a href="https://www.flaticon.com/free-icons/question-mark" title="question mark icons">Question mark icons created by Fathema Khanom - Flaticon</a></p>
+<p><a href="https://www.flaticon.com/free-icons/foursquare-check-in" title="foursquare check in icons">Foursquare check in icons created by hqrloveq - Flaticon</a></p>
+{% endblock %}

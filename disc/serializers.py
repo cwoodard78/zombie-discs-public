@@ -1,12 +1,6 @@
 from rest_framework import serializers
 from .models import Disc
-# from .models import MyModel
 from django.contrib.auth.models import User
-
-# class MyModelSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = MyModel
-#         fields = '__all__'
 
 class DiscSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,8 +13,15 @@ class StatsSerializer(serializers.Serializer):
     total_users = serializers.IntegerField()
 
 class RecentDiscSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField()  # Will use the `__str__` method of the `User` model
+    user = serializers.StringRelatedField()
     
     class Meta:
         model = Disc
         fields = ['id', 'status', 'color', 'type', 'manufacturer', 'mold_name', 'notes', 'latitude', 'longitude', 'created_at', 'user']
+
+class DiscMapSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = Disc
+        fields = ['id', 'status', 'color', 'latitude', 'longitude', 'notes', 'username']

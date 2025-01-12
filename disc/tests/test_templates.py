@@ -71,3 +71,16 @@ class DiscDetailTemplateTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "Back to My Discs")
         self.assertContains(response, "Add Another Disc")
+
+class DiscMapTemplateTests(TestCase):
+    def test_map_view_contains_map_div(self):
+        """Test that the map view contains the required map div."""
+        response = self.client.get(reverse('disc_map_view'))
+        self.assertContains(response, '<div id="map"')
+
+    def test_map_view_contains_toggle_buttons(self):
+        """Test that the map view contains toggle buttons."""
+        response = self.client.get(reverse('disc_map_view'))
+        self.assertContains(response, 'id="showAll"')
+        self.assertContains(response, 'id="showLost"')
+        self.assertContains(response, 'id="showFound"')
