@@ -3,6 +3,7 @@ from . import views
 from .views import delete_disc
 from .views import StatsAPIView
 from .views import DiscListCreateAPIView, DiscDetailAPIView, RecentDiscsAPIView, DiscMapAPIView
+from .views import DiscSearchView
 
 urlpatterns = [
     path("submit-disc/", views.submit_disc, name="submit_disc"),
@@ -13,6 +14,7 @@ urlpatterns = [
     path('map/', views.map_view, name='map_view'),
     # path('map/select/', views.map_view, name='map_view'), UPDATE TO THIS TO BE MORE DESCRIPT
     path('map/discs/', views.disc_map_view, name='disc_map_view'),
+    path('search/', DiscSearchView.as_view(), name='disc_search'),
         
     # APIs
     path('', DiscListCreateAPIView.as_view(), name='disc_list_api'),

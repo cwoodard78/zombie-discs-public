@@ -59,7 +59,15 @@ class DiscMapAPIView(ListAPIView):
     def get_queryset(self):
         # Exclude discs with latitude and longitude both equal to 0
         return Disc.objects.exclude(latitude=0, longitude=0)
-    
+
+from django_filters.views import FilterView
+from .filters import DiscFilter
+
+class DiscSearchView(FilterView):
+    model = Disc
+    template_name = 'disc/disc_search.html'
+    filterset_class = DiscFilter
+
 def disc_map_view(request):
     """View for displaying all discs on a map."""
     return render(request, 'disc/disc_map.html')
