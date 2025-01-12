@@ -21,18 +21,30 @@ from map import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+# API
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
+
+# Swagger schema view for API
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Zombie Discs API",
+        default_version='v1',
+        description="API documentation for the Zombie Discs app",
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+    # permission_classes=(permissions.IsAuthenticated,),
+)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path("discs/", include("disc.urls")),
     path("about/", TemplateView.as_view(template_name="about.html"), name="about"),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-
-    # path('map/', views.map_view, name='map_view'),
-    # path('api/', include('map.urls')),
-    # path('submit-disc/', views.submit_disc, name='submit_disc'),
-    # path('discs/', views.disc_list, name='disc_list'),
-    # path('api/save-coordinates/', views.save_coordinates, name='save_coordinates'),
+    # Swagger API Interface
+    path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
 
 if settings.DEBUG:

@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from .models import MyModel
-from .serializers import MyModelSerializer
+# from .serializers import MyModelSerializer
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import JsonResponse
 from .models import Disc
@@ -11,10 +11,56 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib import messages
 
-class MyModelViewSet(ModelViewSet):
-    queryset = MyModel.objects.all()
-    serializer_class = MyModelSerializer
+# # For Serializer
+# from .serializers import StatsSerializer
+# from rest_framework.views import APIView
+# from rest_framework.response import Response
 
+# # class MyModelViewSet(ModelViewSet):
+# #     queryset = MyModel.objects.all()
+# #     serializer_class = MyModelSerializer
+
+# class StatsAPIView(APIView):
+#     def get(self, request, *args, **kwargs):
+#         total_lost = Disc.objects.filter(status='lost').count()
+#         total_found = Disc.objects.filter(status='found').count()
+#         data = {'total_lost': total_lost, 'total_found': total_found}
+#         serializer = StatsSerializer(data)
+#         return Response(serializer.data)
+
+from rest_framework.generics import ListAPIView
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import Disc, User
+from .serializers import DiscSerializer, RecentDiscSerializer
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+
+class DiscListCreateAPIView(ListCreateAPIView):
+    queryset = Disc.objects.all()
+    serializer_class = DiscSerializer
+
+class DiscDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Disc.objects.all()
+    serializer_class = DiscSerializer
+
+class RecentDiscsAPIView(ListAPIView):
+    serializer_class = RecentDiscSerializer
+
+    def get_queryset(self):
+        # Get the most recent discs (limit to 10)
+        return Disc.objects.order_by('-created_at')[:10]
+
+class StatsAPIView(APIView):
+    def get(self, request):
+        total_lost = Disc.objects.filter(status='lost').count()
+        total_found = Disc.objects.filter(status='found').count()
+        total_users = User.objects.count()
+        return Response({
+            'total_lost': total_lost,
+            'total_found': total_found,
+            'total_users': total_users,
+        })
+    
 @login_required
 def map_view(request):
     return render(request, 'disc/map.html')

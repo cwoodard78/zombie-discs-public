@@ -3,9 +3,52 @@
 {% block title %}Welcome to Zombie Discs{% endblock %}
 
 {% block content %}
+<div>
+    <h1>Welcome to Zombie Discs!</h1>
+    <p>Total Lost Discs: <span id="total-lost">Loading...</span></p>
+    <p>Total Found Discs: <span id="total-found">Loading...</span></p>
+    <p>Total Users: <span id="total-users">Loading...</span></p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const statsUrl = '/discs/api/stats/';
+        fetch(statsUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('total-lost').textContent = data.total_lost;
+                document.getElementById('total-found').textContent = data.total_found;
+                document.getElementById('total-users').textContent = data.total_users;
+            })
+            .catch(error => {
+                console.error('Error fetching stats:', error);
+            });
+    });
+</script>
 <div class="text-center">
     <h1 class="text-4xl font-bold mb-4">Welcome to Zombie Discs</h1>
     <p class="text-lg text-gray-700 mb-6">Find your lost discs or help others recover theirs.</p>
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold text-gray-800">Welcome to Zombie Discs!</h1>
+        <p class="text-gray-600 mt-4">
+            A community to help recover lost discs and return them to their rightful owners.
+        </p>
+        <div class="mt-6 grid grid-cols-2 gap-4 text-gray-800">
+            <div class="bg-blue-100 rounded-lg p-4 shadow-sm">
+                <h2 class="text-xl font-semibold">Lost Discs</h2>
+                <p class="text-4xl font-bold text-blue-600">{{ total_lost }}</p>
+            </div>
+            <div class="bg-green-100 rounded-lg p-4 shadow-sm">
+                <h2 class="text-xl font-semibold">Found Discs</h2>
+                <p class="text-4xl font-bold text-green-600">{{ total_found }}</p>
+            </div>
+        </div>
+    </div>
     {% if user.is_authenticated %}
         <a href="{% url 'profile' user.username %}" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">Go to Profile</a>
     {% else %}

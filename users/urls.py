@@ -4,6 +4,9 @@ from django.contrib.auth.views import LoginView, LogoutView
 from .views import delete_account
 from django.contrib.auth import views as auth_views
 
+from rest_framework.generics import RetrieveAPIView
+from .views import UserListAPIView
+
 urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', LoginView.as_view(template_name='users/login.html'), name='login'),
@@ -22,5 +25,8 @@ urlpatterns = [
     path('password_change/', auth_views.PasswordChangeView.as_view(template_name='users/password_change.html'), name='password_change'),
     path('password_change_done/', auth_views.PasswordChangeDoneView.as_view(template_name='users/password_change_done.html'), name='password_change_done'),
 
+    # API
+    # path('api/users/', UserListAPIView.as_view(), name='user_list_api'),
+    path('', UserListAPIView.as_view(), name='user_list_api'),
 
 ]
