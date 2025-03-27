@@ -167,9 +167,24 @@ def disc_detail_view(request, disc_id):
     )
 
 
+# @login_required
+# def user_disc_list(request):
+#     discs = Disc.objects.filter(user=request.user)
+#     return render(request, "disc/user_disc_list.html", {"discs": discs})
+
 @login_required
 def user_disc_list(request):
     discs = Disc.objects.filter(user=request.user)
+
+    # Add match counts to each disc
+    for disc in discs:
+        if disc.status == 'lost':
+            disc.match_count = DiscMatch.objects.filter(lost_disc=disc).count()
+        elif disc.status == 'found':
+            disc.match_count = DiscMatch.objects.filter(found_disc=disc).count()
+        else:
+            disc.match_count = 0
+
     return render(request, "disc/user_disc_list.html", {"discs": discs})
 
 @login_required

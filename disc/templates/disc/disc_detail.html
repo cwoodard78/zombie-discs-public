@@ -51,21 +51,39 @@
                     </tr>
                 </thead>
                 <tbody class="text-gray-700 text-sm">
-                    {% for match in matches %}
-                        {% with match.found_disc as matched_disc %}
+                    {% if disc.status == 'lost' %}
+                        {% for match in matches %}
+                            {% with match.found_disc as matched_disc %}
                             <tr class="border-b border-gray-200 hover:bg-gray-100">
                                 <td class="py-3 px-6">{{ match.score }}</td>
                                 <td class="py-3 px-6">{{ matched_disc.color }}</td>
                                 <td class="py-3 px-6">{{ matched_disc.mold_name }}</td>
-                                <td class="py-3 px-6">{{ matched_disc.status }}</td>
+                                <td class="py-3 px-6">{{ matched_disc.get_status_display }}</td>
                                 <td class="py-3 px-6">
                                     <a href="{% url 'disc_detail' matched_disc.id %}" class="text-blue-500 hover:underline">
                                         View Details
                                     </a>
                                 </td>
                             </tr>
-                        {% endwith %}
-                    {% endfor %}
+                            {% endwith %}
+                        {% endfor %}
+                    {% elif disc.status == 'found' %}
+                        {% for match in matches %}
+                            {% with match.lost_disc as matched_disc %}
+                            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                <td class="py-3 px-6">{{ match.score }}</td>
+                                <td class="py-3 px-6">{{ matched_disc.color }}</td>
+                                <td class="py-3 px-6">{{ matched_disc.mold_name }}</td>
+                                <td class="py-3 px-6">{{ matched_disc.get_status_display }}</td>
+                                <td class="py-3 px-6">
+                                    <a href="{% url 'disc_detail' matched_disc.id %}" class="text-blue-500 hover:underline">
+                                        View Details
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endwith %}
+                        {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </div>
@@ -122,7 +140,7 @@
     </div>
     <div class="mt-6">
         <a href="{% url 'user_disc_list' %}" class="text-blue-500 hover:underline">
-            &larr; Back to My Discs
+            &larr; Go to My Disc List
         </a>
     </div>
     {% else %}
@@ -133,7 +151,7 @@
     </div>
     <div class="mt-6">
         <a href="{% url 'user_disc_list' %}" class="text-blue-500 hover:underline">
-            Go to My Disc List
+            &larr; Go to My Disc List
         </a>
     </div>
     {% endif %}

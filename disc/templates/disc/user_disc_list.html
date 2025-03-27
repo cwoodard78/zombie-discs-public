@@ -2,7 +2,7 @@
 
 {% block title %}My Discs{% endblock %}
 
-{% block content %}
+{% comment %} {% block content %}
 <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
     <h1 class="text-2xl font-semibold text-gray-800 mb-4">My Discs</h1>
     {% if discs %}
@@ -27,4 +27,82 @@
         <p class="text-gray-600">No discs have been logged yet.</p>
     {% endif %}
 </div>
+{% endblock %} {% endcomment %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-6">My Discs</h1>
+
+    {% if discs %}
+        <!-- Map -->
+        <div class="mb-8 h-80 rounded shadow" id="discs-map"></div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white text-sm text-left text-gray-700 border border-gray-200 rounded">
+                <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                    <tr>
+                        <th class="px-4 py-2">Type</th>
+                        <th class="px-4 py-2">Color</th>
+                        <th class="px-4 py-2">Mold</th>
+                        <th class="px-4 py-2">Status</th>
+                        <th class="px-4 py-2">Matches</th>
+                        <th class="px-4 py-2">Date</th>
+                        <th class="px-4 py-2">Details</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for disc in discs %}
+                        <tr>
+                            <td class="px-4 py-2">{{ disc.type|default:"N/A" }}</td>
+                            <td class="px-4 py-2">{{ disc.color|default:"N/A" }}</td>
+                            <td class="px-4 py-2">{{ disc.mold_name|default:"N/A" }}</td>
+                            <td class="px-4 py-2">{{ disc.status|title }}</td>
+                            <td class="px-4 py-2 text-center">{{ disc.match_count }}</td>
+                            <td class="px-4 py-2">{{ disc.created_at|date:"M j, Y" }}</td>
+                            <td class="px-4 py-2">
+                                <a href="{% url 'disc_detail' disc.id %}?from_user_disc_list=true" class="text-blue-500 hover:underline">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-gray-600">No discs have been logged yet.</p>
+    {% endif %}
+</div>
+
+<!-- Map Script -->
+{% if discs %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const map = L.map('discs-map');
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        const bounds = [];
+
+        {% for disc in discs %}
+            {% if disc.latitude and disc.longitude %}
+                bounds.push([{{ disc.latitude }}, {{ disc.longitude }}]);
+                L.marker([{{ disc.latitude }}, {{ disc.longitude }}])
+                    .addTo(map)
+                    .bindPopup("{{ disc.color|default:'Unknown' }} {{ disc.mold_name|default:'Disc' }} ({{ disc.status|title }})");
+            {% endif %}
+        {% endfor %}
+
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [20, 20] });
+        } else {
+            map.setView([35.00, -86.55], 10);
+        }
+    });
+</script>
+{% endif %}
 {% endblock %}
