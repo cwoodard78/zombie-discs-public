@@ -15,6 +15,8 @@ urlpatterns = [
     # path('map/select/', views.map_view, name='map_view'), UPDATE TO THIS TO BE MORE DESCRIPT
     path('map/discs/', views.disc_map_view, name='disc_map_view'),
     path('search/', DiscSearchView.as_view(), name='disc_search'),
+    path('its-a-match/<int:disc_id>/<int:matched_disc_id>/', views.send_match_message, name='send_match_message'),
+    path('disc/<int:disc_id>/returned/', views.mark_disc_returned, name='mark_disc_returned'),
 
     # APIs
     path('', DiscListCreateAPIView.as_view(), name='disc_list_api'),

@@ -10,6 +10,7 @@ from .forms import DiscForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib import messages
+from django.db.models import Q  # For matching
 
 # For APIs
 from rest_framework.generics import ListAPIView
@@ -172,20 +173,50 @@ def disc_detail_view(request, disc_id):
 #     discs = Disc.objects.filter(user=request.user)
 #     return render(request, "disc/user_disc_list.html", {"discs": discs})
 
+# OLD ONE THAT WORKED 3/27
+# @login_required
+# def user_disc_list(request):
+#     discs = Disc.objects.filter(user=request.user)
+
+#     # Add match counts to each disc
+#     for disc in discs:
+#         if disc.status == 'lost':
+#             disc.match_count = DiscMatch.objects.filter(lost_disc=disc).count()
+#         elif disc.status == 'found':
+#             disc.match_count = DiscMatch.objects.filter(found_disc=disc).count()
+#         else:
+#             disc.match_count = 0
+
+#     return render(request, "disc/user_disc_list.html", {"discs": discs})
+
 @login_required
 def user_disc_list(request):
     discs = Disc.objects.filter(user=request.user)
+    last_login = request.user.last_login or now()
 
-    # Add match counts to each disc
+    new_matches_count = 0
+    match_flags = {}  # disc.id: has_new_match
+
     for disc in discs:
         if disc.status == 'lost':
-            disc.match_count = DiscMatch.objects.filter(lost_disc=disc).count()
+            matches = DiscMatch.objects.filter(lost_disc=disc)
         elif disc.status == 'found':
-            disc.match_count = DiscMatch.objects.filter(found_disc=disc).count()
+            matches = DiscMatch.objects.filter(found_disc=disc)
         else:
-            disc.match_count = 0
+            matches = DiscMatch.objects.none()
 
-    return render(request, "disc/user_disc_list.html", {"discs": discs})
+        disc.match_count = matches.count()
+        has_new = matches.filter(created_at__gt=last_login).exists()
+        match_flags[disc.id] = has_new
+
+        if has_new:
+            new_matches_count += 1
+
+    return render(request, "disc/user_disc_list.html", {
+        "discs": discs,
+        "new_matches_count": new_matches_count,
+        "match_flags": match_flags
+    })
 
 @login_required
 def edit_disc(request, disc_id):
@@ -222,3 +253,30 @@ def delete_disc(request, disc_id):
 
     # Confirmation page
     return render(request, 'disc/delete_disc_confirm.html', {'disc': disc})
+
+@login_required
+def send_match_message(request, disc_id, matched_disc_id):
+    your_disc = get_object_or_404(Disc, id=disc_id)
+    matched_disc = get_object_or_404(Disc, id=matched_disc_id)
+
+    # Determine recipient
+    recipient = matched_disc.user
+    sender = request.user
+
+    content = f"It's a match! I think your disc ({matched_disc.color} {matched_disc.mold_name}) matches mine. Let's connect!"
+
+    Message.objects.create(
+        sender=sender,
+        receiver=recipient,
+        disc=matched_disc,
+        content=content
+    )
+
+    return redirect('disc_detail', disc_id=disc_id)
+
+@login_required
+def mark_disc_returned(request, disc_id):
+    disc = get_object_or_404(Disc, id=disc_id, user=request.user)
+    disc.status = 'returned'
+    disc.save()
+    return redirect('user_disc_list')

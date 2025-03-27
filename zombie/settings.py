@@ -78,6 +78,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # Inbox notification
                 'inbox.context_processors.unread_message_count',
+                'disc.context_processors.match_notifications',
             ],
         },
     },

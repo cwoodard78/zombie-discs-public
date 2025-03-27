@@ -48,6 +48,7 @@
                         <th class="py-3 px-6 text-left">Mold</th>
                         <th class="py-3 px-6 text-left">Status</th>
                         <th class="py-3 px-6 text-left">Details</th>
+                        <th class="py-3 px-6 text-left">Action</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-700 text-sm">
@@ -63,6 +64,19 @@
                                     <a href="{% url 'disc_detail' matched_disc.id %}" class="text-blue-500 hover:underline">
                                         View Details
                                     </a>
+                                </td>
+                                <td class="py-3 px-6">
+                                    {% if matched_disc.user == request.user %}
+                                        <a href="{% url 'edit_disc' matched_disc.id %}" 
+                                           class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 ml-2">
+                                            Edit
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'send_match_message' disc.id matched_disc.id %}" 
+                                           class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 ml-2">
+                                            Claim
+                                        </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                             {% endwith %}
@@ -80,7 +94,19 @@
                                         View Details
                                     </a>
                                 </td>
-                            </tr>
+                                <td class="py-3 px-6">
+                                    {% if matched_disc.user == request.user %}
+                                        <a href="{% url 'edit_disc' matched_disc.id %}" 
+                                           class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 ml-2">
+                                            Edit
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'send_match_message' disc.id matched_disc.id %}" 
+                                           class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 ml-2">
+                                            Claim
+                                        </a>
+                                    {% endif %}
+                                </td>                          </tr>
                             {% endwith %}
                         {% endfor %}
                     {% endif %}
@@ -93,13 +119,19 @@
     
     <!-- Message button -->
     {% if request.user != disc.user %}
-    <div class="mt-6">
+    <div class="mt-6 flex flex-col sm:flex-row gap-4">
         <a href="{% url 'send_message' receiver_id=disc.user.id disc_id=disc.id %}" 
-        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+           class="flex-1 text-center bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
             Send Message to Owner
+        </a>
+    
+        <a href="{% url 'send_match_message' disc.id disc.id %}" 
+           class="flex-1 text-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Claim
         </a>
     </div>
     {% endif %}
+    
 
     <!-- Message History -->
     {% if messages %}
@@ -127,34 +159,45 @@
     </div>
     <!-- Render edit buttons for disc report user -->
     {% if request.user == disc.user %}
-    <div class="mt-6">
-        <a href="{% url 'edit_disc' disc.id %}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <!-- Mark as Returned -->
+        <form method="post" action="{% url 'mark_disc_returned' disc.id %}">
+            {% csrf_token %}
+            <button type="submit" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                Disc Returned
+            </button>
+        </form>
+    
+        <!-- Edit Disc -->
+        <a href="{% url 'edit_disc' disc.id %}" class="w-full bg-yellow-500 text-white px-4 py-2 text-center rounded hover:bg-yellow-600">
             Edit Disc
         </a>
-    </div>
-    <div class="mt-6">
-        <a href="{% url 'delete_disc' disc_id=disc.id %}" 
-           class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-            Delete This Disc
+    
+        <!-- Delete Disc -->
+        <a href="{% url 'delete_disc' disc_id=disc.id %}" class="w-full bg-red-500 text-white px-4 py-2 text-center rounded hover:bg-red-600">
+            Delete Disc
         </a>
     </div>
+    
+    <!-- Back to List -->
     <div class="mt-6">
         <a href="{% url 'user_disc_list' %}" class="text-blue-500 hover:underline">
             &larr; Go to My Disc List
         </a>
     </div>
     {% else %}
-    <div class="mt-6">
+    {% comment %} <div class="mt-6">
         <a href="{% url 'submit_disc' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Add a Disc
         </a>
-    </div>
+    </div> {% endcomment %}
     <div class="mt-6">
         <a href="{% url 'user_disc_list' %}" class="text-blue-500 hover:underline">
             &larr; Go to My Disc List
         </a>
     </div>
     {% endif %}
+    
 </div>
 
 <!-- Script to map disc location using disc lat/long-->
