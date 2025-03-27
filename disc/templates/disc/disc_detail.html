@@ -2,8 +2,11 @@
 
 {% block title %}Disc Details{% endblock %}
 
+{% debug %}
+
 {% block content %}
 <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <!-- Disc Details -->
     <h1 class="text-2xl font-semibold text-gray-800 mb-4">Disc Details</h1>
     {% if disc.image %}
     <div class="mb-6">
@@ -17,19 +20,95 @@
         <p><strong>Manufacturer:</strong> {{ disc.manufacturer|default:"N/A" }}</p>
         <p><strong>Mold:</strong> {{ disc.mold_name|default:"N/A" }}</p>
         <p><strong>Notes:</strong> {{ disc.notes|default:"None" }}</p>
-        <p><strong>Latitude:</strong> {{ disc.latitude }}</p>
-        <p><strong>Longitude:</strong> {{ disc.longitude }}</p>
-        <p><strong>Created At:</strong> {{ disc.created_at|date:"F j, Y, g:i A" }}</p>
     </div>
+    {% if disc.reward %}
+        <hr class="my-6">
+        <p><strong>Reward Offered:</strong> ${{ disc.reward.amount }} </p>
+    {% endif %}
+    <hr class="my-6">
+
+    <!-- Disc Location Map -->
+    {% if disc.latitude and disc.longitude %}
+    <div class="mt-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Disc Location</h2>
+        <div id="disc-map" class="rounded shadow-md" style="height: 300px;"></div>
+    </div>
+    {% endif %}
+    <hr class="my-6">
+
+    <!-- Matched Discs -->
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Potential Matches</h2>
+    {% if matches %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Score</th>
+                        <th class="py-3 px-6 text-left">Color</th>
+                        <th class="py-3 px-6 text-left">Mold</th>
+                        <th class="py-3 px-6 text-left">Status</th>
+                        <th class="py-3 px-6 text-left">Details</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm">
+                    {% for match in matches %}
+                        {% with match.found_disc as matched_disc %}
+                            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                <td class="py-3 px-6">{{ match.score }}</td>
+                                <td class="py-3 px-6">{{ matched_disc.color }}</td>
+                                <td class="py-3 px-6">{{ matched_disc.mold_name }}</td>
+                                <td class="py-3 px-6">{{ matched_disc.status }}</td>
+                                <td class="py-3 px-6">
+                                    <a href="{% url 'disc_detail' matched_disc.id %}" class="text-blue-500 hover:underline">
+                                        View Details
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endwith %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-gray-600">No matches found.</p>
+    {% endif %}
+    
+    <!-- Message button -->
+    {% if request.user != disc.user %}
     <div class="mt-6">
-        <p class="text-gray-600">
-            <strong>Reported by:</strong> 
+        <a href="{% url 'send_message' receiver_id=disc.user.id disc_id=disc.id %}" 
+        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            Send Message to Owner
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- Message History -->
+    {% if messages %}
+    <div class="mt-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Messages About This Disc</h2>
+        <ul class="divide-y divide-gray-200">
+            {% for msg in messages %}
+                <li class="py-2">
+                    <p class="text-sm text-gray-700"><strong>{{ msg.sender.username }}</strong> to <strong>{{ msg.receiver.username }}</strong>:</p>
+                    <p class="text-gray-800 italic">{{ msg.content }}</p>
+                    <p class="text-xs text-gray-500">{{ msg.timestamp|date:"F j, Y, g:i A" }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div class="mt-6">
+        <p><strong>Reported by:</strong> 
             <a href="{% url 'profile' username=disc.user.username %}" class="text-blue-500 hover:underline">
                 {{ disc.user.username }}
             </a>
         </p>
+        <p><strong>Created At:</strong> {{ disc.created_at|date:"F j, Y, g:i A" }}</p>
     </div>
-    {% if from_user_disc_list %}
+    <!-- Render edit buttons for disc report user -->
+    {% if request.user == disc.user %}
     <div class="mt-6">
         <a href="{% url 'edit_disc' disc.id %}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
             Edit Disc
@@ -49,7 +128,7 @@
     {% else %}
     <div class="mt-6">
         <a href="{% url 'submit_disc' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Add Another Disc
+            Add a Disc
         </a>
     </div>
     <div class="mt-6">
@@ -59,4 +138,22 @@
     </div>
     {% endif %}
 </div>
+
+<!-- Script to map disc location using disc lat/long-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const map = L.map('disc-map').setView([{{ disc.latitude }}, {{ disc.longitude }}], 15);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        L.marker([{{ disc.latitude }}, {{ disc.longitude }}])
+            .addTo(map)
+            .bindPopup('Disc Location')
+            .openPopup();
+    });
+</script>
+
 {% endblock %}

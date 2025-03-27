@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from disc.models import Disc
 
 VALID_USER_DATA = {
     'username': 'testuser',
@@ -256,7 +257,24 @@ class ProfileViewTests(TestCase):
         response_lowercase = self.client.get(reverse('profile', kwargs={'username': 'testuser1'}))
         response_uppercase = self.client.get(reverse('profile', kwargs={'username': 'TestUser1'}))
         self.assertEqual(response_lowercase.status_code, 200)
-        self.assertEqual(response_uppercase.status_code, 404)  # Assuming case sensitivity in your setup
+        self.assertEqual(response_uppercase.status_code, 404)  
+
+    def test_profile_view_totals_and_karma_context(self):
+        """Test that lost_total, found_total, and karma are passed correctly in the profile context."""
+        # Give testuser2 a few discs
+        Disc.objects.create(user=self.user2, status='lost', color='red')
+        Disc.objects.create(user=self.user2, status='lost', color='blue')
+        Disc.objects.create(user=self.user2, status='found', color='green')
+
+        # Set karma explicitly
+        self.user2.profile.karma = 42
+        self.user2.profile.save()
+
+        response = self.client.get(reverse('profile', kwargs={'username': self.user2.username}))
+
+        self.assertEqual(response.context['lost_total'], 2)
+        self.assertEqual(response.context['found_total'], 1)
+        self.assertEqual(response.context['karma'], 42)        
 class DeleteAccountTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(

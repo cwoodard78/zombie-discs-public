@@ -21,7 +21,16 @@ class RecentDiscSerializer(serializers.ModelSerializer):
 
 class DiscMapSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
+    manufacturer = serializers.StringRelatedField()  # String representation of manufacturer
 
     class Meta:
         model = Disc
-        fields = ['id', 'status', 'color', 'latitude', 'longitude', 'notes', 'username']
+        fields = [
+            'id', 'status', 'color', 'latitude', 'longitude', 
+            'notes', 'username', 'manufacturer'
+        ]
+
+# class DiscMapSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Disc
+#         fields = ['id', 'status', 'color', 'latitude', 'longitude', 'notes', 'manufacturer']

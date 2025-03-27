@@ -10,6 +10,13 @@
 
         {% csrf_token %}
         {{ form.as_p }}
+        
+        <div>
+            <label for="reward" class="block text-gray-700 font-medium">Optional Reward ($):</label>
+            <input type="number" name="reward" id="reward" step="0.5" min="0" placeholder="e.g. 10.00"
+                   class="w-full border rounded px-3 py-2 mt-1">
+        </div>
+
         <div class="form-actions">
         <div class="flex space-x-4 mt-4">
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">

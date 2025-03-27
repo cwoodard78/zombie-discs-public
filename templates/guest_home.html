@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Zombie Discs{% endblock %}
+
+{% load static %}
+{% block content %}
+<div class="text-center">
+    <h1 class="text-4xl font-bold mb-4">Welcome to Zombie Discs</h1>
+    <p class="text-lg text-gray-700 mb-6">Find your lost discs or help others recover theirs.</p>
+</div>
+
+<!-- Carousel Section -->
+<div id="carousel" class="relative max-w-2xl mx-auto rounded-lg overflow-hidden shadow-md">
+
+    <!-- Slides -->
+    <div class="carousel-slides flex transition-transform duration-700 ease-in-out">
+        <!-- Image Slide -->
+        <div class="flex-shrink-0 w-full bg-gray-100 p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Discover the Community</h2>
+            <p class="mt-4 text-gray-700">Join our growing community of disc golfers today.</p>
+            <img src="{% static 'images/community.jpg' %}" alt="Community" class="rounded-lg shadow-sm max-h-64 w-auto mx-auto">
+            Photo by <a href="https://unsplash.com/@priscilladupreez?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Priscilla Du Preez 🇨🇦</a> on <a href="https://unsplash.com/photos/a-person-sitting-on-a-tree-stump-with-a-backpack-and-a-sign-LAjycRsHAto?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>      
+        </div>
+
+        <!-- Stats Slide -->
+        <div class="flex-shrink-0 w-full bg-blue-100 p-6">
+            <h2 class="text-xl font-semibold mb-4 text-blue-800">Community Stats</h2>
+            <p class="text-lg text-gray-700">Total Lost Discs: <span id="total-lost" class="font-bold">Loading...</span></p>
+            <p class="text-lg text-gray-700">Total Found Discs: <span id="total-found" class="font-bold">Loading...</span></p>
+            <p class="text-lg text-gray-700">Total Users: <span id="total-users" class="font-bold">Loading...</span></p>
+        </div>
+
+        <!-- Features Slide -->
+        <div class="flex-shrink-0 w-full bg-green-100 p-6">
+            <h2 class="text-xl font-semibold mb-4 text-green-800">Site Features</h2>
+            <ul class="list-disc list-inside text-gray-700">
+                <li>Log your lost or found discs</li>
+                <li>Search by disc type, color, or location</li>
+                <li>View disc matches on an interactive map</li>
+                <li>Get matched with potential owners</li>
+            </ul>
+        </div>
+
+        <!-- Packages Slide -->
+        <div class="flex-shrink-0 w-full bg-purple-100 p-6 overflow-auto">
+            <h2 class="text-xl font-semibold mb-4 text-purple-800">Technologies Used</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-left text-sm text-gray-700 border border-purple-200">
+                    <thead class="bg-purple-200 text-purple-900">
+                        <tr>
+                            <th class="px-4 py-2">Common Name</th>
+                            <th class="px-4 py-2">Package Name</th>
+                            <th class="px-4 py-2">Version</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        <tr><td class="px-4 py-2">Django Web Framework</td><td class="px-4 py-2">Django</td><td class="px-4 py-2">5.1.4</td></tr>
+                        <tr><td class="px-4 py-2">Django REST Framework</td><td class="px-4 py-2">djangorestframework</td><td class="px-4 py-2">3.15.2</td></tr>
+                        <tr><td class="px-4 py-2">Tailwind CSS Integration</td><td class="px-4 py-2">pytz</td><td class="px-4 py-2">2024.2</td></tr>
+                        <tr><td class="px-4 py-2">Filtering Support</td><td class="px-4 py-2">django-filter</td><td class="px-4 py-2">24.3</td></tr>
+                        <tr><td class="px-4 py-2">Swagger API Docs</td><td class="px-4 py-2">drf-yasg</td><td class="px-4 py-2">1.21.8</td></tr>
+                        <tr><td class="px-4 py-2">YAML File Support</td><td class="px-4 py-2">PyYAML</td><td class="px-4 py-2">6.0.2</td></tr>
+                        <tr><td class="px-4 py-2">Time Zone Support</td><td class="px-4 py-2">tzdata</td><td class="px-4 py-2">2024.2</td></tr>
+                        <tr><td class="px-4 py-2">ASGI Interface</td><td class="px-4 py-2">asgiref</td><td class="px-4 py-2">3.8.1</td></tr>
+                        <tr><td class="px-4 py-2">SQL Parsing (for Django)</td><td class="px-4 py-2">sqlparse</td><td class="px-4 py-2">0.5.3</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+<!--
+asgiref==3.8.1
+certifi==2024.12.14
+charset-normalizer==3.4.1
+Django==5.1.4
+django-filter==24.3
+djangorestframework==3.15.2
+drf-yasg==1.21.8
+idna==3.10
+inflection==0.5.1
+packaging==24.2
+pillow==11.1.0
+pytz==2024.2
+PyYAML==6.0.2
+requests==2.32.3
+sqlparse==0.5.3
+typing_extensions==4.12.2
+tzdata==2024.2
+uritemplate==4.1.1
+urllib3==2.3.0        
+-->
+
+    </div>
+
+    <!-- Controls -->
+    <button id="prev" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-800 text-white px-4 py-2 rounded-r-lg hover:bg-gray-900">
+        &lt;
+    </button>
+    <button id="next" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-800 text-white px-4 py-2 rounded-l-lg hover:bg-gray-900">
+        &gt;
+    </button>
+</div>
+<div class="max-w-4xl mx-auto mt-8 text-center">
+    {% if not user.is_authenticated %}
+        <!-- Login Button -->
+        <a href="{% url 'login' %}" class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600">
+            Login
+        </a>
+        <!-- Register Link -->
+        <p class="mt-4 text-gray-700">
+            Don't have an account? 
+            <a href="{% url 'register' %}" class="text-blue-500 hover:underline">Register here</a>.
+        </p>
+    {% else %}
+        <!-- Already Logged In -->
+        <p class="text-gray-700">
+            You are already logged in. Visit your 
+            <a href="{% url 'profile' user.username %}" class="text-blue-500 hover:underline">profile</a>.
+        </p>
+    {% endif %}
+</div>
+<!-- Stats Fetch Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const statsUrl = '/discs/api/stats/';
+        fetch(statsUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('total-lost').textContent = data.total_lost;
+                document.getElementById('total-found').textContent = data.total_found;
+                document.getElementById('total-users').textContent = data.total_users;
+            })
+            .catch(error => {
+                console.error('Error fetching stats:', error);
+            });
+    });
+
+    // Carousel Logic
+    const slides = document.querySelector('.carousel-slides');
+    const totalSlides = slides.children.length;
+    let currentIndex = 0;
+
+    document.getElementById('next').addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateCarousel();
+    });
+
+    document.getElementById('prev').addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+    });
+
+    function updateCarousel() {
+        const offset = -currentIndex * 100;
+        slides.style.transform = `translateX(${offset}%)`;
+    }
+</script>
+{% endblock %}

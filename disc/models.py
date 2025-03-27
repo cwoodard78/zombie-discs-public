@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
-class MyModel(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField()
+# class MyModel(models.Model):
+#     name = models.CharField(max_length=255)
+#     description = models.TextField()
 
 class Disc(models.Model):
     STATUS_CHOICES = [
@@ -44,3 +45,22 @@ class Manufacturer(models.Model):
 
     def __str__(self):
         return self.name
+    
+class DiscMatch(models.Model):
+    lost_disc = models.ForeignKey('Disc', on_delete=models.CASCADE, related_name='lost_matches')
+    found_disc = models.ForeignKey('Disc', on_delete=models.CASCADE, related_name='found_matches')
+    score = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        # Ensures each pair of lost and found discs can only appear once in the table.
+        unique_together = ('lost_disc', 'found_disc')
+        ordering = ['-score']  # Order by score, highest first
+
+    def __str__(self):
+        return f"Match: Lost Disc {self.lost_disc.id} - Found Disc {self.found_disc.id} (Score: {self.score})"
+    
+class Reward(models.Model):
+    disc = models.OneToOneField(Disc, on_delete=models.CASCADE, related_name='reward')
+    amount = models.DecimalField(max_digits=6, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)

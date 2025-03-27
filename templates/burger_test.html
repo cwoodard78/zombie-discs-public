@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Zombie Discs{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <header class="bg-blue-600 text-white px-4 py-4">
+    <div class="flex items-center justify-between">
+      <h1 class="text-xl font-bold">Zombie Discs</h1>
+      <button id="burger" class="md:hidden">
+        <!-- Hamburger icon -->
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Navigation links -->
+    <nav id="menu" class="hidden flex-col mt-4 md:flex md:flex-row md:space-x-6 md:mt-0">
+        {% if user.is_authenticated %}
+        <a href="{% url 'inbox' %}" class="block py-2 hover:underline relative">
+            Inbox
+            {% if unread_count > 0 %}
+              <span class="ml-1 inline-flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5">
+                {{ unread_count }}
+              </span>
+            {% endif %}
+        </a>
+        <a href="{% url 'submit_disc' %}" class="block py-2 hover:underline">Log a Disc</a>
+        <a href="{% url 'disc_search' %}" class="block py-2 hover:underline">Search</a>
+        <a href="{% url 'disc_map_view' %}" class="block py-2 hover:underline">Map</a>
+        <a href="#" class="block py-2 hover:underline">Help</a>
+        <a href="{% url 'profile' user.username %}" class="block py-2 hover:underline">Profile</a>
+        <form action="{% url 'logout' %}" method="POST" class="block py-2">
+            {% csrf_token %}
+            <button type="submit" class="hover:underline">Logout</button>
+        </form>
+        {% else %}
+
+            <a href="{% url 'about' %}" class="block py-2 hover:underline">About</a>
+            <a href="{% url 'login' %}" class="block py-2 hover:underline">Login</a>
+            <a href="{% url 'register' %}" class="block py-2 hover:underline">Register</a>
+        {% endif %}
+        </nav>
+  </header>
+
+  <main class="p-6">
+    <p>This is a test page with a fully responsive burger menu.</p>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const burger = document.getElementById("burger");
+      const menu = document.getElementById("menu");
+
+      burger.addEventListener("click", function () {
+        menu.classList.toggle("hidden");
+      });
+    });
+  </script>
+</body>
+</html>

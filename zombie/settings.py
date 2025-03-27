@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'disc',
     'users',
     'map',
+    'inbox',
     'rest_framework',
     'drf_yasg',
     'django.contrib.admin',
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
 ]
 
 REST_FRAMEWORK = {
@@ -74,6 +76,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Inbox notification
+                'inbox.context_processors.unread_message_count',
             ],
         },
     },
@@ -150,7 +154,8 @@ MEDIA_URL = '/media/'  # URL to access media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory to store media files
 
 # For password resets
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development (logs emails to console)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  
+# For development (logs emails to console)
 # For production, configure email backend properly:
     # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     # EMAIL_HOST = 'your-smtp-server'

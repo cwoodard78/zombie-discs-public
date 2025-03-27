@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Inbox{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-6">Inbox</h1>
+
+    {% if messages %}
+    <div class="overflow-x-auto">
+        <table class="min-w-full text-sm text-left text-gray-700">
+            <thead class="text-xs uppercase bg-gray-100 text-gray-600">
+                <tr>
+                    <th class="px-4 py-2">From</th>
+                    <th class="px-4 py-2">Content</th>
+                    <th class="px-4 py-2">Disc</th>
+                    <th class="px-4 py-2">Date</th>
+                    <th class="px-4 py-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for msg in messages %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2 font-medium">
+                        <a href="{% url 'profile' username=msg.sender.username %}" class="text-blue-500 hover:underline">
+                            {{ msg.sender.username }}
+                        </a>
+                    </td>
+                    <td>
+                        <div class="text-container">
+                            {% if msg.content|wordcount > 12 %}
+                                <span class="preview-text">{{ msg.content|truncatewords:12 }}...</span>
+                                <span class="full-text" style="display: none;">{{ msg.content }}</span>
+                                <button type="button" class="toggle-btn text-blue-500 underline text-xs ml-2">Read More</button>
+                            {% else %}
+                                <span>{{ msg.content }}</span>
+                            {% endif %}
+                        </div>
+                    </td>                    
+                    <td class="px-4 py-2">
+                        {% if msg.disc %}
+                            <a href="{% url 'disc_detail' msg.disc.id %}" class="text-blue-500 hover:underline">
+                                {{ msg.disc.mold_name|default:"Disc" }}
+                            </a>
+                        {% else %}
+                            <span class="text-gray-400 italic">N/A</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-4 py-2 text-xs text-gray-500">
+                        {{ msg.timestamp|date:"M j, Y, g:i A" }}
+                    </td>
+                    <td class="px-4 py-2 space-x-2">
+                        <!-- Reply with or without disc reference -->
+                        {% if msg.disc %}
+                            <a href="{% url 'send_message' receiver_id=msg.sender.id disc_id=msg.disc.id %}"
+                            class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
+                            Reply
+                            </a>
+                        {% else %}
+                            <a href="{% url 'send_message' receiver_id=msg.sender.id %}"
+                            class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
+                            Reply
+                            </a>
+                        {% endif %}
+                        <form method="post" action="{% url 'delete_message' message_id=msg.id %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p class="text-gray-600">You have no messages.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleButtons = document.querySelectorAll('.toggle-btn');
+
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const container = button.closest('.text-container');
+            const preview = container.querySelector('.preview-text');
+            const full = container.querySelector('.full-text');
+
+            const isShowingPreview = preview.style.display !== 'none';
+
+            preview.style.display = isShowingPreview ? 'none' : 'inline';
+            full.style.display = isShowingPreview ? 'inline' : 'none';
+            button.textContent = isShowingPreview ? 'Show Less' : 'Read More';
+        });
+    });
+});
+</script>
+{% endblock %}
+    
+    

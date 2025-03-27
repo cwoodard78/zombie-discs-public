@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Toggle Message Test</title>
+</head>
+<body>
+
+<table border="1" style="width: 100%; max-width: 600px; margin: 2rem auto;">
+  <thead>
+    <tr>
+      <th>From</th>
+      <th>Message</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Alice</td>
+      <td>
+        <div class="text-container">
+          <span class="preview-text">This is a short preview of the message...</span>
+          <span class="full-text" style="display: none;">This is the full message that shows all the details and goes beyond the preview.</span>
+          <button type="button" class="toggle-btn">Read More</button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleButtons = document.querySelectorAll('.toggle-btn');
+
+    toggleButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const container = button.closest('.text-container');
+        const preview = container.querySelector('.preview-text');
+        const full = container.querySelector('.full-text');
+
+        const isShowingPreview = preview.style.display !== 'none';
+
+        preview.style.display = isShowingPreview ? 'none' : 'inline';
+        full.style.display = isShowingPreview ? 'inline' : 'none';
+        button.textContent = isShowingPreview ? 'Show Less' : 'Read More';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

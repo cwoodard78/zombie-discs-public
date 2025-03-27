@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Zombie Discs Auth{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Welcome, {{ user.username }}</h1>
+    
+    <!-- Tabs -->
+    <div class="flex border-b">
+        <button id="tab-lost" class="tab-btn active">Lost</button>
+        <button id="tab-found" class="tab-btn">Found</button>
+    </div>
+
+    <!-- Lost Tab Content -->
+    <div id="lost-content" class="tab-content">
+        <h2 class="text-xl font-semibold text-gray-700 mt-4">Lost Discs</h2>
+        <div class="overflow-x-auto mt-4">
+            <table class="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Color</th>
+                        <th class="py-3 px-6 text-left">Type</th>
+                        <th class="py-3 px-6 text-left">Mold Name</th>
+                        <th class="py-3 px-6 text-left">Lost Date</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm">
+                    {% for disc in lost_discs %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6">{{ disc.color }}</td>
+                        <td class="py-3 px-6">{{ disc.type }}</td>
+                        <td class="py-3 px-6">{{ disc.mold_name }}</td>
+                        <td class="py-3 px-6">{{ disc.created_at|date:"Y-m-d" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Found Tab Content -->
+    <div id="found-content" class="tab-content hidden">
+        <h2 class="text-xl font-semibold text-gray-700 mt-4">Found Discs</h2>
+        <div class="overflow-x-auto mt-4">
+            <table class="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Color</th>
+                        <th class="py-3 px-6 text-left">Type</th>
+                        <th class="py-3 px-6 text-left">Mold Name</th>
+                        <th class="py-3 px-6 text-left">Found Date</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm">
+                    {% for disc in found_discs %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6">{{ disc.color }}</td>
+                        <td class="py-3 px-6">{{ disc.type }}</td>
+                        <td class="py-3 px-6">{{ disc.mold_name }}</td>
+                        <td class="py-3 px-6">{{ disc.created_at|date:"Y-m-d" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const lostTab = document.getElementById('tab-lost');
+            const foundTab = document.getElementById('tab-found');
+            const lostContent = document.getElementById('lost-content');
+            const foundContent = document.getElementById('found-content');
+
+            lostTab.addEventListener('click', () => {
+                lostContent.classList.remove('hidden');
+                foundContent.classList.add('hidden');
+                lostTab.classList.add('active');
+                foundTab.classList.remove('active');
+            });
+
+            foundTab.addEventListener('click', () => {
+                foundContent.classList.remove('hidden');
+                lostContent.classList.add('hidden');
+                foundTab.classList.add('active');
+                lostTab.classList.remove('active');
+            });
+        });
+    </script>
+
+    <style>
+        .tab-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-weight: bold;
+        }
+
+        .tab-btn.active {
+            border-bottom: 2px solid #3b82f6;
+            color: #3b82f6;
+        }
+
+        .tab-content.hidden {
+            display: none;
+        }
+    </style>
+
+{% endblock %}

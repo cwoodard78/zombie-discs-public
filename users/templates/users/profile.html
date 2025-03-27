@@ -23,10 +23,26 @@
         <p><strong>Last Name:</strong> {{ profile_user.last_name }}</p>
         <p><strong>Date Joined:</strong> {{ profile_user.date_joined|date:"F j, Y" }}</p>
         <p><strong>Last Login:</strong> {{ profile_user.last_login|date:"F j, Y, g:i A" }}</p>
-        <p><strong>Lost Total:</strong> <span class="text-blue-500">TBD</span></p>
-        <p><strong>Found Total:</strong> <span class="text-blue-500">TBD</span></p>
-        <p><strong>Karma:</strong> <span class="text-green-500">TBD</span></p>
+        <p><strong>Lost Total:</strong> <span class="text-blue-500">{{ lost_total }}</span></p>
+        <p><strong>Found Total:</strong> <span class="text-blue-500">{{ found_total }}</span></p>
+        <p><strong>Karma:</strong> <span class="text-blue-500">{{ karma }}</span></p>
     </div>
+
+    {% if not is_owner %}
+        <form method="post" action="{% url 'award_karma' profile_user.username %}" class="mt-6">
+            {% csrf_token %}
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Give Karma +
+            </button>
+        </form>
+        <!-- Send message button -->
+        <div class="mt-4">
+            <a href="{% url 'send_message' receiver_id=profile_user.id %}"
+               class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                Send Message
+            </a>
+        </div>
+    {% endif %}
 
     {% if is_owner %}
         <div class="mt-6">

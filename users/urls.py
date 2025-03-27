@@ -14,6 +14,7 @@ urlpatterns = [
     path('profile/edit/', views.edit_profile, name='edit_profile'),
     path('profile/<str:username>/', views.profile, name='profile'),
     path('delete_account/', delete_account, name='delete_account'),
+    path('karma/<str:username>/', views.award_karma, name='award_karma'),
 
     # Django password reset
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='users/password_reset.html'), name='password_reset'),
