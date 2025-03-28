@@ -43,8 +43,8 @@ urlpatterns = [
     # Swagger API Interface
     path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
-    # Hamburger troubleshooting
-    path('burger-test/', TemplateView.as_view(template_name='burger_test.html'), name='burger_test'),
+    # # Hamburger troubleshooting
+    # path('burger-test/', TemplateView.as_view(template_name='burger_test.html'), name='burger_test'),
 
 ]
 

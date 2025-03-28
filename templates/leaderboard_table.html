@@ -1,0 +1,26 @@
+<table class="min-w-full bg-white rounded-lg shadow-md text-sm">
+    <thead>
+        <tr class="bg-blue-100 text-blue-800 uppercase text-xs leading-normal">
+            <th class="py-2 px-4 text-left">Rank</th>
+            <th class="py-2 px-4 text-left">User</th>
+            <th class="py-2 px-4 text-left">{{ label }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in leaderboard %}
+        <tr class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-2 px-4">{{ forloop.counter }}</td>
+            <td class="py-2 px-4">{{ user.username }}</td>
+            {% if stat == 'lost_count' %}
+                <td class="py-2 px-4">{{ user.lost_count }}</td>
+            {% elif stat == 'found_count' %}
+                <td class="py-2 px-4">{{ user.found_count }}</td>
+            {% elif stat == 'karma' %}
+                <td class="py-2 px-4">{{ user.profile.karma }}</td>
+            {% endif %}
+        </tr>
+        {% empty %}
+        <tr><td class="py-2 px-4" colspan="3">No users to show.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>

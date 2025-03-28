@@ -7,7 +7,9 @@ from .forms import ProfileForm
 from django.db import models
 from django.contrib.auth.models import User
 from .models import Profile
-from disc.models import Disc
+from disc.models import Disc, Reward
+from django.core.paginator import Paginator
+from django.db.models import Count, Q, F, Value, IntegerField
 
 # For API
 from rest_framework.generics import ListAPIView
@@ -21,34 +23,143 @@ class UserListAPIView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+from django.shortcuts import render
+from django.core.paginator import Paginator
+from django.contrib.auth.models import User
+from django.db.models import Count, Q
+from disc.models import Disc, Reward
+import requests
+
+
+def get_paginated_discs(request, status, param_name):
+    queryset = Disc.objects.filter(status=status).order_by('-created_at')
+    paginator = Paginator(queryset, 5)
+    page_number = request.GET.get(param_name, 1)
+    return paginator.get_page(page_number)
+
+
+def get_top_rewards(limit=5):
+    return Reward.objects.select_related('disc').order_by('-amount')[:limit]
+
+
+def get_leaderboards(limit=5):
+    lost = User.objects.annotate(
+        lost_count=Count('disc', filter=Q(disc__status='lost'))
+    ).order_by('-lost_count')[:limit]
+
+    found = User.objects.annotate(
+        found_count=Count('disc', filter=Q(disc__status='found'))
+    ).order_by('-found_count')[:limit]
+
+    karma = User.objects.select_related('profile').filter(
+        profile__karma__gt=0
+    ).order_by('-profile__karma')[:limit]
+
+    return lost, found, karma
+
+
+def get_guest_stats(request):
+    stats_api_url = f"{request.build_absolute_uri('/discs/api/stats/')}"
+    try:
+        response = requests.get(stats_api_url)
+        response.raise_for_status()
+        stats = response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching stats: {e}")
+        stats = {"total_lost": 0, "total_found": 0, "total_users": 0}
+    return stats
+
+
 def home(request):
     if request.user.is_authenticated:
-        # Fetch lost and found discs for the logged-in user
-        lost_discs = Disc.objects.filter(status="lost")
-        found_discs = Disc.objects.filter(status="found")
+        lost_discs = get_paginated_discs(request, 'lost', 'lost_page')
+        found_discs = get_paginated_discs(request, 'found', 'found_page')
+        active_tab = "found" if "found_page" in request.GET else "lost"
+        top_rewards = get_top_rewards()
+        lost_leaderboard, found_leaderboard, karma_leaderboard = get_leaderboards()
 
         context = {
             "lost_discs": lost_discs,
             "found_discs": found_discs,
+            "top_rewards": top_rewards,
+            "lost_leaderboard": lost_leaderboard,
+            "found_leaderboard": found_leaderboard,
+            "karma_leaderboard": karma_leaderboard,
+            "active_tab": active_tab,
         }
         return render(request, "user_home.html", context)
-    else:
-        # Fetch stats for the guest view
-        stats_api_url = f"{request.build_absolute_uri('/discs/api/stats/')}"
-        try:
-            response = requests.get(stats_api_url)
-            response.raise_for_status()
-            stats = response.json()
-        except requests.exceptions.RequestException as e:
-            stats = {"total_lost": 0, "total_found": 0, "total_users": 0}
-            print(f"Error fetching stats: {e}")
 
-        context = {
-            "total_lost": stats.get("total_lost", 0),
-            "total_found": stats.get("total_found", 0),
-            "total_users": stats.get("total_users", 0),
-        }
-        return render(request, "guest_home.html", context)
+    else:
+        stats = get_guest_stats(request)
+        return render(request, "guest_home.html", stats)
+
+# def home(request):
+#     if request.user.is_authenticated:
+#         # Fetch lost and found discs sorted by most recent
+#         lost_discs_qs = Disc.objects.filter(status="lost").order_by("-created_at")
+#         found_discs_qs = Disc.objects.filter(status="found").order_by("-created_at")
+
+#         lost_paginator = Paginator(lost_discs_qs, 5)
+#         found_paginator = Paginator(found_discs_qs, 5)
+
+#         lost_page_number = request.GET.get("lost_page", 1)
+#         found_page_number = request.GET.get("found_page", 1)
+
+#         lost_discs = lost_paginator.get_page(lost_page_number)
+#         found_discs = found_paginator.get_page(found_page_number)
+
+#         # Determine which tab to show based on which page param is set
+#         active_tab = "found" if "found_page" in request.GET else "lost"
+
+#         # Collect top rewards in decreasing order
+#         top_rewards = Reward.objects.select_related('disc').order_by('-amount')[:5]
+
+#         # Leaderboard: Users with most lost discs
+#         lost_leaderboard = (
+#             User.objects.annotate(lost_count=Count('disc', filter=Q(disc__status='lost')))
+#             .order_by('-lost_count')[:5]
+#         )
+
+#         # Leaderboard: Users with most found discs
+#         found_leaderboard = (
+#             User.objects.annotate(found_count=Count('disc', filter=Q(disc__status='found')))
+#             .order_by('-found_count')[:5]
+#         )
+
+#         karma_leaderboard = (
+#             User.objects.select_related('profile')
+#             .filter(profile__karma__gt=0)
+#             .order_by('-profile__karma')[:5]
+#         )
+
+#         context = {
+#             "lost_discs": lost_discs,
+#             "found_discs": found_discs,
+#             "top_rewards": top_rewards,
+#             'lost_leaderboard': lost_leaderboard,
+#             'found_leaderboard': found_leaderboard,
+#             'karma_leaderboard': karma_leaderboard,
+#             "active_tab": active_tab,
+#         }
+#         return render(request, "user_home.html", context)
+    
+#     else:
+#         # Fetch stats for the guest view
+#         stats_api_url = f"{request.build_absolute_uri('/discs/api/stats/')}"
+#         try:
+#             response = requests.get(stats_api_url)
+#             response.raise_for_status()
+#             stats = response.json()
+#         except requests.exceptions.RequestException as e:
+#             stats = {"total_lost": 0, "total_found": 0, "total_users": 0}
+#             print(f"Error fetching stats: {e}")
+
+#         context = {
+#             "total_lost": stats.get("total_lost", 0),
+#             "total_found": stats.get("total_found", 0),
+#             "total_users": stats.get("total_users", 0),
+#         }
+#         return render(request, "guest_home.html", context)
 
 def register(request):
     if request.method == "POST":
