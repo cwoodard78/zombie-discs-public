@@ -15,7 +15,7 @@
     {% endif %}
     <div class="grid grid-cols-2 gap-4 text-gray-800">
         <p><strong>Status:</strong> {{ disc.get_status_display }}</p>
-        <p><strong>Color:</strong> {{ disc.color }}</p>
+        <p><strong>Color:</strong> {{ disc.color|title }}</p>
         <p><strong>Type:</strong> {{ disc.type|default:"N/A" }}</p>
         <p><strong>Manufacturer:</strong> {{ disc.manufacturer|default:"N/A" }}</p>
         <p><strong>Mold:</strong> {{ disc.mold_name|default:"N/A" }}</p>

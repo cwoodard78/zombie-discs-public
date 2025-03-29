@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load custom_filters %}
+{% load custom_filters color_utils %}
 
 {% block title %}My Discs{% endblock %}
 
@@ -15,7 +15,7 @@
 
     {% if new_matches_count > 0 %}
         <div class="mb-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded">
-            You have {{ new_matches_count }} new disc match{{ new_matches_count|pluralize }} since your last login!
+            You have {{ new_matches_count }} new disc match{{ new_matches_count|pluralize:"es" }} since your last login!
         </div>
     {% endif %}
 
@@ -43,7 +43,11 @@
                     <tr class="hover:bg-gray-100 cursor-pointer"
                         onclick="window.location.href='{% url 'disc_detail' disc.id %}?from_user_disc_list=true'">
                         <td class="px-4 py-2">{{ disc.type|default:"N/A" }}</td>
-                        <td class="px-4 py-2">{{ disc.color|default:"N/A" }}</td>
+                        <td class="px-4 py-2" style="background: {{ disc.color|validate_color }}; border: 1px solid #d1d5db;">
+                            <span class="block text-gray-800 text-sm font-medium text-left">
+                                {{ disc.color|default:"N/A"|title }}
+                            </span>
+                        </td>
                         <td class="px-4 py-2">{{ disc.mold_name|default:"N/A" }}</td>
                         {% comment %} <td class="px-4 py-2">{{ disc.status|title }}</td> {% endcomment %}
                         {% comment %} <td class="px-4 py-2">
@@ -90,7 +94,11 @@
                     <tr class="hover:bg-gray-100 cursor-pointer"
                         onclick="window.location.href='{% url 'disc_detail' disc.id %}?from_user_disc_list=true'">
                         <td class="px-4 py-2">{{ disc.type|default:"N/A" }}</td>
-                        <td class="px-4 py-2">{{ disc.color|default:"N/A" }}</td>
+                        <td class="px-4 py-2" style="background: {{ disc.color|validate_color }}; border: 1px solid #d1d5db;">
+                            <span class="block text-gray-800 text-sm font-medium text-left">
+                                {{ disc.color|default:"N/A"|title }}
+                            </span>
+                        </td>
                         <td class="px-4 py-2">{{ disc.mold_name|default:"N/A" }}</td>
                         {% comment %} <td class="px-4 py-2">{{ disc.status|title }}</td> {% endcomment %}
                         <td class="px-4 py-2">

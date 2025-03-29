@@ -11,6 +11,8 @@
         {% csrf_token %}
         {{ form.as_p }}
         
+        <div id="map" class="h-80 rounded shadow mb-4"></div>
+
         <div>
             <label for="reward" class="block text-gray-700 font-medium">Optional Reward ($):</label>
             <input type="number" name="reward" id="reward" step="0.5" min="0" placeholder="e.g. 10.00"
@@ -18,35 +20,17 @@
         </div>
 
         <div class="form-actions">
-        <div class="flex space-x-4 mt-4">
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                Submit
-            </button>
-            <button type="button" onclick="openMap()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                Select Coordinates
-            </button>
-        </div>
+            <div class="flex space-x-4 mt-4">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Submit
+                </button>
+                <a href="{% url 'user_disc_list' %}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
+                    Cancel
+                </a>
+            </div>
+        </div>        
     </form>
 </div>
-
-<script>
-    function openMap() {
-        const mapWindow = window.open("{% url 'map_view' %}", "Select Coordinates", "width=800,height=600");
-
-        // Listen for coordinates sent back from the map window
-        window.addEventListener("message", (event) => {
-            if (event.origin === window.location.origin) {
-                const coords = event.data;
-                if (coords && coords.lat && coords.lng) {
-                    document.getElementById("id_latitude").value = coords.lat;
-                    document.getElementById("id_longitude").value = coords.lng;
-                } else {
-                    console.error("Invalid coordinates received!");
-                }
-            }
-        });
-    }
-</script>
 
 <style>
     input, select, textarea {
@@ -57,4 +41,61 @@
     }
 </style>
 
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}   <!-- Include base scripts -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Highlight selected color option
+        const options = document.querySelectorAll('.color-option');
+        const radios = document.querySelectorAll('.color-radio');
+
+        radios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                options.forEach(opt => opt.classList.remove('ring-2', 'ring-blue-500'));
+
+                const selectedLabel = radio.closest('.color-option');
+                if (selectedLabel) {
+                    selectedLabel.classList.add('ring-2', 'ring-blue-500');
+                }
+            });
+        });
+
+        // Leaflet map setup
+        const latInput = document.getElementById("id_latitude");
+        const lngInput = document.getElementById("id_longitude");
+
+        const defaultLat = latInput.value || 35.00;
+        const defaultLng = lngInput.value || -86.55;
+
+        const map = L.map("map").setView([defaultLat, defaultLng], 10);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 18,
+            attribution: '&copy; OpenStreetMap contributors',
+        }).addTo(map);
+
+        let marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
+
+        marker.on("dragend", function (e) {
+            const position = marker.getLatLng();
+            latInput.value = position.lat.toFixed(6);
+            lngInput.value = position.lng.toFixed(6);
+        });
+
+        map.on("click", function (e) {
+            marker.setLatLng(e.latlng);
+            latInput.value = e.latlng.lat.toFixed(6);
+            lngInput.value = e.latlng.lng.toFixed(6);
+        });
+
+        map.locate({ setView: true, maxZoom: 14 });
+        map.on("locationfound", function (e) {
+            marker.setLatLng(e.latlng);
+            latInput.value = e.latlng.lat.toFixed(6);
+            lngInput.value = e.latlng.lng.toFixed(6);
+        });
+    });
+</script>
 {% endblock %}

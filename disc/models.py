@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from .constants import COLOR_CHOICES
 
 # class MyModel(models.Model):
 #     name = models.CharField(max_length=255)
@@ -10,8 +11,6 @@ class Disc(models.Model):
     STATUS_CHOICES = [
         ('lost', 'Lost'),
         ('found', 'Found'),
-        # ('returned', 'Returned'),
-        # ('archived', 'Archived'),        
     ]
 
     RECORD_STATE_CHOICES = [
@@ -30,7 +29,8 @@ class Disc(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='lost')
     state = models.CharField(max_length=10, choices=RECORD_STATE_CHOICES, default='active')
 
-    color = models.CharField(max_length=50)
+    # color = models.CharField(max_length=50)
+    color = models.CharField(max_length=20, choices=COLOR_CHOICES)
     type = models.CharField(max_length=10, choices=DISC_TYPE_CHOICES, blank=True, null=True)
     manufacturer = models.ForeignKey(
         'Manufacturer', 
