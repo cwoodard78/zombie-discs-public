@@ -80,6 +80,7 @@
 {% endblock %}
 
 {% block scripts %}
+{{ block.super }}   <!-- Include base scripts -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const toggleButtons = document.querySelectorAll('.toggle-btn');

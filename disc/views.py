@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib import messages
 from django.db.models import Q  # For matching
+from django.utils.timezone import now
 
 # For APIs
 from rest_framework.generics import ListAPIView
@@ -167,31 +168,12 @@ def disc_detail_view(request, disc_id):
     }
     )
 
-
-# @login_required
-# def user_disc_list(request):
-#     discs = Disc.objects.filter(user=request.user)
-#     return render(request, "disc/user_disc_list.html", {"discs": discs})
-
-# OLD ONE THAT WORKED 3/27
-# @login_required
-# def user_disc_list(request):
-#     discs = Disc.objects.filter(user=request.user)
-
-#     # Add match counts to each disc
-#     for disc in discs:
-#         if disc.status == 'lost':
-#             disc.match_count = DiscMatch.objects.filter(lost_disc=disc).count()
-#         elif disc.status == 'found':
-#             disc.match_count = DiscMatch.objects.filter(found_disc=disc).count()
-#         else:
-#             disc.match_count = 0
-
-#     return render(request, "disc/user_disc_list.html", {"discs": discs})
-
 @login_required
 def user_disc_list(request):
     discs = Disc.objects.filter(user=request.user)
+    # lost_discs = Disc.objects.filter(user=request.user, status="lost", state="active")
+    # found_discs = Disc.objects.filter(user=request.user, status="found", state="active")
+
     last_login = request.user.last_login or now()
 
     new_matches_count = 0
@@ -212,11 +194,55 @@ def user_disc_list(request):
         if has_new:
             new_matches_count += 1
 
+    # Filter from already annotated discs
+    lost_discs = [disc for disc in discs if disc.status == "lost" and disc.state == "active"]
+    found_discs = [disc for disc in discs if disc.status == "found" and disc.state == "active"]
+
     return render(request, "disc/user_disc_list.html", {
         "discs": discs,
+        "lost_discs": lost_discs,
+        "found_discs": found_discs,
         "new_matches_count": new_matches_count,
         "match_flags": match_flags
     })
+
+# @login_required
+# def user_disc_list(request):
+#     all_discs = Disc.objects.filter(user=request.user)
+
+#     # Filter by status/state
+#     lost_discs = all_discs.filter(status='lost')
+#     found_discs = all_discs.filter(status='found')
+#     returned_discs = all_discs.filter(state='returned')
+#     archived_discs = all_discs.filter(state='archived')
+
+#     last_login = request.user.last_login or now()
+#     new_matches_count = 0
+#     match_flags = {}
+
+#     for disc in all_discs:
+#         if disc.status == 'lost':
+#             matches = DiscMatch.objects.filter(lost_disc=disc)
+#         elif disc.status == 'found':
+#             matches = DiscMatch.objects.filter(found_disc=disc)
+#         else:
+#             matches = DiscMatch.objects.none()
+
+#         disc.match_count = matches.count()
+#         has_new = matches.filter(created_at__gt=last_login).exists()
+#         match_flags[disc.id] = has_new
+#         if has_new:
+#             new_matches_count += 1
+
+#     return render(request, "disc/user_disc_list.html", {
+#         "lost_discs": lost_discs,
+#         "found_discs": found_discs,
+#         "returned_discs": returned_discs,
+#         "archived_discs": archived_discs,
+#         "new_matches_count": new_matches_count,
+#         "match_flags": match_flags,
+#     })
+
 
 @login_required
 def edit_disc(request, disc_id):
@@ -277,6 +303,25 @@ def send_match_message(request, disc_id, matched_disc_id):
 @login_required
 def mark_disc_returned(request, disc_id):
     disc = get_object_or_404(Disc, id=disc_id, user=request.user)
-    disc.status = 'returned'
+    disc.state = 'returned'
     disc.save()
     return redirect('user_disc_list')
+
+@login_required
+def user_disc_archive(request):
+    archived_discs = Disc.objects.filter(
+        user=request.user,
+        state__in=["archived", "returned"]
+    ).order_by("-created_at")
+
+    return render(request, "disc/user_disc_archive.html", {
+        "archived_discs": archived_discs
+    })
+
+@login_required
+def reactivate_disc(request, disc_id):
+    disc = get_object_or_404(Disc, id=disc_id, user=request.user)
+    if request.method == 'POST':
+        disc.state = 'active'
+        disc.save()
+        return redirect('user_disc_list')

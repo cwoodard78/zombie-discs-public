@@ -1,0 +1,68 @@
+<!-- partials/disc_table.html -->
+<table class="min-w-full bg-white rounded-lg shadow-md">
+    <thead>
+        <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+            <th class="py-3 px-6 text-left">Color</th>
+            <th class="py-3 px-6 text-left">Type</th>
+            <th class="py-3 px-6 text-left">Mold Name</th>
+            <th class="py-3 px-6 text-left">{{ label }}</th>
+        </tr>
+    </thead>
+    <tbody class="text-gray-700 text-sm">
+        {% for disc in discs %}
+        <tr class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-3 px-6">{{ disc.color }}</td>
+            <td class="py-3 px-6">{{ disc.type }}</td>
+            <td class="py-3 px-6">{{ disc.mold_name }}</td>
+            <td class="py-3 px-6">{{ disc.created_at|date:"Y-m-d" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td class="py-3 px-6" colspan="4">No discs to show.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if discs.paginator.num_pages > 1 %}
+<div class="mt-4 flex justify-center space-x-2">
+    {% if discs.has_previous %}
+        <a href="?{{ page_param }}={{ discs.previous_page_number }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+    {% endif %}
+    <span class="px-3 py-1 text-gray-700">Page {{ discs.number }} of {{ discs.paginator.num_pages }}</span>
+    {% if discs.has_next %}
+        <a href="?{{ page_param }}={{ discs.next_page_number }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+    {% endif %}
+</div>
+{% endif %}
+
+
+<!-- partials/reward_table.html -->
+<table class="min-w-full bg-white rounded-lg shadow-md">
+    <thead>
+        <tr class="bg-yellow-100 text-yellow-800 uppercase text-sm leading-normal">
+            <th class="py-3 px-6 text-left">Reward</th>
+            <th class="py-3 px-6 text-left">Color</th>
+            <th class="py-3 px-6 text-left">Type</th>
+            <th class="py-3 px-6 text-left">Mold</th>
+            <th class="py-3 px-6 text-left">Status</th>
+            <th class="py-3 px-6 text-left">Date Posted</th>
+        </tr>
+    </thead>
+    <tbody class="text-gray-700 text-sm">
+        {% for reward in rewards %}
+        <tr class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-3 px-6 font-semibold text-green-700">${{ reward.amount }}</td>
+            <td class="py-3 px-6">{{ reward.disc.color|default:"N/A" }}</td>
+            <td class="py-3 px-6">{{ reward.disc.type|default:"N/A" }}</td>
+            <td class="py-3 px-6">
+                <a href="{% url 'disc_detail' reward.disc.id %}" class="text-blue-600 hover:underline">
+                    {{ reward.disc.mold_name }}
+                </a>
+            </td>
+            <td class="py-3 px-6">{{ reward.disc.status|title }}</td>
+            <td class="py-3 px-6">{{ reward.created_at|date:"Y-m-d" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td class="py-3 px-6" colspan="6">No rewards posted yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>

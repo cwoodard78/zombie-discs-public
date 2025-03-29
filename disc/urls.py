@@ -17,6 +17,8 @@ urlpatterns = [
     path('search/', DiscSearchView.as_view(), name='disc_search'),
     path('its-a-match/<int:disc_id>/<int:matched_disc_id>/', views.send_match_message, name='send_match_message'),
     path('disc/<int:disc_id>/returned/', views.mark_disc_returned, name='mark_disc_returned'),
+    path("my-discs/archive/", views.user_disc_archive, name="user_disc_archive"),
+    path('discs/<int:disc_id>/reactivate/', views.reactivate_disc, name='reactivate_disc'),
 
     # APIs
     path('', DiscListCreateAPIView.as_view(), name='disc_list_api'),

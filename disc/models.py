@@ -10,8 +10,14 @@ class Disc(models.Model):
     STATUS_CHOICES = [
         ('lost', 'Lost'),
         ('found', 'Found'),
-        ('returned', 'Returned'),
-        ('archived', 'Archived'),        
+        # ('returned', 'Returned'),
+        # ('archived', 'Archived'),        
+    ]
+
+    RECORD_STATE_CHOICES = [
+        ('active', 'Active'),
+        ('returned', 'Returned'),  # Successfully resolved
+        ('archived', 'Archived'),  # No longer tracked
     ]
 
     DISC_TYPE_CHOICES = [
@@ -22,6 +28,8 @@ class Disc(models.Model):
     ]
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='lost')
+    state = models.CharField(max_length=10, choices=RECORD_STATE_CHOICES, default='active')
+
     color = models.CharField(max_length=50)
     type = models.CharField(max_length=10, choices=DISC_TYPE_CHOICES, blank=True, null=True)
     manufacturer = models.ForeignKey(

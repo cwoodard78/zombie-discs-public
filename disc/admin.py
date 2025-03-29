@@ -3,7 +3,7 @@ from .models import Disc, Manufacturer, DiscMatch, Reward
 
 @admin.register(Disc)
 class DiscAdmin(admin.ModelAdmin):
-    list_display = ('id', 'status', 'color', 'type', 'mold_name', 'latitude', 'longitude', 'user', 'created_at')
+    list_display = ('id', 'status', 'state', 'color', 'type', 'mold_name', 'latitude', 'longitude', 'user', 'created_at')
     search_fields = ('color', 'mold_name', 'user__username')
     list_filter = ('status', 'type', 'manufacturer', 'created_at')
 
