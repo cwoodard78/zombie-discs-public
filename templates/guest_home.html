@@ -15,31 +15,101 @@
     <!-- Slides -->
     <div class="carousel-slides flex transition-transform duration-700 ease-in-out">
         <!-- Image Slide -->
-        <div class="flex-shrink-0 w-full bg-gray-100 p-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">Discover the Community</h2>
-            <p class="mt-4 text-gray-700">Join our growing community of disc golfers today.</p>
-            <img src="{% static 'images/community.jpg' %}" alt="Community" class="rounded-lg shadow-sm max-h-64 w-auto mx-auto">
-            Photo by <a href="https://unsplash.com/@priscilladupreez?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Priscilla Du Preez 🇨🇦</a> on <a href="https://unsplash.com/photos/a-person-sitting-on-a-tree-stump-with-a-backpack-and-a-sign-LAjycRsHAto?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>      
+        <div class="flex-shrink-0 w-full bg-gray-100 p-6 text-center">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Discover the Community</h2>
+            <p class="text-gray-700 mb-4">Join thousands of disc golfers sharing, finding, and returning discs across the country.</p>
+            <img src="{% static 'images/community.jpg' %}" alt="Community" class="rounded-lg shadow-sm w-full h-[300px] object-cover mx-auto">
+            <p class="mt-2 text-sm text-gray-500">
+                Photo by <a href="https://unsplash.com/@priscilladupreez" class="underline" target="_blank">Priscilla Du Preez</a> on 
+                <a href="https://unsplash.com/photos/LAjycRsHAto" class="underline" target="_blank">Unsplash</a>
+            </p>
         </div>
 
         <!-- Stats Slide -->
-        <div class="flex-shrink-0 w-full bg-blue-100 p-6">
-            <h2 class="text-xl font-semibold mb-4 text-blue-800">Community Stats</h2>
-            <p class="text-lg text-gray-700">Total Lost Discs: <span id="total-lost" class="font-bold">Loading...</span></p>
-            <p class="text-lg text-gray-700">Total Found Discs: <span id="total-found" class="font-bold">Loading...</span></p>
-            <p class="text-lg text-gray-700">Total Users: <span id="total-users" class="font-bold">Loading...</span></p>
+        <div class="flex-shrink-0 w-full bg-blue-100 p-6 relative z-10">
+            <h2 class="text-2xl font-semibold mb-6 text-blue-800 text-center">Community Stats</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:grid-cols-3 text-center">
+                <div class="bg-white rounded-lg shadow p-4">
+                    <p class="text-sm text-blue-600 uppercase">Lost Discs</p>
+                    <p id="total-lost" class="text-3xl font-bold text-gray-800">Loading...</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-4">
+                    <p class="text-sm text-green-600 uppercase">Found Discs</p>
+                    <p id="total-found" class="text-3xl font-bold text-gray-800">Loading...</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-4">
+                    <p class="text-sm text-purple-600 uppercase">Resolved Matches</p>
+                    <p id="total-resolved" class="text-3xl font-bold text-gray-800">Loading...</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-4">
+                    <p class="text-sm text-yellow-600 uppercase">Rewards Offered</p>
+                    <p id="total-rewards" class="text-3xl font-bold text-gray-800">$0</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-4 col-span-full sm:col-span-2 md:col-span-1">
+                    <p class="text-sm text-indigo-600 uppercase">Community Members</p>
+                    <p id="total-users" class="text-3xl font-bold text-gray-800">Loading...</p>
+                </div>
+            </div>
         </div>
 
         <!-- Features Slide -->
-        <div class="flex-shrink-0 w-full bg-green-100 p-6">
-            <h2 class="text-xl font-semibold mb-4 text-green-800">Site Features</h2>
-            <ul class="list-disc list-inside text-gray-700">
-                <li>Log your lost or found discs</li>
-                <li>Search by disc type, color, or location</li>
-                <li>View disc matches on an interactive map</li>
-                <li>Get matched with potential owners</li>
-            </ul>
+        <div class="flex-shrink-0 w-full bg-green-100 p-6 relative z-10">
+            <h2 class="text-2xl font-semibold text-green-900 mb-6 text-center">What Makes Zombie Discs Awesome?</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-800 text-sm">
+                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
+                    <span class="text-green-500 text-xl">📍</span>
+                    <div>
+                        <p class="font-semibold text-base">Post Lost or Found Discs</p>
+                        <p>Upload photos and mark the location on a map.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
+                    <span class="text-green-500 text-xl">🔍</span>
+                    <div>
+                        <p class="font-semibold text-base">Advanced Search</p>
+                        <p>Filter by type, color, location, or reward status.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
+                    <span class="text-green-500 text-xl">🗺️</span>
+                    <div>
+                        <p class="font-semibold text-base">Interactive Map</p>
+                        <p>Browse discs on a live map of all submissions.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
+                    <span class="text-green-500 text-xl">🎁</span>
+                    <div>
+                        <p class="font-semibold text-base">Offer & Earn Rewards</p>
+                        <p>Post a bounty for your disc — or claim one for returning it.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
+                    <span class="text-green-500 text-xl">💬</span>
+                    <div>
+                        <p class="font-semibold text-base">Messaging & Profiles</p>
+                        <p>Connect with other players and view their disc history.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
+                    <span class="text-green-500 text-xl">🏆</span>
+                    <div>
+                        <p class="font-semibold text-base">Community Leaderboards</p>
+                        <p>Celebrate the most helpful disc golfers in your area.</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mt-6 text-center text-gray-600 text-sm italic">Built for the disc golf community. Optimized for mobile, tablets, and every course in between.</p>
         </div>
+
 
         <!-- Packages Slide -->
         <div class="flex-shrink-0 w-full bg-purple-100 p-6 overflow-auto">
@@ -67,29 +137,6 @@
                 </table>
             </div>
         </div>
-
-<!--
-asgiref==3.8.1
-certifi==2024.12.14
-charset-normalizer==3.4.1
-Django==5.1.4
-django-filter==24.3
-djangorestframework==3.15.2
-drf-yasg==1.21.8
-idna==3.10
-inflection==0.5.1
-packaging==24.2
-pillow==11.1.0
-pytz==2024.2
-PyYAML==6.0.2
-requests==2.32.3
-sqlparse==0.5.3
-typing_extensions==4.12.2
-tzdata==2024.2
-uritemplate==4.1.1
-urllib3==2.3.0        
--->
-
     </div>
 
     <!-- Controls -->
@@ -134,6 +181,8 @@ urllib3==2.3.0
                 document.getElementById('total-lost').textContent = data.total_lost;
                 document.getElementById('total-found').textContent = data.total_found;
                 document.getElementById('total-users').textContent = data.total_users;
+                document.getElementById('total-resolved').textContent = data.total_resolved;
+                document.getElementById('total-rewards').textContent = `$${data.total_rewards}`;
             })
             .catch(error => {
                 console.error('Error fetching stats:', error);

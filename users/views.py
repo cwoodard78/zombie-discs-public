@@ -45,11 +45,11 @@ def get_top_rewards(limit=5):
 def get_leaderboards(limit=5):
     lost = User.objects.annotate(
         lost_count=Count('disc', filter=Q(disc__status='lost'))
-    ).order_by('-lost_count')[:limit]
+    ).filter(lost_count__gt=0).order_by('-lost_count')[:limit]
 
     found = User.objects.annotate(
         found_count=Count('disc', filter=Q(disc__status='found'))
-    ).order_by('-found_count')[:limit]
+    ).filter(found_count__gt=0).order_by('-found_count')[:limit]
 
     karma = User.objects.select_related('profile').filter(
         profile__karma__gt=0

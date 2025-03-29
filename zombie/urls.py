@@ -8,6 +8,8 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 from users.views import home
+from django.conf.urls import handler404
+from django.shortcuts import render
 
 # API Documentation (Swagger)
 from drf_yasg.views import get_schema_view
@@ -47,6 +49,11 @@ urlpatterns = [
     # path('burger-test/', TemplateView.as_view(template_name='burger_test.html'), name='burger_test'),
 
 ]
+
+def custom_404(request, exception):
+    return render(request, "404.html", status=404)
+
+handler404 = custom_404
 
 # Serve media files during development
 if settings.DEBUG:

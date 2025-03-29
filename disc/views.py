@@ -10,7 +10,7 @@ from .forms import DiscForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib import messages
-from django.db.models import Q  # For matching
+from django.db.models import Sum, Q  # For matching
 from django.utils.timezone import now
 
 # For APIs
@@ -42,13 +42,17 @@ class RecentDiscsAPIView(ListAPIView):
 
 class StatsAPIView(APIView):
     def get(self, request):
-        total_lost = Disc.objects.filter(status='lost').count()
-        total_found = Disc.objects.filter(status='found').count()
+        total_lost = Disc.objects.filter(status='lost', state='active').count()
+        total_found = Disc.objects.filter(status='found', state='active').count()
+        total_resolved = Disc.objects.filter(state='returned').count()
+        total_rewards = Reward.objects.aggregate(total=Sum('amount'))['total'] or 0
         total_users = User.objects.count()
         return Response({
             'total_lost': total_lost,
             'total_found': total_found,
             'total_users': total_users,
+            'total_rewards': float(total_rewards),
+            'total_resolved': total_resolved,
         })
 
 # class DiscMapAPIView(APIView):

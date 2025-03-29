@@ -154,7 +154,17 @@
                         </strong>:
                     </p>
                     <p class="text-gray-800 italic">{{ msg.content }}</p>
-                    <p class="text-xs text-gray-500">{{ msg.timestamp|date:"F j, Y, g:i A" }}</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs text-gray-500">{{ msg.timestamp|date:"F j, Y, g:i A" }}</p>
+        
+                        <!-- Reply button -->
+                        {% if request.user == msg.receiver %}
+                        <a href="{% url 'send_message' receiver_id=msg.sender.id disc_id=disc.id %}"
+                           class="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 ml-4">
+                            Reply
+                        </a>
+                        {% endif %}
+                    </div>
                 </li>
             {% endfor %}
         </ul>

@@ -40,8 +40,8 @@ class Disc(models.Model):
     )
     mold_name = models.CharField(max_length=100, blank=True, null=True)  # Free-text field for mold name
     notes = models.TextField(blank=True, null=True)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    latitude = models.FloatField(default=0.0)
+    longitude = models.FloatField(default=0.0)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='disc_images/', blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Tie to authenticated user

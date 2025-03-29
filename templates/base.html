@@ -21,31 +21,29 @@
     </script>
     {% endblock %}
     <style>
-        /* Floating button styles */
-        .floating-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
-            z-index: 1000;
+        .nav-link {
+            padding: 0.5rem 0;
+            font-weight: 500;
+            transition: color 0.2s;
+            position: relative;
         }
-
-        .floating-btn:hover {
-            background-color: #0056b3;
+      
+        .nav-link:hover {
+            text-decoration: underline;
         }
-    </style>
+      
+        .nav-link::before {
+            content: "☠️";
+            margin-right: 6px;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+      
+        .nav-link:hover::before {
+            opacity: 1;
+        }
+      </style>
+      
 </head>
 
 <body class="bg-gray-100 text-gray-900 font-sans">
@@ -55,55 +53,64 @@
         - https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_mobile_navbar 
         - https://play.tailwindcss.com/BFEhU1EG1i-->
     <header class="bg-blue-500 text-white px-4 py-4">
-        <div class="flex items-center justify-between">
-          <!-- Site Logo -->
-          <a href="{% url 'home' %}" class="text-2xl font-bold">Zombie Discs</a>
-            <button id="burger" class="md:hidden">
-              <!-- Burger Button -->
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                   viewBox="0 0 24 24">
+        <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap">
+        
+            <!-- Logo and Title -->
+            <div class="flex items-center gap-3">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/zombie_logo.png' %}" alt="Zombie Discs Logo" class="h-12 w-auto md:h-16">
+            </a>
+            <a href="{% url 'home' %}" class="text-3xl md:text-4xl font-bold text-green-200 hover:underline">Zombie Discs</a>
+            </div>
+        
+            <!-- Burger Button (Mobile Only) -->
+            <div class="md:hidden">
+            <button id="burger" class="focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+                        d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
             </button>
+            </div>
+        
+            <!-- Nav Menu -->
+            <nav id="menu" class="w-full mt-4 hidden md:flex md:items-center md:space-x-6 md:w-auto md:mt-0 flex-col md:flex-row">
+            {% if user.is_authenticated %}
+                <a href="{% url 'inbox' %}" class="nav-link">Inbox
+                {% if unread_count > 0 %}
+                    <span class="ml-1 inline-flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5">
+                    {{ unread_count }}
+                    </span>
+                {% endif %}
+                </a>
+                <a href="{% url 'user_disc_list' %}" class="nav-link">My Discs
+                {% if new_matches_count > 0 %}
+                    <span class="ml-1 inline-flex items-center justify-center bg-green-500 text-white text-xs font-bold rounded-full w-5 h-5 animate-pulse">
+                    {{ new_matches_count }}
+                    </span>
+                {% endif %}
+                </a>
+                <a href="{% url 'submit_disc' %}" class="nav-link">Log a Disc</a>
+                <a href="{% url 'disc_search' %}" class="nav-link">Search</a>
+                <a href="{% url 'disc_map_view' %}" class="nav-link">Map</a>
+                <a href="{% url 'faq' %}" class="nav-link">Help</a>
+                <a href="{% url 'profile' user.username %}" class="nav-link">Profile</a>
+                <form action="{% url 'logout' %}" method="POST" class="inline md:inline">
+                {% csrf_token %}
+                <button type="submit" class="nav-link">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'about' %}" class="nav-link">About</a>
+                <a href="{% url 'login' %}" class="nav-link">Login</a>
+                <a href="{% url 'register' %}" class="nav-link">Register</a>
+            {% endif %}
+            </nav>
         </div>
-      
-        <!-- Nav Menu -->
-        <nav id="menu" class="hidden flex-col mt-4 md:flex md:flex-row md:space-x-6 md:mt-0">
-        {% if user.is_authenticated %}
-        <a href="{% url 'inbox' %}" class="block py-2 hover:underline relative">
-            Inbox
-            {% if unread_count > 0 %}
-                <span class="ml-1 inline-flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5">
-                {{ unread_count }}
-                </span>
-            {% endif %}
-        </a>
-        <a href="{% url 'user_disc_list' %}" class="block py-2 hover:underline">
-            My Discs
-            {% if new_matches_count > 0 %}
-                <span class="ml-1 inline-flex items-center justify-center bg-green-500 text-white text-xs font-bold rounded-full w-5 h-5 animate-pulse">
-                {{ new_matches_count }}
-                </span>
-            {% endif %}
-        </a>
-        <a href="{% url 'submit_disc' %}" class="block py-2 hover:underline">Log a Disc</a>
-        <a href="{% url 'disc_search' %}" class="block py-2 hover:underline">Search</a>
-        <a href="{% url 'disc_map_view' %}" class="block py-2 hover:underline">Map</a>
-        <a href="{% url 'faq' %}" class="block py-2 hover:underline">Help</a>
-        <a href="{% url 'profile' user.username %}" class="block py-2 hover:underline">Profile</a>
-        <form action="{% url 'logout' %}" method="POST" class="block py-2">
-            {% csrf_token %}
-            <button type="submit" class="hover:underline">Logout</button>
-        </form>
-        {% else %}
-
-            <a href="{% url 'about' %}" class="block py-2 hover:underline">About</a>
-            <a href="{% url 'login' %}" class="block py-2 hover:underline">Login</a>
-            <a href="{% url 'register' %}" class="block py-2 hover:underline">Register</a>
-        {% endif %}
-        </nav>
-    </header>
+        </header>
+          
+          
+          
 
     <!-- Main Content -->
     <main class="container mx-auto py-8">

@@ -31,6 +31,10 @@ class DiscMatchAdmin(admin.ModelAdmin):
 
 @admin.register(Reward) 
 class RewardAdmin(admin.ModelAdmin):
-    list_display = ('disc', 'amount', 'created_at', 'id')
+    list_display = ('disc', 'get_username', 'amount', 'created_at', 'id')
     search_fields = ('disc__mold_name', 'disc__user__username')
     list_filter = ('created_at',)
+
+    def get_username(self, obj):
+        return obj.disc.user.username
+    get_username.short_description = 'Username'
