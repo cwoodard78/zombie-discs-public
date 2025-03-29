@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from .models import Profile
 from disc.models import Disc, Reward
 from django.core.paginator import Paginator
-from django.db.models import Count, Q, F, Value, IntegerField
+from django.db.models import Count, Sum, Q, F, Value, IntegerField
 
 # For API
 from rest_framework.generics import ListAPIView
@@ -27,12 +27,12 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.db.models import Count, Q
-from disc.models import Disc, Reward
+from disc.models import Disc, Reward, DiscMatch
 import requests
 
 
 def get_paginated_discs(request, status, param_name):
-    queryset = Disc.objects.filter(status=status).order_by('-created_at')
+    queryset = Disc.objects.filter(status=status, state='active').order_by('-created_at')
     paginator = Paginator(queryset, 5)
     page_number = request.GET.get(param_name, 1)
     return paginator.get_page(page_number)
@@ -55,7 +55,35 @@ def get_leaderboards(limit=5):
         profile__karma__gt=0
     ).order_by('-profile__karma')[:limit]
 
-    return lost, found, karma
+    rewards_offered = (
+        Reward.objects
+        .select_related('disc__user')
+        .values('disc__user__username')
+        .annotate(
+            username=F('disc__user__username'),
+            total_rewards=Count('id'),
+            total_amount=Sum('amount')
+        )
+        .order_by('-total_amount')[:limit]
+    )
+
+    rewards_earned = (
+        DiscMatch.objects
+        .filter(
+            lost_disc__reward__isnull=False,
+            lost_disc__state='returned',
+            found_disc__state='returned',
+        )
+        .values('found_disc__user__username')
+        .annotate(
+            username=F('found_disc__user__username'),
+            total_earned=Sum('lost_disc__reward__amount'),
+            found_count=Count('id')
+        )
+        .order_by('-total_earned')[:limit]
+    )
+
+    return lost, found, karma, rewards_offered, rewards_earned
 
 
 def get_guest_stats(request):
@@ -76,7 +104,8 @@ def home(request):
         found_discs = get_paginated_discs(request, 'found', 'found_page')
         active_tab = "found" if "found_page" in request.GET else "lost"
         top_rewards = get_top_rewards()
-        lost_leaderboard, found_leaderboard, karma_leaderboard = get_leaderboards()
+        lost_leaderboard, found_leaderboard, karma_leaderboard, rewards_offered, rewards_earned = get_leaderboards()
+
 
         context = {
             "lost_discs": lost_discs,
@@ -85,6 +114,8 @@ def home(request):
             "lost_leaderboard": lost_leaderboard,
             "found_leaderboard": found_leaderboard,
             "karma_leaderboard": karma_leaderboard,
+            "rewards_offered": rewards_offered,
+            "rewards_earned": rewards_earned,
             "active_tab": active_tab,
         }
         return render(request, "user_home.html", context)

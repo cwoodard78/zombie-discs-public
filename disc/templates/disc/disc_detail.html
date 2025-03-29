@@ -16,7 +16,7 @@
     <div class="grid grid-cols-2 gap-4 text-gray-800">
         <p><strong>Status:</strong> {{ disc.get_status_display }}</p>
         <p><strong>Color:</strong> {{ disc.color|title }}</p>
-        <p><strong>Type:</strong> {{ disc.type|default:"N/A" }}</p>
+        <p><strong>Type:</strong> {{ disc.type|default:"N/A"|title }}</p>
         <p><strong>Manufacturer:</strong> {{ disc.manufacturer|default:"N/A" }}</p>
         <p><strong>Mold:</strong> {{ disc.mold_name|default:"N/A" }}</p>
         <p><strong>Notes:</strong> {{ disc.notes|default:"None" }}</p>
@@ -140,7 +140,19 @@
         <ul class="divide-y divide-gray-200">
             {% for msg in messages %}
                 <li class="py-2">
-                    <p class="text-sm text-gray-700"><strong>{{ msg.sender.username }}</strong> to <strong>{{ msg.receiver.username }}</strong>:</p>
+                    <p class="text-sm text-gray-700">
+                        <strong>
+                            <a href="{% url 'profile' msg.sender.username %}" class="text-blue-600 hover:underline">
+                                {{ msg.sender.username }}
+                            </a>
+                        </strong>
+                        to
+                        <strong>
+                            <a href="{% url 'profile' msg.receiver.username %}" class="text-blue-600 hover:underline">
+                                {{ msg.receiver.username }}
+                            </a>
+                        </strong>:
+                    </p>
                     <p class="text-gray-800 italic">{{ msg.content }}</p>
                     <p class="text-xs text-gray-500">{{ msg.timestamp|date:"F j, Y, g:i A" }}</p>
                 </li>
@@ -148,6 +160,7 @@
         </ul>
     </div>
     {% endif %}
+    
 
     <div class="mt-6">
         <p><strong>Reported by:</strong> 

@@ -7,17 +7,36 @@
         </tr>
     </thead>
     <tbody>
-        {% for user in leaderboard %}
+        {% for entry in leaderboard %}
         <tr class="border-b border-gray-200 hover:bg-gray-100">
             <td class="py-2 px-4">{{ forloop.counter }}</td>
-            <td class="py-2 px-4">{{ user.username }}</td>
-            {% if stat == 'lost_count' %}
-                <td class="py-2 px-4">{{ user.lost_count }}</td>
-            {% elif stat == 'found_count' %}
-                <td class="py-2 px-4">{{ user.found_count }}</td>
-            {% elif stat == 'karma' %}
-                <td class="py-2 px-4">{{ user.profile.karma }}</td>
-            {% endif %}
+        
+            {# Handle both model instances and dictionary entries #}
+            <td class="py-2 px-4">
+                {% if entry.username %}
+                    <a href="{% url 'profile' entry.username %}" class="text-blue-600 hover:underline">
+                        {{ entry.username }}
+                    </a>
+                {% else %}
+                    <a href="{% url 'profile' entry.user.username %}" class="text-blue-600 hover:underline">
+                        {{ entry.user.username }}
+                    </a>
+                {% endif %}
+            </td>
+        
+            <td class="py-2 px-4">
+                {% if stat == 'lost_count' %}
+                    {{ entry.lost_count }}
+                {% elif stat == 'found_count' %}
+                    {{ entry.found_count }}
+                {% elif stat == 'karma' %}
+                    {{ entry.profile.karma }}
+                {% elif stat == 'total_amount' %}
+                    ${{ entry.total_amount }}
+                {% elif stat == 'total_earned' %}
+                    ${{ entry.total_earned }}
+                {% endif %}
+            </td>
         </tr>
         {% empty %}
         <tr><td class="py-2 px-4" colspan="3">No users to show.</td></tr>

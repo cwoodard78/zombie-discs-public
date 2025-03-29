@@ -42,7 +42,7 @@
                     {% for disc in lost_discs %}
                     <tr class="hover:bg-gray-100 cursor-pointer"
                         onclick="window.location.href='{% url 'disc_detail' disc.id %}?from_user_disc_list=true'">
-                        <td class="px-4 py-2">{{ disc.type|default:"N/A" }}</td>
+                        <td class="px-4 py-2">{{ disc.type|default:"N/A"|title }}</td>
                         <td class="px-4 py-2" style="background: {{ disc.color|validate_color }}; border: 1px solid #d1d5db;">
                             <span class="block text-gray-800 text-sm font-medium text-left">
                                 {{ disc.color|default:"N/A"|title }}
@@ -93,7 +93,7 @@
                     {% for disc in found_discs %}
                     <tr class="hover:bg-gray-100 cursor-pointer"
                         onclick="window.location.href='{% url 'disc_detail' disc.id %}?from_user_disc_list=true'">
-                        <td class="px-4 py-2">{{ disc.type|default:"N/A" }}</td>
+                        <td class="px-4 py-2">{{ disc.type|default:"N/A"|title }}</td>
                         <td class="px-4 py-2" style="background: {{ disc.color|validate_color }}; border: 1px solid #d1d5db;">
                             <span class="block text-gray-800 text-sm font-medium text-left">
                                 {{ disc.color|default:"N/A"|title }}
