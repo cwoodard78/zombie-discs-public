@@ -4,67 +4,86 @@
 
 {% block content %}
 <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
+
+    <!-- Avatar and Username -->
     <div class="flex items-center space-x-4 mb-6">
         {% if profile_user.profile.photo %}
             <img src="{{ profile_user.profile.photo.url }}" alt="Profile Photo" class="w-24 h-24 rounded-full shadow-md">
         {% else %}
-            <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center shadow-md">
-                <span class="text-gray-500 text-sm">No Photo</span>
+            <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-white text-xl font-bold shadow-md">
+                {{ profile_user.username|slice:":1"|upper }}
             </div>
         {% endif %}
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">{{ profile_user.username }}</h1>
             <p class="text-gray-600">UserID: {{ profile_user.id }}</p>
+            <!-- Karma -->
+            <span class="inline-block bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full font-semibold">
+                +{{ karma }}
+            </span>
+                
         </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-4 text-gray-800">
+    <!-- Section: User Info -->
+    <h2 class="text-lg font-semibold text-gray-700 mb-2">User Info</h2>
+    <div class="grid grid-cols-2 gap-4 text-gray-800 mb-6">
         <p><strong>First Name:</strong> {{ profile_user.first_name }}</p>
         <p><strong>Last Name:</strong> {{ profile_user.last_name }}</p>
         <p><strong>Date Joined:</strong> {{ profile_user.date_joined|date:"F j, Y" }}</p>
         <p><strong>Last Login:</strong> {{ profile_user.last_login|date:"F j, Y, g:i A" }}</p>
         <p><strong>Lost Total:</strong> <span class="text-blue-500">{{ lost_total }}</span></p>
         <p><strong>Found Total:</strong> <span class="text-blue-500">{{ found_total }}</span></p>
-        <p><strong>Karma:</strong> <span class="text-blue-500">{{ karma }}</span></p>
+        {% comment %} <p><strong>Karma:</strong>
+            <span class="inline-block bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full font-semibold">
+                +{{ karma }}
+            </span>
+        </p> {% endcomment %}
     </div>
 
     {% if not is_owner %}
-        <form method="post" action="{% url 'award_karma' profile_user.username %}" class="mt-6">
-            {% csrf_token %}
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                Give Karma +
-            </button>
-        </form>
-        <!-- Send message button -->
-        <div class="mt-4">
+        <!-- Section: Actions for Other Users -->
+        <h2 class="text-lg font-semibold text-gray-700 mb-2">Actions</h2>
+        <div class="flex space-x-4 mt-2">
             <a href="{% url 'send_message' receiver_id=profile_user.id %}"
-               class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
                 Send Message
             </a>
+            <form method="post" action="{% url 'award_karma' profile_user.username %}">
+                {% csrf_token %}
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Give Karma +
+                </button>
+            </form>
+            <a href="{% url 'disc_search' %}?query={{ profile_user.username }}"
+            class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+             View Discs
+         </a>
         </div>
     {% endif %}
 
+
     {% if is_owner %}
-        <div class="mt-6">
-            <p><strong>Email:</strong> {{ profile_user.email }}</p>
-            <div class="flex space-x-4 mt-4">
-                <a href="{% url 'edit_profile' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    Edit Profile
-                </a>
-                <a href="{% url 'password_change' %}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-                    Change Password
-                </a>
-            </div>
-            <div class="mt-6">
-                <a href="{% url 'delete_account' %}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                    Delete Account
-                </a>
-            </div>
-            <div class="mt-6">
-                <a href="{% url 'user_disc_list' %}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                    View My Discs
-                </a>
-            </div>                
+        <!-- Section: Account Settings -->
+        <h2 class="text-lg font-semibold text-gray-700 mt-8 mb-2">Account Settings</h2>
+        <p><strong>Email:</strong> {{ profile_user.email }}</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <a href="{% url 'edit_profile' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center">
+                Edit Profile
+            </a>
+            <a href="{% url 'password_change' %}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-center">
+                Change Password
+            </a>
+        </div>
+
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a href="{% url 'delete_account' %}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 text-center">
+                Delete Account
+            </a>
+            <a href="{% url 'user_disc_list' %}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-center">
+                View My Discs
+            </a>
         </div>
     {% endif %}
 </div>

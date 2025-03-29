@@ -19,7 +19,8 @@ class DiscFilter(django_filters.FilterSet):
             Q(manufacturer__name__icontains=value) |
             Q(color__icontains=value) |
             Q(status__icontains=value) |
-            Q(notes__icontains=value)
+            Q(notes__icontains=value) |
+            Q(user__username__icontains=value)
         )
 
     def filter_has_reward(self, queryset, name, value):

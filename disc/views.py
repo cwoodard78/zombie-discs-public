@@ -75,6 +75,11 @@ class DiscSearchView(FilterView):
     template_name = 'disc/disc_search.html'
     filterset_class = DiscFilter
 
+    def get_queryset(self):
+        # Only return active discs (e.g., not archived or returned)
+        qs = super().get_queryset()
+        return qs.filter(state='active')
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -202,7 +207,7 @@ def disc_detail_view(request, disc_id):
 
 @login_required
 def user_disc_list(request):
-    discs = Disc.objects.filter(user=request.user)
+    discs = Disc.objects.filter(user=request.user, state='active')
     # lost_discs = Disc.objects.filter(user=request.user, status="lost", state="active")
     # found_discs = Disc.objects.filter(user=request.user, status="found", state="active")
 

@@ -1,23 +1,24 @@
 # Valid color list that aligns with color_util.py
 VALID_COLORS = [
     "Red", 
-    "Blue", 
-    "Green", 
-    "Yellow", 
-    "Black", 
-    "White", 
-    "Purple", 
     "Orange", 
+    "Yellow", 
+    "Green", 
+    "Blue", 
+    "Purple", 
     "Pink", 
-    "Gray", 
+    "Black", 
     "Brown", 
-    "Cyan", 
-    "Magenta", 
-    "Lime", 
-    "Teal", 
-    "Navy", 
+    "Gray", 
+    "White", 
     "Multi", 
     "Unknown",
+    # Other available default colors if needed
+    # "Cyan", 
+    # "Magenta", 
+    # "Lime", 
+    # "Teal", 
+    # "Navy", 
 ]
 
 COLOR_CHOICES = [(color.lower(), color) for color in VALID_COLORS]

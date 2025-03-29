@@ -14,8 +14,8 @@
         <tbody class="divide-y divide-gray-200">
             {% for disc in group %}
             <tr>
-                <td class="px-4 py-2">{{ disc.type|default:"N/A" }}</td>
-                <td class="px-4 py-2">{{ disc.color|default:"N/A" }}</td>
+                <td class="px-4 py-2">{{ disc.type|default:"N/A"|title }}</td>
+                <td class="px-4 py-2">{{ disc.color|default:"N/A"|title }}</td>
                 <td class="px-4 py-2">{{ disc.mold_name|default:"N/A" }}</td>
                 <td class="px-4 py-2">{{ disc.status|title }}</td>
                 <td class="px-4 py-2">

@@ -80,7 +80,7 @@
                 const infoWindow = new google.maps.InfoWindow({
                     content: `
                         <div>
-                            <p><strong>Color:</strong> ${disc.color}</p>
+                            <p><strong>Color:</strong> ${disc.color|title}</p>
                             <p><strong>Status:</strong> ${disc.status}</p>
                             <p><strong>Manufacturer:</strong> ${disc.manufacturer || "Unknown"}</p>
                             <p><strong>Notes:</strong> ${disc.notes || "No notes"}</p>

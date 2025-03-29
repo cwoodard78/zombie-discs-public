@@ -11,7 +11,7 @@
     <tbody class="text-gray-700 text-sm">
         {% for disc in discs %}
         <tr class="border-b border-gray-200 hover:bg-gray-100">
-            <td class="py-3 px-6">{{ disc.color }}</td>
+            <td class="py-3 px-6">{{ |title }}</td>
             <td class="py-3 px-6">{{ disc.type }}</td>
             <td class="py-3 px-6">{{ disc.mold_name }}</td>
             <td class="py-3 px-6">{{ disc.created_at|date:"Y-m-d" }}</td>
@@ -51,7 +51,7 @@
         {% for reward in rewards %}
         <tr class="border-b border-gray-200 hover:bg-gray-100">
             <td class="py-3 px-6 font-semibold text-green-700">${{ reward.amount }}</td>
-            <td class="py-3 px-6">{{ reward.disc.color|default:"N/A" }}</td>
+            <td class="py-3 px-6">{{ reward.disc.color|default:"N/A"|title }}</td>
             <td class="py-3 px-6">{{ reward.disc.type|default:"N/A" }}</td>
             <td class="py-3 px-6">
                 <a href="{% url 'disc_detail' reward.disc.id %}" class="text-blue-600 hover:underline">

@@ -39,7 +39,7 @@ def get_paginated_discs(request, status, param_name):
 
 
 def get_top_rewards(limit=5):
-    return Reward.objects.select_related('disc').order_by('-amount')[:limit]
+    return Reward.objects.filter(disc__state='active').order_by('-amount')[:limit]
 
 
 def get_leaderboards(limit=5):

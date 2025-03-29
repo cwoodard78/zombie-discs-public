@@ -103,9 +103,9 @@
                             <td class="py-3 px-6" style="background: {{ disc.color|validate_color }};">
                                 {{ disc.color }}
                             </td>
-                            <td class="py-3 px-6">{{ disc.type }}</td>
+                            <td class="py-3 px-6">{{ disc.type|title }}</td>
                             <td class="py-3 px-6">{{ disc.mold_name }}</td>
-                            <td class="py-3 px-6">{{ disc.status }}</td>
+                            <td class="py-3 px-6">{{ disc.status|title }}</td>
                             {% comment %} <td class="py-3 px-6">{{ disc.manufacturer }}</td>
                             <td class="py-3 px-6">
                                 <a href="{% url 'disc_detail' disc.id %}" class="text-blue-500 hover:underline">
