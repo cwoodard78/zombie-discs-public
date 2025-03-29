@@ -57,7 +57,7 @@
                             {% with match.found_disc as matched_disc %}
                             <tr class="border-b border-gray-200 hover:bg-gray-100">
                                 <td class="py-3 px-6">{{ match.score }}</td>
-                                <td class="py-3 px-6">{{ matched_disc.color }}</td>
+                                <td class="py-3 px-6">{{ matched_disc.color|title }}</td>
                                 <td class="py-3 px-6">{{ matched_disc.mold_name }}</td>
                                 <td class="py-3 px-6">{{ matched_disc.get_status_display }}</td>
                                 <td class="py-3 px-6">
@@ -86,7 +86,7 @@
                             {% with match.lost_disc as matched_disc %}
                             <tr class="border-b border-gray-200 hover:bg-gray-100">
                                 <td class="py-3 px-6">{{ match.score }}</td>
-                                <td class="py-3 px-6">{{ matched_disc.color }}</td>
+                                <td class="py-3 px-6">{{ matched_disc.color|title }}</td>
                                 <td class="py-3 px-6">{{ matched_disc.mold_name }}</td>
                                 <td class="py-3 px-6">{{ matched_disc.get_status_display }}</td>
                                 <td class="py-3 px-6">

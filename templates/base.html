@@ -90,7 +90,7 @@
         <a href="{% url 'submit_disc' %}" class="block py-2 hover:underline">Log a Disc</a>
         <a href="{% url 'disc_search' %}" class="block py-2 hover:underline">Search</a>
         <a href="{% url 'disc_map_view' %}" class="block py-2 hover:underline">Map</a>
-        <a href="#" class="block py-2 hover:underline">Help</a>
+        <a href="{% url 'faq' %}" class="block py-2 hover:underline">Help</a>
         <a href="{% url 'profile' user.username %}" class="block py-2 hover:underline">Profile</a>
         <form action="{% url 'logout' %}" method="POST" class="block py-2">
             {% csrf_token %}

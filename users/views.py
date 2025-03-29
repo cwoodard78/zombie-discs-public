@@ -237,3 +237,26 @@ def award_karma(request, username):
 
     messages.success(request, f"You gave karma to {target_user.username}! 🙌")
     return redirect('profile', username=username)
+
+from django.shortcuts import render
+from .constants import FAQS
+
+def help_view(request):
+    # faqs = [
+    #     ("How do I submit a disc?",
+    #      "Click 'Submit a Disc' from the top menu, fill out the form, and mark the disc's location on the map."),
+
+    #     ("Can I edit or delete my disc listing?",
+    #      "Yes, go to 'My Discs' and click on a disc to edit or archive it."),
+
+    #     ("How do rewards work?",
+    #      "You can offer an optional reward when submitting a lost disc. This is visible to anyone who finds it."),
+
+    #     ("What do the status and state fields mean?",
+    #      "<strong>Status:</strong> Lost or Found.<br><strong>State:</strong> Active (being tracked), Returned (matched), Archived (closed)."),
+
+    #     ("Can I use my current location on the map?",
+    #      "Yes! When submitting a disc, the map will try to center on your device's location."),
+    # ]
+
+    return render(request, "users/help.html", {"faqs": FAQS})

@@ -68,31 +68,63 @@ class DiscMapAPIView(ListAPIView):
 
 from django_filters.views import FilterView
 from .filters import DiscFilter
+from django.core.serializers.json import DjangoJSONEncoder
 
 class DiscSearchView(FilterView):
     model = Disc
     template_name = 'disc/disc_search.html'
     filterset_class = DiscFilter
 
-def disc_search_view(request):
-    """
-    Renders the search page with filters and a map displaying the results.
-    """
-    # Exclude discs with invalid coordinates
-    queryset = Disc.objects.exclude(latitude=0, longitude=0)
-    # Apply filters
-    filter_set = DiscFilter(request.GET, queryset=queryset)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    # Serialize filtered results
-    serializer = DiscMapSerializer(filter_set.qs, many=True)
+        # Get filtered queryset with valid lat/lng
+        filtered_qs = self.object_list.exclude(latitude=0, longitude=0)
 
-    # Pass serialized data and filter to the context
-    context = {
-        'filter': filter_set,
-        'discs_data': json.dumps(serializer.data),  # Convert to JSON for JavaScript
-    }
+        # Serialize results
+        serializer = DiscMapSerializer(filtered_qs, many=True)
 
-    return render(request, 'disc/disc_search.html', context)
+        # Add JSON data for map
+        context['discs_data'] = json.dumps(serializer.data, cls=DjangoJSONEncoder)
+
+        return context
+    
+# import logging
+# from django.http import HttpResponse
+
+# def disc_search_view(request):
+#     """
+#     Renders the search page with filters and a map displaying the results.
+#     """
+#     # # Exclude discs with invalid coordinates
+#     # queryset = Disc.objects.exclude(latitude=0, longitude=0)
+#     # # Apply filters
+#     # filter_set = DiscFilter(request.GET, queryset=queryset)
+
+#     # # Serialize filtered results
+#     # serializer = DiscMapSerializer(filter_set.qs, many=True)
+
+#     # logger = logging.getLogger(__name__)
+#     # logger.debug('Serialized disc data: %s', serializer.data)
+
+#     # print("Filter count:", filter_set.qs.count())
+#     # print("Serialized:", serializer.data)
+
+#     # # Pass serialized data and filter to the context
+#     # context = {
+#     #     'filter': filter_set,
+#     #     'discs_data': json.dumps(serializer.data, cls=DjangoJSONEncoder),  # Convert to JSON for JavaScript
+#     # }
+
+#     queryset = Disc.objects.exclude(latitude=0, longitude=0)
+#     serializer = DiscMapSerializer(queryset, many=True)
+
+#     print("Total Discs:", Disc.objects.count())
+#     print("Valid Lat/Lng:", Disc.objects.exclude(latitude=0, longitude=0).count())
+
+#     return HttpResponse(json.dumps(serializer.data, cls=DjangoJSONEncoder), content_type="application/json")
+
+#     return render(request, 'disc/disc_search.html', context)
 
 # def search_discs(request):
 #     filter = DiscFilter(request.GET, queryset=Disc.objects.all())

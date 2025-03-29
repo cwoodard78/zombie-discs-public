@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Help & FAQ{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Help & Frequently Asked Questions</h1>
+
+    <div class="space-y-4">
+        {% for faq in faqs %}
+        <div class="border rounded overflow-hidden">
+            <button class="w-full text-left px-4 py-3 bg-gray-100 hover:bg-gray-200 focus:outline-none font-medium" onclick="toggleAnswer(this)">
+                {{ faq.question }}
+            </button>
+            <div class="px-4 py-3 hidden text-gray-700 bg-white border-t">
+                {{ faq.answer|safe }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function toggleAnswer(button) {
+        const answer = button.nextElementSibling;
+        answer.classList.toggle("hidden");
+    }
+</script>
+{% endblock %}

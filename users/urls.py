@@ -6,6 +6,7 @@ from django.contrib.auth import views as auth_views
 
 from rest_framework.generics import RetrieveAPIView
 from .views import UserListAPIView
+from .views import help_view
 
 urlpatterns = [
     path('register/', views.register, name='register'),
@@ -15,6 +16,7 @@ urlpatterns = [
     path('profile/<str:username>/', views.profile, name='profile'),
     path('delete_account/', delete_account, name='delete_account'),
     path('karma/<str:username>/', views.award_karma, name='award_karma'),
+    path("faq/", help_view, name="faq"),
 
     # Django password reset
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='users/password_reset.html'), name='password_reset'),
