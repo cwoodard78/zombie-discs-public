@@ -1,0 +1,135 @@
+[
+{
+  "model": "disc.manufacturer",
+  "pk": 1,
+  "fields": {
+    "name": "AGL"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 2,
+  "fields": {
+    "name": "Axiom"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 3,
+  "fields": {
+    "name": "Clash"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 4,
+  "fields": {
+    "name": "Discmania"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 5,
+  "fields": {
+    "name": "Discraft"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 6,
+  "fields": {
+    "name": "Dynamic Discs"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 7,
+  "fields": {
+    "name": "Gateway"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 8,
+  "fields": {
+    "name": "Innova"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 9,
+  "fields": {
+    "name": "Kastaplast"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 10,
+  "fields": {
+    "name": "Latitude 64"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 11,
+  "fields": {
+    "name": "Lone Star"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 12,
+  "fields": {
+    "name": "Loft"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 13,
+  "fields": {
+    "name": "Millennium"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 14,
+  "fields": {
+    "name": "Mint"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 15,
+  "fields": {
+    "name": "MVP"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 16,
+  "fields": {
+    "name": "Prodigy"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 17,
+  "fields": {
+    "name": "RPM"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 18,
+  "fields": {
+    "name": "Thought Space"
+  }
+},
+{
+  "model": "disc.manufacturer",
+  "pk": 19,
+  "fields": {
+    "name": "Westside"
+  }
+}
+]

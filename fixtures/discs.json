@@ -1,0 +1,542 @@
+[
+{
+  "model": "disc.disc",
+  "pk": 2,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "unknown",
+    "type": "Driver",
+    "manufacturer": 8,
+    "mold_name": "Leopard",
+    "notes": "Deep underground",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "created_at": "2025-01-10T01:19:43.176Z",
+    "image": "disc_images/Leopard.png",
+    "user": 1
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 3,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "Red",
+    "type": "midrange",
+    "manufacturer": null,
+    "mold_name": null,
+    "notes": "",
+    "latitude": 34.89489500113142,
+    "longitude": -86.44499195106505,
+    "created_at": "2025-01-10T01:41:57.680Z",
+    "image": "",
+    "user": 1
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 4,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "Yellow",
+    "type": "putter",
+    "manufacturer": 8,
+    "mold_name": "Aviar",
+    "notes": "In the woods",
+    "latitude": 34.52607860664671,
+    "longitude": -87.06570204212639,
+    "created_at": "2025-01-10T03:02:50.418Z",
+    "image": "",
+    "user": 1
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 5,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "Blue",
+    "type": null,
+    "manufacturer": null,
+    "mold_name": null,
+    "notes": "",
+    "latitude": 34.89514139577557,
+    "longitude": -86.4435596514511,
+    "created_at": "2025-01-10T03:46:10.374Z",
+    "image": "",
+    "user": 1
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 6,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "white",
+    "type": null,
+    "manufacturer": null,
+    "mold_name": "Frostbyte",
+    "notes": "",
+    "latitude": 34.89511939628381,
+    "longitude": -86.44423020370482,
+    "created_at": "2025-01-10T03:47:49.808Z",
+    "image": "",
+    "user": 1
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 7,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "blue",
+    "type": null,
+    "manufacturer": null,
+    "mold_name": "Talon",
+    "notes": "",
+    "latitude": 34.89494340013772,
+    "longitude": -86.44301784523009,
+    "created_at": "2025-01-10T03:49:16.614Z",
+    "image": "",
+    "user": 11
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 8,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "pink",
+    "type": null,
+    "manufacturer": null,
+    "mold_name": "Vortex",
+    "notes": "",
+    "latitude": 34.8949653996766,
+    "longitude": -86.44328606613158,
+    "created_at": "2025-01-10T03:51:00.902Z",
+    "image": "",
+    "user": 16
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 10,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "gray",
+    "type": null,
+    "manufacturer": 9,
+    "mold_name": "Berg",
+    "notes": "",
+    "latitude": 34.89522939368365,
+    "longitude": -86.4430553961563,
+    "created_at": "2025-01-10T03:54:57.159Z",
+    "image": "",
+    "user": 16
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 11,
+  "fields": {
+    "status": "found",
+    "state": "returned",
+    "color": "unknown",
+    "type": "Midrange",
+    "manufacturer": 13,
+    "mold_name": "Don't know",
+    "notes": "",
+    "latitude": 34.893288,
+    "longitude": -86.442125,
+    "created_at": "2025-01-10T03:55:24.895Z",
+    "image": "",
+    "user": 1
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 12,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "multi",
+    "type": null,
+    "manufacturer": 16,
+    "mold_name": "Ev-2",
+    "notes": "",
+    "latitude": 34.89390061523652,
+    "longitude": -86.44235802181242,
+    "created_at": "2025-01-10T03:58:03.440Z",
+    "image": "",
+    "user": 1
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 13,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "White",
+    "type": "Midrange",
+    "manufacturer": 5,
+    "mold_name": null,
+    "notes": "",
+    "latitude": 34.89456500714679,
+    "longitude": -86.44451988227843,
+    "created_at": "2025-01-10T04:07:28.623Z",
+    "image": "",
+    "user": 1
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 14,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "orange",
+    "type": null,
+    "manufacturer": null,
+    "mold_name": "Test Disc",
+    "notes": "",
+    "latitude": 32.43838872417035,
+    "longitude": -99.5712272321175,
+    "created_at": "2025-01-10T06:22:06.317Z",
+    "image": "",
+    "user": 15
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 15,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "multi",
+    "type": null,
+    "manufacturer": 19,
+    "mold_name": "King",
+    "notes": "I have no idea where it went.",
+    "latitude": 34.892938233390836,
+    "longitude": -86.44727960229842,
+    "created_at": "2025-01-10T17:54:14.924Z",
+    "image": "",
+    "user": 15
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 16,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "unknown",
+    "type": null,
+    "manufacturer": null,
+    "mold_name": "Eclipse",
+    "notes": "None",
+    "latitude": 34.89486552625394,
+    "longitude": -86.44214682332485,
+    "created_at": "2025-01-10T23:32:27.689Z",
+    "image": "disc_images/Eclipse.png",
+    "user": 14
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 17,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "unknown",
+    "type": "Driver",
+    "manufacturer": 5,
+    "mold_name": "Eclipse",
+    "notes": "Lost in this bush. Maybe a bird took it.",
+    "latitude": 34.89468820505612,
+    "longitude": -86.44195032604216,
+    "created_at": "2025-01-10T23:40:30.160Z",
+    "image": "disc_images/Bush.jpg",
+    "user": 9
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 18,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "Blue",
+    "type": "Putter",
+    "manufacturer": 5,
+    "mold_name": "Luna",
+    "notes": "I lost my putter in this pit.",
+    "latitude": 34.78876601332019,
+    "longitude": -86.63151208647375,
+    "created_at": "2025-01-11T01:15:52.551Z",
+    "image": "disc_images/Pit.jpg",
+    "user": 9
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 21,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "Blue",
+    "type": "Putter",
+    "manufacturer": 5,
+    "mold_name": "Luna",
+    "notes": "",
+    "latitude": 34.78897409018525,
+    "longitude": -86.63147947611202,
+    "created_at": "2025-01-12T22:50:29.325Z",
+    "image": "",
+    "user": 1
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 22,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "black",
+    "type": "Driver",
+    "manufacturer": 6,
+    "mold_name": "FD2",
+    "notes": "",
+    "latitude": 37.20269572091653,
+    "longitude": -121.53486815982474,
+    "created_at": "2025-01-12T22:54:56.165Z",
+    "image": "",
+    "user": 17
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 23,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "pink",
+    "type": "Putter",
+    "manufacturer": 4,
+    "mold_name": null,
+    "notes": "",
+    "latitude": 34.89435381030091,
+    "longitude": -86.4448578406143,
+    "created_at": "2025-03-25T14:11:00.332Z",
+    "image": "",
+    "user": 17
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 24,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "brown",
+    "type": null,
+    "manufacturer": null,
+    "mold_name": "Wraith",
+    "notes": "",
+    "latitude": 34.894908200863256,
+    "longitude": -86.44366157539366,
+    "created_at": "2025-03-25T14:31:51.677Z",
+    "image": "",
+    "user": 17
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 26,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "black",
+    "type": "Driver",
+    "manufacturer": 2,
+    "mold_name": "Thunder Fang",
+    "notes": "",
+    "latitude": 34.89561218348688,
+    "longitude": -86.44425166137694,
+    "created_at": "2025-03-25T15:20:02.920Z",
+    "image": "",
+    "user": 1
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 27,
+  "fields": {
+    "status": "lost",
+    "state": "returned",
+    "color": "Black",
+    "type": "Midrange",
+    "manufacturer": 11,
+    "mold_name": "Test Disc 44",
+    "notes": "",
+    "latitude": 34.89334610851772,
+    "longitude": -86.45410396658384,
+    "created_at": "2025-03-27T01:39:17.372Z",
+    "image": "",
+    "user": 9
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 29,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "pink",
+    "type": "Driver",
+    "manufacturer": null,
+    "mold_name": "Eclipse",
+    "notes": "Found in the trash.",
+    "latitude": 34.89266454047163,
+    "longitude": -86.44753352122532,
+    "created_at": "2025-03-27T20:56:41.009Z",
+    "image": "",
+    "user": 12
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 31,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "black",
+    "type": "Putter",
+    "manufacturer": 16,
+    "mold_name": "P3",
+    "notes": "",
+    "latitude": 34.89507539728264,
+    "longitude": -86.44353282936095,
+    "created_at": "2025-03-29T00:59:24.830Z",
+    "image": "",
+    "user": 9
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 32,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "multi",
+    "type": "Driver",
+    "manufacturer": 19,
+    "mold_name": "Midnight Glide",
+    "notes": "",
+    "latitude": 34.89476300369664,
+    "longitude": -86.44419801719664,
+    "created_at": "2025-03-29T03:15:52.538Z",
+    "image": "",
+    "user": 12
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 35,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "multi",
+    "type": "Driver",
+    "manufacturer": 8,
+    "mold_name": "Laser Toad Disc",
+    "notes": "Lost in a bush. Maybe Toad took it.",
+    "latitude": 34.707548,
+    "longitude": -86.602011,
+    "created_at": "2025-03-29T14:44:24.100Z",
+    "image": "disc_images/hq720.jpg",
+    "user": 9
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 36,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "white",
+    "type": "Driver",
+    "manufacturer": 8,
+    "mold_name": "Leopard",
+    "notes": "Found it deep underground.",
+    "latitude": 34.785752,
+    "longitude": -86.630931,
+    "created_at": "2025-03-29T14:50:18.947Z",
+    "image": "",
+    "user": 9
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 38,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "multi",
+    "type": "Driver",
+    "manufacturer": 8,
+    "mold_name": "Toad",
+    "notes": "",
+    "latitude": 34.70701,
+    "longitude": -86.601963,
+    "created_at": "2025-03-29T20:39:07.981Z",
+    "image": "",
+    "user": 13
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 39,
+  "fields": {
+    "status": "lost",
+    "state": "active",
+    "color": "unknown",
+    "type": "Putter",
+    "manufacturer": 10,
+    "mold_name": "Sky Reaper",
+    "notes": "",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "created_at": "2025-03-29T21:37:44.561Z",
+    "image": "",
+    "user": 13
+  }
+},
+{
+  "model": "disc.disc",
+  "pk": 10040,
+  "fields": {
+    "status": "found",
+    "state": "active",
+    "color": "pink",
+    "type": "Putter",
+    "manufacturer": 15,
+    "mold_name": "Proxy",
+    "notes": "",
+    "latitude": 31.167297,
+    "longitude": -85.483348,
+    "created_at": "2025-03-30T15:34:53.982Z",
+    "image": "",
+    "user": 9
+  }
+}
+]

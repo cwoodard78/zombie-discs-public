@@ -263,12 +263,13 @@ class DeleteDiscViewTests(TestCase):
         response = self.client.get(self.url)
         self.assertRedirects(response, f"{reverse('login')}?next={self.url}")
 
-class DiscMapViewTests(TestCase):
-    def test_disc_map_view_template(self):
-        """Test that the map view uses the correct template."""
-        response = self.client.get(reverse('disc_map_view'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'disc/disc_map.html')
+# Associated with removed Google API Map
+# class DiscMapViewTests(TestCase):
+#     def test_disc_map_view_template(self):
+#         """Test that the map view uses the correct template."""
+#         response = self.client.get(reverse('disc_map_view'))
+#         self.assertEqual(response.status_code, 200)
+#         self.assertTemplateUsed(response, 'disc/disc_map.html')
 
 class DiscMapAPITests(APITestCase):
     def setUp(self):

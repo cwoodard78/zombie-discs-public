@@ -1,0 +1,65 @@
+[
+{
+  "model": "disc.reward",
+  "pk": 2,
+  "fields": {
+    "disc": 26,
+    "amount": "5.00",
+    "created_at": "2025-03-25T15:20:03.061Z"
+  }
+},
+{
+  "model": "disc.reward",
+  "pk": 3,
+  "fields": {
+    "disc": 27,
+    "amount": "100.00",
+    "created_at": "2025-03-27T01:39:17.529Z"
+  }
+},
+{
+  "model": "disc.reward",
+  "pk": 4,
+  "fields": {
+    "disc": 35,
+    "amount": "1000.00",
+    "created_at": "2025-03-29T14:44:24.580Z"
+  }
+},
+{
+  "model": "disc.reward",
+  "pk": 5,
+  "fields": {
+    "disc": 6,
+    "amount": "15.00",
+    "created_at": "2025-03-29T23:09:15.762Z"
+  }
+},
+{
+  "model": "disc.reward",
+  "pk": 6,
+  "fields": {
+    "disc": 7,
+    "amount": "20.00",
+    "created_at": "2025-03-29T23:09:23.171Z"
+  }
+},
+{
+  "model": "disc.reward",
+  "pk": 7,
+  "fields": {
+    "disc": 39,
+    "amount": "10.00",
+    "created_at": "2025-03-29T23:13:24.587Z"
+  }
+},
+{
+  "model": "disc.reward",
+  "pk": 8,
+  "fields": {
+    "disc": 10040,
+    "amount": "15.00",
+    "created_at": "2025-03-30T15:34:54.047Z"
+  }
+}
+]

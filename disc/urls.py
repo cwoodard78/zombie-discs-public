@@ -19,7 +19,7 @@ from .views import (
     reactivate_disc,
     mark_disc_returned,
     send_match_message,
-    disc_map_view,
+    # disc_map_view,
     DiscSearchView,
     DiscListCreateAPIView,
     DiscDetailAPIView,
@@ -48,7 +48,8 @@ urlpatterns = [
     path('its-a-match/<int:disc_id>/<int:matched_disc_id>/', send_match_message, name='send_match_message'),
 
     # Map and search
-    path('map/discs/', disc_map_view, name='disc_map_view'),
+    # Removed Google API Map for public hosting
+    # path('map/discs/', disc_map_view, name='disc_map_view'),
     path('search/', DiscSearchView.as_view(), name='disc_search'),
 
     # API Endpoints

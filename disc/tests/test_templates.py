@@ -72,15 +72,16 @@ class DiscDetailTemplateTest(TestCase):
         self.assertContains(response, "Go to My Disc List")
         self.assertNotContains(response, "Add Another Disc")
 
-class DiscMapTemplateTests(TestCase):
-    def test_map_view_contains_map_div(self):
-        """Test that the map view contains the required map div."""
-        response = self.client.get(reverse('disc_map_view'))
-        self.assertContains(response, '<div id="map"')
+# Associated with removed Google API Map
+# class DiscMapTemplateTests(TestCase):
+#     def test_map_view_contains_map_div(self):
+#         """Test that the map view contains the required map div."""
+#         response = self.client.get(reverse('disc_map_view'))
+#         self.assertContains(response, '<div id="map"')
 
-    def test_map_view_contains_toggle_buttons(self):
-        """Test that the map view contains toggle buttons."""
-        response = self.client.get(reverse('disc_map_view'))
-        self.assertContains(response, 'id="showAll"')
-        self.assertContains(response, 'id="showLost"')
-        self.assertContains(response, 'id="showFound"')
+#     def test_map_view_contains_toggle_buttons(self):
+#         """Test that the map view contains toggle buttons."""
+#         response = self.client.get(reverse('disc_map_view'))
+#         self.assertContains(response, 'id="showAll"')
+#         self.assertContains(response, 'id="showLost"')
+#         self.assertContains(response, 'id="showFound"')

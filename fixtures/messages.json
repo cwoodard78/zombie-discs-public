@@ -1,0 +1,211 @@
+[
+{
+  "model": "inbox.message",
+  "pk": 1,
+  "fields": {
+    "sender": 1,
+    "receiver": 9,
+    "disc": 17,
+    "content": "I hope you find your disc.",
+    "timestamp": "2025-03-25T19:03:53.848Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 2,
+  "fields": {
+    "sender": 1,
+    "receiver": 9,
+    "disc": 17,
+    "content": "Did anyone contact you about the disc yet?",
+    "timestamp": "2025-03-25T20:17:17.766Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 4,
+  "fields": {
+    "sender": 1,
+    "receiver": 9,
+    "disc": 17,
+    "content": "Testing again",
+    "timestamp": "2025-03-25T20:44:47.941Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 7,
+  "fields": {
+    "sender": 1,
+    "receiver": 9,
+    "disc": null,
+    "content": "Test message, no disc ID.",
+    "timestamp": "2025-03-25T22:14:56.033Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 9,
+  "fields": {
+    "sender": 9,
+    "receiver": 1,
+    "disc": null,
+    "content": "Just saying hi. Let's play a round of disc golf on Tuesday.",
+    "timestamp": "2025-03-26T02:41:18.042Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 10,
+  "fields": {
+    "sender": 1,
+    "receiver": 9,
+    "disc": null,
+    "content": "Hi there",
+    "timestamp": "2025-03-26T02:45:59.826Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 16,
+  "fields": {
+    "sender": 9,
+    "receiver": 1,
+    "disc": null,
+    "content": "This is going to be a really long reply that gets truncated because I don't know how to be brief when messaging someone.",
+    "timestamp": "2025-03-26T03:04:14.728Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 17,
+  "fields": {
+    "sender": 1,
+    "receiver": 9,
+    "disc": null,
+    "content": "This is going to be a really long reply that gets truncated because I don't know how to be brief when messaging someone.This is going to be a really long reply that gets truncated because I don't know how to be brief when messaging someone.This is going to be a really long reply that gets truncated because I don't know how to be brief when messaging someone.This is going to be a really long reply that gets truncated because I don't know how to be brief when messaging someone.This is going to be a really long reply that gets truncated because I don't know how to be brief when messaging someone.This is going to be a really long reply that gets truncated because I don't know how to be brief when messaging someone.This is going to be a really long reply that gets truncated because I don't know how to be brief when messaging someone. This is going to be a really long reply that gets truncated because I don't know how to be brief when messaging someone.",
+    "timestamp": "2025-03-26T03:36:17.959Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 22,
+  "fields": {
+    "sender": 9,
+    "receiver": 1,
+    "disc": 16,
+    "content": "It's a match! I think your disc (Multi Eclipse) matches mine. Let's connect!",
+    "timestamp": "2025-03-27T19:04:45.198Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 24,
+  "fields": {
+    "sender": 9,
+    "receiver": 9,
+    "disc": null,
+    "content": "It's a match! I think your disc (Black Test Disc 44) matches mine. Let's connect!",
+    "timestamp": "2025-03-27T19:27:02.366Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 25,
+  "fields": {
+    "sender": 9,
+    "receiver": 1,
+    "disc": 21,
+    "content": "It's a match! I think your disc (Blue Luna) matches mine. Let's connect!",
+    "timestamp": "2025-03-27T19:40:00.709Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 26,
+  "fields": {
+    "sender": 1,
+    "receiver": 9,
+    "disc": 35,
+    "content": "Found your disc!",
+    "timestamp": "2025-03-29T14:45:38.794Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 27,
+  "fields": {
+    "sender": 9,
+    "receiver": 1,
+    "disc": 35,
+    "content": "Cool. Thanks! Here's $1000 no questions asked.",
+    "timestamp": "2025-03-29T14:46:28.018Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 28,
+  "fields": {
+    "sender": 1,
+    "receiver": 9,
+    "disc": 36,
+    "content": "It's a match! I think your disc (white Leopard) matches mine. Let's connect!",
+    "timestamp": "2025-03-29T14:53:39.949Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 29,
+  "fields": {
+    "sender": 9,
+    "receiver": 1,
+    "disc": 36,
+    "content": "Nope. Wrong color.",
+    "timestamp": "2025-03-29T14:54:24.696Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 30,
+  "fields": {
+    "sender": 9,
+    "receiver": 1,
+    "disc": 38,
+    "content": "It's a match! I think your disc (multi Toad) matches mine. Let's connect!",
+    "timestamp": "2025-03-29T20:40:59.221Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 31,
+  "fields": {
+    "sender": 9,
+    "receiver": 1,
+    "disc": 35,
+    "content": "Want to come over for some barbeque?",
+    "timestamp": "2025-03-29T21:51:43.055Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 32,
+  "fields": {
+    "sender": 9,
+    "receiver": 1,
+    "disc": 36,
+    "content": "Don't think so.",
+    "timestamp": "2025-03-30T04:26:00.564Z"
+  }
+},
+{
+  "model": "inbox.message",
+  "pk": 33,
+  "fields": {
+    "sender": 9,
+    "receiver": 1,
+    "disc": 2,
+    "content": "It's a match! I think your disc (unknown Leopard) matches mine. Let's connect!",
+    "timestamp": "2025-03-30T04:26:17.943Z"
+  }
+}
+]

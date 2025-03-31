@@ -101,12 +101,13 @@ class DiscSearchView(FilterView):
         return context
 
 # CORE TEMPLATE VIEWS
-def disc_map_view(request):
-    """
-    View for displaying all discs on a map (public and private).
-    This is the Google API proof of concept and can be removed after demo.
-    """
-    return render(request, 'disc/disc_map.html')
+# Remove Google API for public hosting
+# def disc_map_view(request):
+#     """
+#     View for displaying all discs on a map (public and private).
+#     This is the Google API proof of concept and can be removed after demo.
+#     """
+#     return render(request, 'disc/disc_map.html')
 
 @login_required
 def submit_disc(request):

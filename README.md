@@ -31,8 +31,8 @@ The platform features automatic disc matching logic, interactive maps, search an
 1. **Clone the repository:**
 
    ```sh
-    git clone https://github.com/yourusername/zombie-discs.git
-    cd zombie-discs
+    git clone https://github.com/yourusername/zombie-discs-public.git
+    cd zombie-discs-public
 
 2. **Create and activate a virtual environment:**
 
@@ -49,9 +49,11 @@ The platform features automatic disc matching logic, interactive maps, search an
 4. **Set up environment variables:**
 
     Create a .env file in the root of the project and add your secret key:
+    
     SECRET_KEY=your-new-secret-key
+    DJANGO_DEBUG=True
 
-    You can generate a new Django secret key using the following Python script:
+    You can generate a new Django secret key using:
     
     ```sh
     from django.core.management.utils import get_random_secret_key
@@ -63,22 +65,27 @@ The platform features automatic disc matching logic, interactive maps, search an
     python manage.py makemigrations
     python manage.py migrate
 
-6. **(Optional) Create a Superuser**
+6. **Collect static files**
+
+    ```sh
+    python manage.py collectstatic
+
+7. **(Optional) Create a Superuser**
 
    ```sh
    python manage.py createsuperuser
 
-7. **(Optional) Seed the Database**
+8. **(Optional) Seed the Database**
    
    ```sh
-    python manage.py loaddata db_seed.json
+    ./import_data.ps1             # If using PowerShell
    
-8. **Run the Development Server**
+9. **Run the Development Server**
    
    ```sh
     python manage.py runserver
 
-9. **(Optional) Run Tests to Confirm It Works**
+10. **(Optional) Run Tests to Confirm It Works**
    
    ```sh
     python manage.py test
