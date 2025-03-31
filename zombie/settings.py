@@ -30,7 +30,7 @@ DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['zombiediscs.com', 
                  'www.zombiediscs.com',
-                 'zombiediscs.onrender.com',
+                 'zombie-discs-public.onrender.com',
                  'localhost',
                 '127.0.0.1']
 
