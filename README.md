@@ -79,6 +79,7 @@ The platform features automatic disc matching logic, interactive maps, search an
    
    ```sh
     ./import_data.ps1             # If using PowerShell
+    import_all.py                 # If using Linux or macOS
    
 9. **Run the Development Server**
    
