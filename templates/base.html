@@ -58,14 +58,17 @@
             <!-- Logo and Title -->
             <div class="flex items-center gap-3">
             <a href="{% url 'home' %}">
-                <img src="{% static 'images/zombie_logo.png' %}" alt="Zombie Discs Logo" class="h-12 w-auto md:h-16">
+                <picture>
+                    <source srcset="{% static 'images/zombie_logo.webp' %}" type="image/webp">
+                    <img src="{% static 'images/zombie_logo.png' %}" alt="Zombie Discs Logo" class="h-12 w-auto md:h-16">
+                </picture>
             </a>
             <a href="{% url 'home' %}" class="text-3xl md:text-4xl font-bold text-green-200 hover:underline">Zombie Discs</a>
             </div>
         
             <!-- Burger Button (Mobile Only) -->
             <div class="md:hidden">
-            <button id="burger" class="focus:outline-none">
+            <button id="burger" class="focus:outline-none" aria-label="Toggle navigation menu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
                     viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -94,6 +97,7 @@
                 <a href="{% url 'submit_disc' %}" class="nav-link">Log a Disc</a>
                 <a href="{% url 'disc_search' %}" class="nav-link">Search</a>
                 <a href="{% url 'disc_map_view' %}" class="nav-link">Map</a>
+                <a href="{% url 'schema-swagger-ui' %}" class="nav-link">API</a>
                 <a href="{% url 'faq' %}" class="nav-link">Help</a>
                 <a href="{% url 'profile' user.username %}" class="nav-link">Profile</a>
                 <form action="{% url 'logout' %}" method="POST" class="inline md:inline">
@@ -102,15 +106,14 @@
                 </form>
             {% else %}
                 <a href="{% url 'about' %}" class="nav-link">About</a>
+                <a href="{% url 'disc_map_view' %}" class="nav-link">Map</a>
+                <a href="{% url 'schema-swagger-ui' %}" class="nav-link">API</a>
                 <a href="{% url 'login' %}" class="nav-link">Login</a>
                 <a href="{% url 'register' %}" class="nav-link">Register</a>
             {% endif %}
             </nav>
         </div>
-        </header>
-          
-          
-          
+        </header>        
 
     <!-- Main Content -->
     <main class="container mx-auto py-8">

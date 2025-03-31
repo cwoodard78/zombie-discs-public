@@ -131,7 +131,6 @@
         </a>
     </div>
     {% endif %}
-    
 
     <!-- Message History -->
     {% if messages %}
@@ -171,7 +170,6 @@
     </div>
     {% endif %}
     
-
     <div class="mt-6">
         <p><strong>Reported by:</strong> 
             <a href="{% url 'profile' username=disc.user.username %}" class="text-blue-500 hover:underline">
@@ -209,11 +207,6 @@
         </a>
     </div>
     {% else %}
-    {% comment %} <div class="mt-6">
-        <a href="{% url 'submit_disc' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Add a Disc
-        </a>
-    </div> {% endcomment %}
     <div class="mt-6">
         <a href="{% url 'user_disc_list' %}" class="text-blue-500 hover:underline">
             &larr; Go to My Disc List

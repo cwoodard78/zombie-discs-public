@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from .models import Profile
 
+# USER REGISTRATION FORM
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(
         widget=forms.PasswordInput, 
@@ -20,6 +21,7 @@ class RegistrationForm(forms.ModelForm):
         validate_password(password)
         return password
 
+# PROFILE EDIT FORM
 class ProfileForm(forms.ModelForm):
     email = forms.EmailField(required=True)
     first_name = forms.CharField(required=True)
@@ -30,7 +32,8 @@ class ProfileForm(forms.ModelForm):
         fields = ['photo']
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)  # Pass the user instance explicitly
+        # Pass user instance
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if user:
             # Prepopulate fields from the User model
@@ -41,10 +44,11 @@ class ProfileForm(forms.ModelForm):
     def save(self, commit=True):
         profile = super().save(commit=False)
         user = profile.user  # Get the related User instance
+        # Update user fields from form
         user.email = self.cleaned_data['email']
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         if commit:
-            user.save()  # Save User fields
-            profile.save()  # Save Profile fields
+            user.save()  # Save User model fields
+            profile.save()  # Save Profile model fields
         return profile

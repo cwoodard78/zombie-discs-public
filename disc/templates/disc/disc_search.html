@@ -6,7 +6,9 @@
 <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6">
     <h1 class="text-2xl font-semibold text-gray-800 mb-4">Search Discs</h1>
 
+    <!-- Disc Search Form -->
     <form method="get" action="" class="space-y-4">
+        <!-- Free text box string search -->
         <div class="flex justify-center mb-4">
             <input type="text" name="query" placeholder="Search discs..." 
                 class="w-full max-w-lg border border-gray-300 rounded px-4 py-2"
@@ -14,11 +16,11 @@
         </div>
 
         <div class="flex flex-wrap gap-4 items-center justify-center">
-            <!-- Filters -->
+            <!-- Filters with dropdowns -->
+            <!-- Type -->
             <div>
                 <label for="type" class="block text-sm font-medium text-gray-700">Type:</label>
                 <select name="type" id="type" class="border border-gray-300 rounded px-4 py-2">
-                    {% comment %} <option value="">----------</option> {% endcomment %}
                     {% for choice in filter.form.type.field.choices %}
                         <option value="{{ choice.0 }}" {% if choice.0 == request.GET.type %}selected{% endif %}>
                             {{ choice.1 }}
@@ -26,10 +28,10 @@
                     {% endfor %}
                 </select>
             </div>
+            <!-- Color -->
             <div>
                 <label for="color" class="block text-sm font-medium text-gray-700">Color:</label>
                 <select name="color" id="color" class="border border-gray-300 rounded px-4 py-2">
-                    {% comment %} <option value="">----------</option> {% endcomment %}
                     {% for choice in filter.form.color.field.choices %}
                         <option value="{{ choice.0 }}" {% if choice.0 == request.GET.color %}selected{% endif %}>
                             {{ choice.1 }}
@@ -37,10 +39,10 @@
                     {% endfor %}
                 </select>
             </div>
+            <!-- Status -->
             <div>
                 <label for="status" class="block text-sm font-medium text-gray-700">Status:</label>
                 <select name="status" id="status" class="border border-gray-300 rounded px-4 py-2">
-                    {% comment %} <option value="">----------</option> {% endcomment %}
                     {% for choice in filter.form.status.field.choices %}
                         <option value="{{ choice.0 }}" {% if choice.0 == request.GET.status %}selected{% endif %}>
                             {{ choice.1 }}
@@ -48,6 +50,7 @@
                     {% endfor %}
                 </select>
             </div>
+            <!-- Reward Checkbox (boolean) -->
             <div>
                 <label class="inline-flex items-center mt-2">
                   <input type="checkbox" name="has_reward" value="true"
@@ -58,6 +61,7 @@
               </div>         
         </div>
 
+        <!-- Search submission button -->
         <div class="flex justify-center mt-6">
             <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
                 Search
@@ -90,9 +94,6 @@
                         <th class="py-3 px-6 text-left">Type</th>
                         <th class="py-3 px-6 text-left">Mold</th>
                         <th class="py-3 px-6 text-left">Status</th>
-                        {% comment %} <th class="py-3 px-6 text-left">Manufacturer</th>
-                        <th class="py-3 px-6 text-left">Mold</th>
-                        <th class="py-3 px-6 text-left">Details</th> {% endcomment %}
                     </tr>
                 </thead>
                 <tbody class="text-gray-700 text-sm">
@@ -101,17 +102,11 @@
                         onclick="window.location.href='{% url 'disc_detail' disc.id %}'">
                             {% load color_utils %}
                             <td class="py-3 px-6" style="background: {{ disc.color|validate_color }};">
-                                {{ disc.color }}
+                                {{ disc.color|title }}
                             </td>
                             <td class="py-3 px-6">{{ disc.type|title }}</td>
                             <td class="py-3 px-6">{{ disc.mold_name }}</td>
                             <td class="py-3 px-6">{{ disc.status|title }}</td>
-                            {% comment %} <td class="py-3 px-6">{{ disc.manufacturer }}</td>
-                            <td class="py-3 px-6">
-                                <a href="{% url 'disc_detail' disc.id %}" class="text-blue-500 hover:underline">
-                                    View Details
-                                </a>
-                            </td> {% endcomment %}
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -126,6 +121,7 @@
 {% block scripts %}
 {{ block.super }}
 <script>
+    /* Leaflet script */
     document.addEventListener('DOMContentLoaded', function () {
         const map = L.map('map').setView([39.5, -98.35], 4);
 

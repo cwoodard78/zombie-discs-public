@@ -15,131 +15,19 @@
     <!-- Slides -->
     <div class="carousel-slides flex transition-transform duration-700 ease-in-out">
         <!-- Image Slide -->
-        <div class="flex-shrink-0 w-full bg-gray-100 p-6 text-center">
-            <h2 class="text-2xl font-bold mb-4 text-gray-800">Discover the Community</h2>
-            <p class="text-gray-700 mb-4">Join thousands of disc golfers sharing, finding, and returning discs across the country.</p>
-            <img src="{% static 'images/community.jpg' %}" alt="Community" class="rounded-lg shadow-sm w-full h-[300px] object-cover mx-auto">
-            <p class="mt-2 text-sm text-gray-500">
-                Photo by <a href="https://unsplash.com/@priscilladupreez" class="underline" target="_blank">Priscilla Du Preez</a> on 
-                <a href="https://unsplash.com/photos/LAjycRsHAto" class="underline" target="_blank">Unsplash</a>
-            </p>
-        </div>
+        {% include "_image_slide.html" %}
 
         <!-- Stats Slide -->
-        <div class="flex-shrink-0 w-full bg-blue-100 p-6 relative z-10">
-            <h2 class="text-2xl font-semibold mb-6 text-blue-800 text-center">Community Stats</h2>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:grid-cols-3 text-center">
-                <div class="bg-white rounded-lg shadow p-4">
-                    <p class="text-sm text-blue-600 uppercase">Lost Discs</p>
-                    <p id="total-lost" class="text-3xl font-bold text-gray-800">Loading...</p>
-                </div>
-                <div class="bg-white rounded-lg shadow p-4">
-                    <p class="text-sm text-green-600 uppercase">Found Discs</p>
-                    <p id="total-found" class="text-3xl font-bold text-gray-800">Loading...</p>
-                </div>
-                <div class="bg-white rounded-lg shadow p-4">
-                    <p class="text-sm text-purple-600 uppercase">Resolved Matches</p>
-                    <p id="total-resolved" class="text-3xl font-bold text-gray-800">Loading...</p>
-                </div>
-                <div class="bg-white rounded-lg shadow p-4">
-                    <p class="text-sm text-yellow-600 uppercase">Rewards Offered</p>
-                    <p id="total-rewards" class="text-3xl font-bold text-gray-800">$0</p>
-                </div>
-                <div class="bg-white rounded-lg shadow p-4 col-span-full sm:col-span-2 md:col-span-1">
-                    <p class="text-sm text-indigo-600 uppercase">Community Members</p>
-                    <p id="total-users" class="text-3xl font-bold text-gray-800">Loading...</p>
-                </div>
-            </div>
-        </div>
+        {% include "_stats_slide.html" %}
 
         <!-- Features Slide -->
-        <div class="flex-shrink-0 w-full bg-green-100 p-6 relative z-10">
-            <h2 class="text-2xl font-semibold text-green-900 mb-6 text-center">What Makes Zombie Discs Awesome?</h2>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-800 text-sm">
-                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
-                    <span class="text-green-500 text-xl">📍</span>
-                    <div>
-                        <p class="font-semibold text-base">Post Lost or Found Discs</p>
-                        <p>Upload photos and mark the location on a map.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
-                    <span class="text-green-500 text-xl">🔍</span>
-                    <div>
-                        <p class="font-semibold text-base">Advanced Search</p>
-                        <p>Filter by type, color, location, or reward status.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
-                    <span class="text-green-500 text-xl">🗺️</span>
-                    <div>
-                        <p class="font-semibold text-base">Interactive Map</p>
-                        <p>Browse discs on a live map of all submissions.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
-                    <span class="text-green-500 text-xl">🎁</span>
-                    <div>
-                        <p class="font-semibold text-base">Offer & Earn Rewards</p>
-                        <p>Post a bounty for your disc — or claim one for returning it.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
-                    <span class="text-green-500 text-xl">💬</span>
-                    <div>
-                        <p class="font-semibold text-base">Messaging & Profiles</p>
-                        <p>Connect with other players and view their disc history.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-3 bg-white rounded-md shadow p-4">
-                    <span class="text-green-500 text-xl">🏆</span>
-                    <div>
-                        <p class="font-semibold text-base">Community Leaderboards</p>
-                        <p>Celebrate the most helpful disc golfers in your area.</p>
-                    </div>
-                </div>
-            </div>
-
-            <p class="mt-6 text-center text-gray-600 text-sm italic">Built for the disc golf community. Optimized for mobile, tablets, and every course in between.</p>
-        </div>
-
+        {% include "_features_slide.html" %}
 
         <!-- Packages Slide -->
-        <div class="flex-shrink-0 w-full bg-purple-100 p-6 overflow-auto">
-            <h2 class="text-xl font-semibold mb-4 text-purple-800">Technologies Used</h2>
-            <div class="overflow-x-auto">
-                <table class="min-w-full text-left text-sm text-gray-700 border border-purple-200">
-                    <thead class="bg-purple-200 text-purple-900">
-                        <tr>
-                            <th class="px-4 py-2">Common Name</th>
-                            <th class="px-4 py-2">Package Name</th>
-                            <th class="px-4 py-2">Version</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white">
-                        <tr><td class="px-4 py-2">Django Web Framework</td><td class="px-4 py-2">Django</td><td class="px-4 py-2">5.1.4</td></tr>
-                        <tr><td class="px-4 py-2">Django REST Framework</td><td class="px-4 py-2">djangorestframework</td><td class="px-4 py-2">3.15.2</td></tr>
-                        <tr><td class="px-4 py-2">Tailwind CSS Integration</td><td class="px-4 py-2">pytz</td><td class="px-4 py-2">2024.2</td></tr>
-                        <tr><td class="px-4 py-2">Filtering Support</td><td class="px-4 py-2">django-filter</td><td class="px-4 py-2">24.3</td></tr>
-                        <tr><td class="px-4 py-2">Swagger API Docs</td><td class="px-4 py-2">drf-yasg</td><td class="px-4 py-2">1.21.8</td></tr>
-                        <tr><td class="px-4 py-2">YAML File Support</td><td class="px-4 py-2">PyYAML</td><td class="px-4 py-2">6.0.2</td></tr>
-                        <tr><td class="px-4 py-2">Time Zone Support</td><td class="px-4 py-2">tzdata</td><td class="px-4 py-2">2024.2</td></tr>
-                        <tr><td class="px-4 py-2">ASGI Interface</td><td class="px-4 py-2">asgiref</td><td class="px-4 py-2">3.8.1</td></tr>
-                        <tr><td class="px-4 py-2">SQL Parsing (for Django)</td><td class="px-4 py-2">sqlparse</td><td class="px-4 py-2">0.5.3</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        {% include "_packages_slide.html" %}
     </div>
 
-    <!-- Controls -->
+    <!-- Slider Controls -->
     <button id="prev" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-800 text-white px-4 py-2 rounded-r-lg hover:bg-gray-900">
         &lt;
     </button>

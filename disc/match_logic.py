@@ -1,3 +1,17 @@
+"""
+Disc Matching Logic for Zombie Discs
+
+This module defines the logic used to determine how closely a found disc matches a lost disc.
+Matching is based on several factors including:
+- Color
+- Disc type
+- Manufacturer
+- Mold name similarity (fuzzy matching)
+- Proximity (GPS coordinates)
+
+If the calculated score exceeds a threshold, a DiscMatch entry is saved or updated in the database.
+"""
+
 from disc.models import DiscMatch
 # Allow for typos in mold name
 from difflib import SequenceMatcher
@@ -5,6 +19,9 @@ from difflib import SequenceMatcher
 from geopy.distance import geodesic
         
 def calculate_proximity_score(lat1, lon1, lat2, lon2):
+    """
+    Calculates a score based on how close two discs are geographically.
+    """
     distance_km = geodesic((lat1, lon1), (lat2, lon2)).km
     if distance_km <= 2:  # 1 km radius
         return 50
@@ -13,6 +30,9 @@ def calculate_proximity_score(lat1, lon1, lat2, lon2):
     return 0
 
 def calculate_match_score(lost_disc, found_disc):
+    """
+    Calculates a composite score based on disc attributes and proximity. Returns a rounded percentage score.
+    """
     score = 0
 
     # Check color
@@ -57,22 +77,13 @@ def calculate_match_score(lost_disc, found_disc):
     
 # Function to populate matches in the database
 def populate_disc_matches(lost_discs, found_discs):
+    """
+    Compares each lost disc with each found disc and creates or updates DiscMatch entries if the match score exceeds 50.
+    """
     for lost_disc in lost_discs:
         for found_disc in found_discs:
             score = calculate_match_score(lost_disc, found_disc)
             if score > 50:  # Only keep significant matches
-                DiscMatch.objects.update_or_create(
-                    lost_disc=lost_disc,
-                    found_disc=found_disc,
-                    defaults={'score': score}
-                )
-                
-def populate_disc_matches(lost_discs, found_discs):
-    from disc.models import DiscMatch
-    for lost_disc in lost_discs:
-        for found_disc in found_discs:
-            score = calculate_match_score(lost_disc, found_disc)
-            if score > 50:
                 DiscMatch.objects.update_or_create(
                     lost_disc=lost_disc,
                     found_disc=found_disc,

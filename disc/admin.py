@@ -28,7 +28,6 @@ class DiscMatchAdmin(admin.ModelAdmin):
         return obj.found_disc.id
     found_id.short_description = 'Found Disc ID'
 
-
 @admin.register(Reward) 
 class RewardAdmin(admin.ModelAdmin):
     list_display = ('disc', 'get_username', 'amount', 'created_at', 'id')

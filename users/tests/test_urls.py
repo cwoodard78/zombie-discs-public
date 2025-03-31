@@ -1,8 +1,7 @@
 from django.test import SimpleTestCase
-from users.views import register
+from users.views import register, profile, edit_profile
 from django.urls import reverse, resolve
 from django.contrib.auth.views import LoginView, LogoutView
-from users.views import profile, edit_profile
 
 class RegistrationURLTests(SimpleTestCase):
 

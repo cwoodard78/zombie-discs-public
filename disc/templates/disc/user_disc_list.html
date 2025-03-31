@@ -33,7 +33,6 @@
                         <th class="px-4 py-2">Type</th>
                         <th class="px-4 py-2">Color</th>
                         <th class="px-4 py-2">Mold</th>
-                        {% comment %} <th class="px-4 py-2">Status</th> {% endcomment %}
                         <th class="px-4 py-2">Matches</th>
                         <th class="px-4 py-2">Date</th>
                     </tr>
@@ -49,15 +48,6 @@
                             </span>
                         </td>
                         <td class="px-4 py-2">{{ disc.mold_name|default:"N/A" }}</td>
-                        {% comment %} <td class="px-4 py-2">{{ disc.status|title }}</td> {% endcomment %}
-                        {% comment %} <td class="px-4 py-2">
-                            {{ disc.match_count|default:"0" }}
-                            {% if match_flags|dict_key:disc.id %}
-                            <span class="ml-2 text-xs bg-green-100 text-green-700 font-semibold px-2 py-0.5 rounded-full animate-pulse">
-                                New!
-                            </span>
-                            {% endif %}
-                        </td> {% endcomment %}
                         <td class="px-4 py-2">
                             {{ disc.match_count|default:"0" }}
                             {% if match_flags|dict_key:disc.id %}
@@ -84,7 +74,6 @@
                         <th class="px-4 py-2">Type</th>
                         <th class="px-4 py-2">Color</th>
                         <th class="px-4 py-2">Mold</th>
-                        {% comment %} <th class="px-4 py-2">Status</th> {% endcomment %}
                         <th class="px-4 py-2">Matches</th>
                         <th class="px-4 py-2">Date</th>
                     </tr>
@@ -100,7 +89,6 @@
                             </span>
                         </td>
                         <td class="px-4 py-2">{{ disc.mold_name|default:"N/A" }}</td>
-                        {% comment %} <td class="px-4 py-2">{{ disc.status|title }}</td> {% endcomment %}
                         <td class="px-4 py-2">
                             {{ disc.match_count|default:"0" }}
                             {% if match_flags|dict_key:disc.id %}
@@ -117,6 +105,7 @@
         </div>
         {% endif %}
 
+    <!-- No discs associated with user -->
     {% else %}
         <p class="text-gray-600">No discs have been logged yet.</p>
     {% endif %}

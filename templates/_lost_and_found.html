@@ -1,0 +1,81 @@
+<!-- Lost and Found Table with Tabs -->
+<h2 class="text-xl font-semibold text-gray-700 mb-4 mt-10">Lost and Found</h2>
+<div class="border border-gray-200 rounded-lg shadow-sm bg-gray-50">
+    <div class="flex border-b">
+        <button id="tab-lost" class="tab-btn {% if active_tab == 'lost' %}active{% endif %}">Lost</button>
+        <button id="tab-found" class="tab-btn {% if active_tab == 'found' %}active{% endif %}">Found</button>
+    </div>
+
+    <div id="lost-content" class="tab-content {% if active_tab != 'lost' %}hidden{% endif %}">
+        <div class="overflow-x-auto mt-4">
+            <table class="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Color</th>
+                        <th class="py-3 px-6 text-left">Type</th>
+                        <th class="py-3 px-6 text-left">Mold Name</th>
+                        <th class="py-3 px-6 text-left">Lost Date</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm">
+                    {% for disc in lost_discs %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-100 cursor-pointer" onclick="window.location.href='{% url 'disc_detail' disc.id %}'">
+                        <td class="py-3 px-6">{{ disc.color|title }}</td>
+                        <td class="py-3 px-6">{{ disc.type|title }}</td>
+                        <td class="py-3 px-6">{{ disc.mold_name }}</td>
+                        <td class="py-3 px-6">{{ disc.created_at|date:"Y-m-d" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if lost_discs.paginator.num_pages > 1 %}
+            <div class="mt-4 flex justify-center space-x-2">
+                {% if lost_discs.has_previous %}
+                    <a href="?lost_page={{ lost_discs.previous_page_number }}#lost-content" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+                {% endif %}
+                <span class="px-3 py-1 text-gray-700">Page {{ lost_discs.number }} of {{ lost_discs.paginator.num_pages }}</span>
+                {% if lost_discs.has_next %}
+                    <a href="?lost_page={{ lost_discs.next_page_number }}#lost-content" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Found Tab Content -->
+    <div id="found-content" class="tab-content {% if active_tab != 'found' %}hidden{% endif %}">
+        <div class="overflow-x-auto mt-4">
+            <table class="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Color</th>
+                        <th class="py-3 px-6 text-left">Type</th>
+                        <th class="py-3 px-6 text-left">Mold Name</th>
+                        <th class="py-3 px-6 text-left">Found Date</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm">
+                    {% for disc in found_discs %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-100 cursor-pointer" onclick="window.location.href='{% url 'disc_detail' disc.id %}'">
+                        <td class="py-3 px-6">{{ disc.color|title }}</td>
+                        <td class="py-3 px-6">{{ disc.type|title }}</td>
+                        <td class="py-3 px-6">{{ disc.mold_name }}</td>
+                        <td class="py-3 px-6">{{ disc.created_at|date:"Y-m-d" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if found_discs.paginator.num_pages > 1 %}
+            <div class="mt-4 flex justify-center space-x-2">
+                {% if found_discs.has_previous %}
+                    <a href="?found_page={{ found_discs.previous_page_number }}#found-content" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+                {% endif %}
+                <span class="px-3 py-1 text-gray-700">Page {{ found_discs.number }} of {{ found_discs.paginator.num_pages }}</span>
+                {% if found_discs.has_next %}
+                    <a href="?found_page={{ found_discs.next_page_number }}#found-content" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

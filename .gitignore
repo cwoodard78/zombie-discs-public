@@ -9,8 +9,8 @@ venv/
 .env
 
 # Django-related
-db.sqlite3
-/media/
+# db.sqlite3
+# /media/
 
 # System files
 .DS_Store
@@ -20,3 +20,6 @@ db.sqlite3
 # IDE-specific
 .idea/
 .vscode/
+
+# Static files
+/staticfiles/

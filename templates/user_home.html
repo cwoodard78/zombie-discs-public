@@ -1,185 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Zombie Discs Auth{% endblock %}
+{% block title %}Zombie Discs{% endblock %}
 
 {% block content %}
 <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6">
     <h1 class="text-2xl font-bold text-gray-800 mb-6">Welcome, {{ user.username }}</h1>
 
     <!-- Summary Section -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-        <div class="bg-blue-100 text-blue-800 rounded p-4">
-            <p class="text-sm font-semibold">Active Lost Discs</p>
-            <p class="text-2xl font-bold">{{ lost_discs.paginator.count }}</p>
-        </div>
-        <div class="bg-green-100 text-green-800 rounded p-4">
-            <p class="text-sm font-semibold">Active Found Discs</p>
-            <p class="text-2xl font-bold">{{ found_discs.paginator.count }}</p>
-        </div>
-        <div class="bg-yellow-100 text-yellow-800 rounded p-4">
-            <p class="text-sm font-semibold">Top Reward</p>
-            <p class="text-2xl font-bold">
-                {% if top_rewards %}${{ top_rewards.0.amount }}{% else %}N/A{% endif %}
-            </p>
-        </div>
-    </div>
+    {% include "_summary_cards.html" %}
 
     <!-- Rewards and Leaderboard Side-by-Side -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
-
         <!-- Top Rewards -->
-        <div class="border border-gray-200 rounded-lg shadow-sm bg-gray-50">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4 px-4 pt-4">Top Disc Rewards</h2>
-            <div class="overflow-x-auto px-4 pb-4">
-                <table class="min-w-full bg-white rounded-lg shadow-md text-sm">
-                    <thead>
-                        <tr class="bg-yellow-100 text-yellow-800 uppercase text-xs">
-                            <th class="py-2 px-4 text-left border-b border-gray-200">Reward</th>
-                            <th class="py-2 px-4 text-left border-b border-gray-200">Color</th>
-                            <th class="py-2 px-4 text-left border-b border-gray-200">Type</th>
-                            <th class="py-2 px-4 text-left border-b border-gray-200">Mold</th>
-                            <th class="py-2 px-4 text-left border-b border-gray-200">Date Posted</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-700">
-                        {% for reward in top_rewards %}
-                        <tr class="{% cycle 'bg-white' 'bg-gray-50' %} hover:bg-gray-100 border-b border-gray-200">
-                            <td class="py-2 px-4 font-semibold text-green-700">${{ reward.amount }}</td>
-                            <td class="py-2 px-4">{{ reward.disc.color|default:"N/A"|title }}</td>
-                            <td class="py-2 px-4">{{ reward.disc.type|default:"N/A"|title }}</td>
-                            <td class="py-2 px-4">
-                                <a href="{% url 'disc_detail' reward.disc.id %}" class="text-blue-600 hover:underline">
-                                    {{ reward.disc.mold_name }}
-                                </a>
-                            </td>
-                            <td class="py-2 px-4">{{ reward.created_at|date:"Y-m-d" }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr><td class="py-2 px-4" colspan="5">No rewards posted yet.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+        {% include "_rewards.html" %}
         <!-- Leaderboard -->
-        <div class="border border-gray-200 rounded-lg shadow-sm bg-gray-50">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4 px-4 pt-4">Leaderboard</h2>
-            <div class="flex border-b border-gray-300 mb-4 px-4 flex-wrap">
-                <button class="tab-btn-leaderboard active" data-tab="lost-leaderboard">Lost</button>
-                <button class="tab-btn-leaderboard" data-tab="found-leaderboard">Found</button>
-                <button class="tab-btn-leaderboard" data-tab="karma-leaderboard">Karma</button>
-                <button class="tab-btn-leaderboard" data-tab="rewards-offered">Offered ($)</button>
-                <button class="tab-btn-leaderboard" data-tab="rewards-earned">Earned ($)</button>
-            </div>
-
-            <div class="px-4 pb-4">
-                <div id="lost-leaderboard" class="leaderboard-tab">
-                    {% include "leaderboard_table.html" with leaderboard=lost_leaderboard stat="lost_count" label="Lost Discs" %}
-                </div>
-                <div id="found-leaderboard" class="leaderboard-tab hidden">
-                    {% include "leaderboard_table.html" with leaderboard=found_leaderboard stat="found_count" label="Found Discs" %}
-                </div>
-                <div id="karma-leaderboard" class="leaderboard-tab hidden">
-                    {% include "leaderboard_table.html" with leaderboard=karma_leaderboard stat="karma" label="Karma Score" %}
-                </div>
-                <div id="rewards-offered" class="leaderboard-tab hidden">
-                    {% include "leaderboard_table.html" with leaderboard=rewards_offered stat="total_amount" label="Rewards Offered ($)" %}
-                </div>
-                <div id="rewards-earned" class="leaderboard-tab hidden">
-                    {% include "leaderboard_table.html" with leaderboard=rewards_earned stat="total_earned" label="Rewards Earned ($)" %}
-                </div>
-            </div>
-        </div>
+        {% include "_leaderboard.html" %}
     </div>
-    
-    <!-- Tabs -->
-    <h2 class="text-xl font-semibold text-gray-700 mb-4 mt-10">Lost and Found</h2>
-    <div class="border border-gray-200 rounded-lg shadow-sm bg-gray-50">
-        <div class="flex border-b">
-            <button id="tab-lost" class="tab-btn {% if active_tab == 'lost' %}active{% endif %}">Lost</button>
-            <button id="tab-found" class="tab-btn {% if active_tab == 'found' %}active{% endif %}">Found</button>
-        </div>
 
-        <div id="lost-content" class="tab-content {% if active_tab != 'lost' %}hidden{% endif %}">
-
-            {% comment %} <h2 class="text-xl font-semibold text-gray-700 mt-4">Lost Discs</h2> {% endcomment %}
-            <div class="overflow-x-auto mt-4">
-                <table class="min-w-full bg-white rounded-lg shadow-md">
-                    <thead>
-                        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                            <th class="py-3 px-6 text-left">Color</th>
-                            <th class="py-3 px-6 text-left">Type</th>
-                            <th class="py-3 px-6 text-left">Mold Name</th>
-                            <th class="py-3 px-6 text-left">Lost Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-700 text-sm">
-                        {% for disc in lost_discs %}
-                        <tr class="border-b border-gray-200 hover:bg-gray-100 cursor-pointer" onclick="window.location.href='{% url 'disc_detail' disc.id %}'">
-                            <td class="py-3 px-6">{{ disc.color|title }}</td>
-                            <td class="py-3 px-6">{{ disc.type|title }}</td>
-                            <td class="py-3 px-6">{{ disc.mold_name }}</td>
-                            <td class="py-3 px-6">{{ disc.created_at|date:"Y-m-d" }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% if lost_discs.paginator.num_pages > 1 %}
-                <div class="mt-4 flex justify-center space-x-2">
-                    {% if lost_discs.has_previous %}
-                        <a href="?lost_page={{ lost_discs.previous_page_number }}#lost-content" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
-                    {% endif %}
-                    <span class="px-3 py-1 text-gray-700">Page {{ lost_discs.number }} of {{ lost_discs.paginator.num_pages }}</span>
-                    {% if lost_discs.has_next %}
-                        <a href="?lost_page={{ lost_discs.next_page_number }}#lost-content" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
-                    {% endif %}
-                </div>
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- Found Tab Content -->
-        <div id="found-content" class="tab-content {% if active_tab != 'found' %}hidden{% endif %}">
-
-            {% comment %} <h2 class="text-xl font-semibold text-gray-700 mt-4">Found Discs</h2> {% endcomment %}
-            <div class="overflow-x-auto mt-4">
-                <table class="min-w-full bg-white rounded-lg shadow-md">
-                    <thead>
-                        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                            <th class="py-3 px-6 text-left">Color</th>
-                            <th class="py-3 px-6 text-left">Type</th>
-                            <th class="py-3 px-6 text-left">Mold Name</th>
-                            <th class="py-3 px-6 text-left">Found Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-700 text-sm">
-                        {% for disc in found_discs %}
-                        <tr class="border-b border-gray-200 hover:bg-gray-100 cursor-pointer" onclick="window.location.href='{% url 'disc_detail' disc.id %}'">
-                            <td class="py-3 px-6">{{ disc.color|title }}</td>
-                            <td class="py-3 px-6">{{ disc.type|title }}</td>
-                            <td class="py-3 px-6">{{ disc.mold_name }}</td>
-                            <td class="py-3 px-6">{{ disc.created_at|date:"Y-m-d" }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% if found_discs.paginator.num_pages > 1 %}
-                <div class="mt-4 flex justify-center space-x-2">
-                    {% if found_discs.has_previous %}
-                        <a href="?found_page={{ found_discs.previous_page_number }}#found-content" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
-                    {% endif %}
-                    <span class="px-3 py-1 text-gray-700">Page {{ found_discs.number }} of {{ found_discs.paginator.num_pages }}</span>
-                    {% if found_discs.has_next %}
-                        <a href="?found_page={{ found_discs.next_page_number }}#found-content" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
-                    {% endif %}
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+    <!-- Lost and Found Section -->
+    {% include "_lost_and_found.html" %}
 
     <script>
+        /* Lost and Found tab handling */
         document.addEventListener('DOMContentLoaded', function () {
             const lostTab = document.getElementById('tab-lost');
             const foundTab = document.getElementById('tab-found');
@@ -201,6 +43,7 @@
             });
         });
 
+        /* Leaderboard tab handling */
         document.addEventListener("DOMContentLoaded", () => {
             const tabButtons = document.querySelectorAll(".tab-btn-leaderboard");
             const tabs = document.querySelectorAll(".leaderboard-tab");
@@ -220,6 +63,7 @@
     </script>
 
     <style>
+        /* Improve button/tab functionality */
         .tab-btn {
             padding: 10px 20px;
             cursor: pointer;

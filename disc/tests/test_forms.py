@@ -13,7 +13,7 @@ class DiscFormTests(TestCase):
         """Test that the form is valid with correct data."""
         form_data = {
             'status': 'lost',
-            'color': 'Red',
+            'color': 'red',
             'type': 'Driver',
             'manufacturer': self.manufacturer.id,
             'mold_name': 'Destroyer',
@@ -40,7 +40,7 @@ class DiscFormTests(TestCase):
         """Test that the form is invalid with invalid latitude or longitude."""
         form_data = {
             'status': 'lost',
-            'color': 'Blue',
+            'color': 'blue',
             'type': 'midrange',
             'manufacturer': self.manufacturer.id,
             'mold_name': 'Roc',
@@ -61,7 +61,7 @@ class DiscFormTests(TestCase):
         """Test that the form is valid without optional fields."""
         form_data = {
             'status': 'found',
-            'color': 'Green',
+            'color': 'green',
             'latitude': 34.89495,
             'longitude': -86.44408,
         }
@@ -72,7 +72,7 @@ class DiscFormTests(TestCase):
         """Test that the form is invalid with an invalid status."""
         form_data = {
             'status': 'invalid_status',  # Invalid status
-            'color': 'Yellow',
+            'color': 'yellow',
             'latitude': 34.89495,
             'longitude': -86.44408,
         }
@@ -84,7 +84,7 @@ class DiscFormTests(TestCase):
         """Test that the form is invalid if the mold name exceeds max length."""
         form_data = {
             'status': 'found',
-            'color': 'White',
+            'color': 'white',
             'type': 'putter',
             'manufacturer': self.manufacturer.id,
             'mold_name': 'A' * 101,  # Exceeds typical max length for mold name
@@ -99,7 +99,7 @@ class DiscFormTests(TestCase):
         """Test that the form is invalid if manufacturer does not exist."""
         form_data = {
             'status': 'lost',
-            'color': 'Purple',
+            'color': 'purple',
             'type': 'other',
             'manufacturer': 999,  # Non-existent manufacturer ID
             'latitude': 34.89495,
@@ -114,7 +114,7 @@ class DiscFormTests(TestCase):
         invalid_image = SimpleUploadedFile("invalid_image.txt", b"file_content", content_type="text/plain")
         form_data = {
             'status': 'lost',
-            'color': 'Yellow',
+            'color': 'yellow',
             'notes': 'Near hole 3.',
             'latitude': 34.89700,
             'longitude': -86.44600,

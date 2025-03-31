@@ -132,9 +132,9 @@ class LoginViewTests(TestCase):
 
     def test_protected_view_redirects_unauthenticated_users(self):
         """Test that unauthenticated users are redirected to login when accessing a protected view."""
-        protected_url = reverse('user_disc_list')  # Replace with an actual protected view name
+        protected_url = reverse('user_disc_list')  # Protected view name
         response = self.client.get(protected_url)
-        self.assertRedirects(response, f"{self.login_url}?next={protected_url}")  # Redirect with `next` parameter
+        self.assertRedirects(response, f"{self.login_url}?next={protected_url}")
 
 class ProfileViewTests(TestCase):
 
@@ -203,12 +203,6 @@ class ProfileViewTests(TestCase):
         response = self.client.get(reverse('profile', kwargs={'username': self.user2.username}))
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'Edit Profile')  # Ensure 'Edit Profile' link is not visible
-
-    # def test_cannot_access_other_user_edit_profile(self):
-    #     """Test that a user cannot access the edit profile page of another user"""
-    #     # Ensure user1 cannot access the edit profile page for user2
-    #     response = self.client.get(reverse('edit_profile'))
-    #     self.assertEqual(response.status_code, 200)  # Own edit profile is accessible
 
     def test_cannot_access_other_user_edit_profile(self):
         """Test that a user cannot access the edit profile page of another user"""
@@ -293,7 +287,7 @@ class DeleteAccountTests(TestCase):
     def test_delete_account_view_post(self):
         """Test that the account is deleted on POST"""
         response = self.client.post(reverse('delete_account'))
-        self.assertRedirects(response, reverse('home'))  # Assuming 'home' is your homepage
+        self.assertRedirects(response, reverse('home'))  # Return to homepage
         self.assertFalse(User.objects.filter(username='testuser').exists())
 
 class PasswordChangeTests(TestCase):

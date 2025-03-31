@@ -6,6 +6,7 @@
 <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
     <h1 class="text-2xl font-semibold text-gray-800 text-center mb-6">Login</h1>
 
+    <!-- Form requiring username and password to login -->
     <form method="POST" class="space-y-4">
         {% csrf_token %}
         {% for field in form %}
@@ -27,6 +28,7 @@
             </div>
         {% endif %}
 
+        <!-- Login/Cancel buttons -->
         <div class="flex space-x-4 mt-4">
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600">
                 Login
@@ -37,6 +39,7 @@
         </div>
     </form>
 
+    <!-- Alternate path for users without accounts -->
     <div class="text-center mt-4 space-x-4">
         <a href="{% url 'register' %}" class="text-blue-500 hover:underline">Register</a>
         <span>|</span>
@@ -45,6 +48,7 @@
 </div>
 
 <style>
+    /* Improve input field appearance */
     input, select, textarea {
         border: 1px solid #d1d5db; /* Tailwind's gray-300 */
         border-radius: 0.375rem;   /* Tailwind's rounded */

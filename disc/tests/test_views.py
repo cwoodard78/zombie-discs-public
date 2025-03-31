@@ -24,7 +24,7 @@ class DiscViewTests(TestCase):
         """Test that the submit_disc view creates a disc on valid POST."""
         form_data = {
             "status": "lost",
-            "color": "Red",
+            "color": "red",
             "latitude": 34.89,
             "longitude": -86.44,
             "notes": "Lost near the basket."
@@ -86,7 +86,7 @@ class DiscViewTests(TestCase):
         """Test that a disc without an image displays correctly."""
         disc = Disc.objects.create(
             status='found',
-            color='Blue',
+            color='blue',
             notes='Found near the basket.',
             latitude=34.89500,
             longitude=-86.44450,
@@ -97,7 +97,7 @@ class DiscViewTests(TestCase):
         url = reverse('disc_detail', kwargs={'disc_id': disc.pk})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, '<img')
+        self.assertNotContains(response, 'disc_images')
         
 class ViewMyDiscsTests(TestCase):
     def setUp(self):
@@ -121,7 +121,7 @@ class ViewMyDiscsTests(TestCase):
             Disc.objects.create(
                 user=self.user,
                 status='Lost',
-                color='Red',
+                color='red',
                 latitude=34.89,
                 longitude=-86.44,
                 notes='Lost near the basket.'
@@ -129,7 +129,7 @@ class ViewMyDiscsTests(TestCase):
             Disc.objects.create(
                 user=self.user,
                 status='Lost',
-                color='Blue',
+                color='blue',
                 latitude=34.88,
                 longitude=-86.43,
                 notes='Found near the tee.'
@@ -141,7 +141,7 @@ class ViewMyDiscsTests(TestCase):
             Disc.objects.create(
                 user=self.other_user,
                 status='Found',
-                color='Yellow',
+                color='yellow',
                 latitude=34.87,
                 longitude=-86.42,
                 notes='Lost in the woods.'
@@ -149,7 +149,7 @@ class ViewMyDiscsTests(TestCase):
         ]
 
         # Define the URL for "View My Discs"
-        self.url = reverse('user_disc_list')  # Replace with your actual URL name for the view
+        self.url = reverse('user_disc_list')
 
     def test_user_disc_list_status_code(self):
         """Test that the View My Discs page loads successfully."""
@@ -159,7 +159,7 @@ class ViewMyDiscsTests(TestCase):
     def test_user_disc_list_template_used(self):
         """Test that the correct template is used for the View My Discs page."""
         response = self.client.get(self.url)
-        self.assertTemplateUsed(response, 'disc/user_disc_list.html')  # Replace with the actual template name
+        self.assertTemplateUsed(response, 'disc/user_disc_list.html')
 
     def test_user_disc_list_displays_correct_discs(self):
         """Test that the User Discs page displays only the discs for the authenticated user."""
@@ -174,12 +174,11 @@ class ViewMyDiscsTests(TestCase):
         # Ensure discs for other users are NOT displayed
         for disc in self.other_user_discs:
             self.assertNotContains(response, disc.color)
-            self.assertNotContains(response, disc.status)
 
     def test_user_disc_list_correct_number_of_discs(self):
         """Test that the correct number of discs is displayed for the authenticated user."""
         response = self.client.get(self.url)
-        discs_displayed = response.context['discs']  # Replace with the actual context variable name
+        discs_displayed = response.context['discs']
         self.assertEqual(len(discs_displayed), len(self.user_discs))
 
 class EditDiscTests(TestCase):
@@ -189,7 +188,7 @@ class EditDiscTests(TestCase):
         self.disc = Disc.objects.create(
             user=self.user,
             status="lost",
-            color="Yellow",
+            color="yellow",
             notes="Near the basket.",
             latitude=34.89495,
             longitude=-86.44408
@@ -212,7 +211,7 @@ class EditDiscTests(TestCase):
             reverse("edit_disc", args=[self.disc.id]),
             {
                 "status": "found",
-                "color": "Blue",
+                "color": "blue",
                 "latitude": 34.89495,
                 "longitude": -86.44408,
                 "notes": "Updated notes.",
@@ -220,7 +219,7 @@ class EditDiscTests(TestCase):
         )
         self.assertRedirects(response, reverse("disc_detail", args=[self.disc.id]))
         self.disc.refresh_from_db()
-        self.assertEqual(self.disc.color, "Blue")
+        self.assertEqual(self.disc.color, "blue")
         self.assertEqual(self.disc.notes, "Updated notes.")
 
 class DeleteDiscViewTests(TestCase):
@@ -231,7 +230,7 @@ class DeleteDiscViewTests(TestCase):
         self.disc = Disc.objects.create(
             user=self.user,
             status='lost',
-            color='Yellow',
+            color='yellow',
             notes='Near hole 7.',
             latitude=34.89495,
             longitude=-86.44408

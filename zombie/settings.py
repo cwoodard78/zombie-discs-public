@@ -34,7 +34,6 @@ ALLOWED_HOSTS = ['127.0.0.1']
 INSTALLED_APPS = [
     'disc',
     'users',
-    'map',
     'inbox',
     'rest_framework',
     'drf_yasg',
@@ -76,7 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # Inbox notification
+                # Navigation notifications (inbox and new discs)
                 'inbox.context_processors.unread_message_count',
                 'disc.context_processors.match_notifications',
             ],

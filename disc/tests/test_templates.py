@@ -23,7 +23,14 @@ class DiscTemplateTests(TestCase):
         """Test that the submit_disc template renders correctly."""
         response = self.client.get(reverse('submit_disc'))
         self.assertContains(response, "Submit a Disc")
-        self.assertContains(response, "Select Coordinates")
+        self.assertContains(response, "Status")
+        self.assertContains(response, "Color")
+        self.assertContains(response, "Type")
+        self.assertContains(response, "Manufacturer")
+        self.assertContains(response, "Mold")
+        self.assertContains(response, "Notes")
+        self.assertContains(response, "Image")
+        self.assertContains(response, "Optional Reward")
 
     def test_user_disc_list_template_content(self):
         """Test that the user_disc_list template displays discs correctly."""
@@ -59,18 +66,11 @@ class DiscDetailTemplateTest(TestCase):
         self.client.login(username="testuser", password="testpass")
 
     def test_disc_detail_from_user_disc_list(self):
-        """Test that the 'Back to My Discs' link appears when navigated from the user_disc_list."""
+        """Test that the 'Go to My Disc List' link appears when navigated from the user_disc_list."""
         response = self.client.get(f"{self.detail_url}?from_user_disc_list=true")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Back to My Discs")
+        self.assertContains(response, "Go to My Disc List")
         self.assertNotContains(response, "Add Another Disc")
-
-    def test_disc_detail_direct_navigation(self):
-        """Test that the 'Add Another Disc' link appears when not navigated from the user_disc_list."""
-        response = self.client.get(self.detail_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "Back to My Discs")
-        self.assertContains(response, "Add Another Disc")
 
 class DiscMapTemplateTests(TestCase):
     def test_map_view_contains_map_div(self):

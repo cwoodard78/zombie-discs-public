@@ -56,7 +56,7 @@ class LoginFormTests(TestCase):
             email='testuser@example.com',
             password='StrongPass123!'
         )
-        self.login_url = reverse('login')  # Replace 'login' with your login URL name
+        self.login_url = reverse('login')
 
     # Form Tests
     def test_login_form_required_fields(self):

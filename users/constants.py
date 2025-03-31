@@ -1,3 +1,8 @@
+"""
+Frequently Asked Questions (FAQ) used to populate the Help page.
+Each item includes a 'question' and its corresponding 'answer'.
+"""
+
 FAQS = [
     {
         "question": "How do I submit a disc?",

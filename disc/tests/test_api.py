@@ -49,11 +49,11 @@ class DiscAPITests(APITestCase):
         url = reverse("disc_list_api")
         data = {
             "status": "lost",
-            "color": "Yellow",
+            "color": "yellow",
             "notes": "Near hole 5",
             "latitude": 0,
             "longitude": 0,
-            "user": self.user.id,  # Include the user if it's required
+            "user": self.user.id,
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -69,11 +69,11 @@ class DiscAPITests(APITestCase):
     def test_update_disc(self):
         """Test updating a disc"""
         url = reverse("disc_detail_api", kwargs={"pk": self.disc1.id})
-        data = {"color": "Green"}
+        data = {"color": "green"}
         response = self.client.patch(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.disc1.refresh_from_db()
-        self.assertEqual(self.disc1.color, "Green")
+        self.assertEqual(self.disc1.color, "green")
 
     def test_delete_disc(self):
         """Test deleting a disc"""

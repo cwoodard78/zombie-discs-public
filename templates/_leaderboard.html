@@ -1,0 +1,29 @@
+<!-- Leaderboard for User homepage -->
+<div class="border border-gray-200 rounded-lg shadow-sm bg-gray-50">
+    <h2 class="text-xl font-semibold text-gray-700 mb-4 px-4 pt-4">Leaderboard</h2>
+    <div class="flex border-b border-gray-300 mb-4 px-4 flex-wrap">
+        <button class="tab-btn-leaderboard active" data-tab="lost-leaderboard">Lost</button>
+        <button class="tab-btn-leaderboard" data-tab="found-leaderboard">Found</button>
+        <button class="tab-btn-leaderboard" data-tab="karma-leaderboard">Karma</button>
+        <button class="tab-btn-leaderboard" data-tab="rewards-offered">Offered ($)</button>
+        <button class="tab-btn-leaderboard" data-tab="rewards-earned">Earned ($)</button>
+    </div>
+
+    <div class="px-4 pb-4">
+        <div id="lost-leaderboard" class="leaderboard-tab">
+            {% include "leaderboard_table.html" with leaderboard=lost_leaderboard stat="lost_count" label="Lost Discs" %}
+        </div>
+        <div id="found-leaderboard" class="leaderboard-tab hidden">
+            {% include "leaderboard_table.html" with leaderboard=found_leaderboard stat="found_count" label="Found Discs" %}
+        </div>
+        <div id="karma-leaderboard" class="leaderboard-tab hidden">
+            {% include "leaderboard_table.html" with leaderboard=karma_leaderboard stat="karma" label="Karma Score" %}
+        </div>
+        <div id="rewards-offered" class="leaderboard-tab hidden">
+            {% include "leaderboard_table.html" with leaderboard=rewards_offered stat="total_amount" label="Rewards Offered ($)" %}
+        </div>
+        <div id="rewards-earned" class="leaderboard-tab hidden">
+            {% include "leaderboard_table.html" with leaderboard=rewards_earned stat="total_earned" label="Rewards Earned ($)" %}
+        </div>
+    </div>
+</div>

@@ -5,6 +5,11 @@ from disc.match_logic import populate_disc_matches
 
 @receiver(post_save, sender=Disc)
 def run_matching_on_save(sender, instance, **kwargs):
+    """
+    Signal handler that runs disc matching logic after a Disc instance is saved.
+    - Finds potential matches from the opposite status type (found for lost and vice versa)
+    - Runs matching algorithm to assign score
+    """
     from disc.models import Disc  # circular import protection
 
     if instance.status == "lost":
@@ -16,4 +21,5 @@ def run_matching_on_save(sender, instance, **kwargs):
     else:
         return
 
+    # Run matching scoring script on the disc sets
     populate_disc_matches(lost_discs, found_discs)

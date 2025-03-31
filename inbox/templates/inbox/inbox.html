@@ -5,6 +5,7 @@
 <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-md p-6">
     <h1 class="text-2xl font-semibold text-gray-800 mb-6">Inbox</h1>
 
+    <!-- Table of Inbox messages (if messages exist) -->
     {% if messages %}
     <div class="overflow-x-auto">
         <table class="min-w-full text-sm text-left text-gray-700">
@@ -26,6 +27,7 @@
                         </a>
                     </td>
                     <td>
+                        <!-- Long messages are truncated with option to expand for reading -->
                         <div class="text-container">
                             {% if msg.content|wordcount > 12 %}
                                 <span class="preview-text">{{ msg.content|truncatewords:12 }}...</span>
@@ -37,6 +39,7 @@
                         </div>
                     </td>                    
                     <td class="px-4 py-2">
+                        <!-- Link to disc if not N/A -->
                         {% if msg.disc %}
                             <a href="{% url 'disc_detail' msg.disc.id %}" class="text-blue-500 hover:underline">
                                 {{ msg.disc.mold_name|default:"Disc" }}
@@ -48,32 +51,36 @@
                     <td class="px-4 py-2 text-xs text-gray-500">
                         {{ msg.timestamp|date:"M j, Y, g:i A" }}
                     </td>
-                    <td class="px-4 py-2 space-x-2">
-                        <!-- Reply with or without disc reference -->
-                        {% if msg.disc %}
-                            <a href="{% url 'send_message' receiver_id=msg.sender.id disc_id=msg.disc.id %}"
-                            class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
-                            Reply
-                            </a>
-                        {% else %}
-                            <a href="{% url 'send_message' receiver_id=msg.sender.id %}"
-                            class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
-                            Reply
-                            </a>
-                        {% endif %}
-                        <form method="post" action="{% url 'delete_message' message_id=msg.id %}" class="inline">
-                            {% csrf_token %}
-                            <button type="submit" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">
-                                Delete
-                            </button>
-                        </form>
-                    </td>
+                    <td class="px-4 py-2">
+                        <div class="flex flex-col space-y-2">
+                            <!-- Reply with or without disc reference -->
+                            {% if msg.disc %}
+                                <a href="{% url 'send_message' receiver_id=msg.sender.id disc_id=msg.disc.id %}"
+                                   class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 text-center">
+                                   Reply
+                                </a>
+                            {% else %}
+                                <a href="{% url 'send_message' receiver_id=msg.sender.id %}"
+                                   class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 text-center">
+                                   Reply
+                                </a>
+                            {% endif %}
+                            <form method="post" action="{% url 'delete_message' message_id=msg.id %}">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 w-full">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </td>                    
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
     {% else %}
+        <!-- No messages in inbox -->
         <p class="text-gray-600">You have no messages.</p>
     {% endif %}
 </div>
